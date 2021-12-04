@@ -1,0 +1,68 @@
+Flutter crash report.
+Please report a bug at https://github.com/flutter/flutter/issues.
+
+## command
+
+flutter run --machine --start-paused -d linux --dart-define=flutter.inspector.structuredErrors=true --web-allow-expose-url --devtools-server-address http://127.0.0.1:9100/ --target lib/main.dart
+
+## exception
+
+ArgumentError: Invalid argument(s): Cannot find executable for build/linux/debug/bundle/desktop_version.
+
+```
+#0      _getExecutable (package:process/src/interface/local_process_manager.dart:124:5)
+#1      LocalProcessManager.start (package:process/src/interface/local_process_manager.dart:40:30)
+#2      ErrorHandlingProcessManager.start.<anonymous closure> (package:flutter_tools/src/base/error_handling_io.dart:638:33)
+#3      _run (package:flutter_tools/src/base/error_handling_io.dart:532:20)
+#4      ErrorHandlingProcessManager.start (package:flutter_tools/src/base/error_handling_io.dart:638:12)
+#5      DesktopDevice.startApp (package:flutter_tools/src/desktop_device.dart:139:51)
+<asynchronous suspension>
+#6      FlutterDevice.runHot (package:flutter_tools/src/resident_runner.dart:598:33)
+<asynchronous suspension>
+#7      HotRunner.run.<anonymous closure> (package:flutter_tools/src/run_hot.dart)
+<asynchronous suspension>
+```
+
+## flutter doctor
+
+```
+[✓] Flutter (Channel stable, 2.0.3, on Linux, locale en_IL)
+    • Flutter version 2.0.3 at /home/mohammad/Documents/flutter for desktop/flutter
+    • Framework revision 4d7946a68d (9 months ago), 2021-03-18 17:24:33 -0700
+    • Engine revision 3459eb2436
+    • Dart version 2.12.2
+
+[✓] Android toolchain - develop for Android devices (Android SDK version 31.0.0)
+    • Android SDK at /home/mohammad/Android/Sdk
+    • Platform android-31, build-tools 31.0.0
+    • Java binary at: /opt/android-studio/jre/bin/java
+    • Java version OpenJDK Runtime Environment (build 11.0.10+0-b96-7249189)
+    • All Android licenses accepted.
+
+[✗] Chrome - develop for the web (Cannot find Chrome executable at google-chrome)
+    ! Cannot find Chrome. Try setting CHROME_EXECUTABLE to a Chrome executable.
+
+[✓] Linux toolchain - develop for Linux desktop
+    • clang version 10.0.0-4ubuntu1
+    • cmake version 3.16.3
+    • ninja version 1.10.0
+    • pkg-config version 0.29.1
+
+[✓] Android Studio
+    • Android Studio at /opt/android-studio
+    • Flutter plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/9212-flutter
+    • Dart plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/6351-dart
+    • android-studio-dir = /opt/android-studio
+    • Java version OpenJDK Runtime Environment (build 11.0.10+0-b96-7249189)
+
+[✓] VS Code (version 1.61.2)
+    • VS Code at /usr/share/code
+    • Flutter extension version 3.29.0
+
+[✓] Connected device (1 available)
+    • Linux (desktop) • linux • linux-x64 • Linux
+
+! Doctor found issues in 1 category.
+```
