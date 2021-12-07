@@ -1,3 +1,4 @@
+import 'package:desktop_version/screen/addEmployee.dart';
 import 'package:desktop_version/screen/addPatientScreen.dart';
 import 'package:desktop_version/widgets.dart/patinetInfoSideContainer.dart';
 import 'package:dotted_line/dotted_line.dart';
@@ -90,7 +91,7 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                          builder: (context) => AddPatientScreen()),
+                          builder: (context) => AddEmployee()),
                     );
                   },
                   child: Center(

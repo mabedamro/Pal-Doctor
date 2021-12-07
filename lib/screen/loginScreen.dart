@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/homeScreen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 //0055d4ff main color
 class LoginScreen extends StatefulWidget {
@@ -10,7 +12,11 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  TextEditingController _emailController = TextEditingController();
+
+  TextEditingController _passwordController = TextEditingController();
   final focus = FocusNode();
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     Color color = Colors.blue;
@@ -31,15 +37,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     TextField(
+                      controller: _emailController,
                       onSubmitted: (val) {
                         FocusScope.of(context).requestFocus(focus);
                       },
                       cursorColor: color,
                       decoration: new InputDecoration(
                         prefixIcon: Icon(
-                          Icons.phone_sharp,
+                          Icons.email_rounded,
                         ),
-                        labelText: "Phone Number",
+                        labelText: "Email",
                         focusedBorder: OutlineInputBorder(
                           borderRadius: new BorderRadius.circular(25.0),
                           borderSide: BorderSide(color: color),
@@ -55,6 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 30,
                     ),
                     TextField(
+                      controller: _passwordController,
                       focusNode: focus,
                       onSubmitted: (val) {
                         print('enter button');
@@ -84,7 +92,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        login();
+                        if (isLoading == false) {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          login();
+                        }
                       },
                       child: Center(
                         child: Padding(
@@ -107,7 +120,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                    )
+                    ),
+                    isLoading ? Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: CircularProgressIndicator(),
+                    ) : Container()
                   ],
                 ),
               ),
@@ -118,10 +135,25 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void login() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => HomeScreen()),
-    );
+  Future<void> login() async {
+    bool result = await Provider.of<UserProvier>(context, listen: false)
+        .login(email: _emailController.text, pass: _passwordController.text);
+    print(result);
+    if (result) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Wrong Email Or Password'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 }

@@ -1,4 +1,5 @@
-
+import 'package:desktop_version/models/user.dart';
+import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/datesScreen.dart';
 import 'package:desktop_version/screen/employeeScreen.dart';
 import 'package:desktop_version/screen/finScreen.dart';
@@ -6,6 +7,7 @@ import 'package:desktop_version/screen/patientScreen.dart';
 import 'package:desktop_version/screen/settingsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 class TabBarCustome extends StatefulWidget {
   @override
@@ -15,10 +17,21 @@ class TabBarCustome extends StatefulWidget {
 class _TabBarCustomeState extends State<TabBarCustome>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
+    List<Tab> tabsNames = [];
 
+    List<Widget> tabs = [];
   @override
   void initState() {
-    _tabController = TabController(length: 5, vsync: this);
+    print('1');
+    getTabs();
+
+    print('2');
+    getTabsNames();
+
+    print('3');
+    _tabController = TabController(length: tabs.length, vsync: this);
+
+    print('4');
     super.initState();
   }
 
@@ -66,26 +79,7 @@ class _TabBarCustomeState extends State<TabBarCustome>
                       ),
                       labelColor: Colors.white,
                       unselectedLabelColor: Colors.black,
-                      tabs: [
-                        // first tab [you can add an icon using the icon property]
-                        Tab(
-                          text: 'Patient',
-                        ),
-
-                        Tab(
-                          text: 'Employees',
-                        ),
-                         Tab(
-                          text: 'Dates',
-                        ),
-                          Tab(
-                          text: 'Financial',
-                        ),
-
-                          Tab(
-                          text: 'Settings',
-                        ),
-                      ],
+                      tabs: tabsNames,
                     ),
                   ),
                 ],
@@ -94,23 +88,77 @@ class _TabBarCustomeState extends State<TabBarCustome>
               Expanded(
                 child: TabBarView(
                   controller: _tabController,
-                  children: [
-                    // first tab bar view widget
-                    PatientScreen(),
-                    
-
-                    // second tab bar view widget
-                   EmployeeScreen (),
-                    DatesScreen(),
-                    FinScreen(),
-                   SettingsScreen(),
-                  ],
+                  children: tabs,
                 ),
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  void getTabsNames() {
+    User user = Provider.of<UserProvier>(context,listen: false).user;
+  
+
+    if (user.permission[0] == '1') {
+      tabsNames.add(
+        Tab(
+          text: 'Patient',
+        ),
+      );
+    }
+    if (user.permission[1] == '1') {
+      tabsNames.add(
+        Tab(
+          text: 'Employees',
+        ),
+      );
+    }
+    if (user.permission[2] == '1') {
+      tabsNames.add(
+        Tab(
+          text: 'Dates',
+        ),
+      );
+    }
+    if (user.permission[3] == '1') {
+      tabsNames.add(
+        Tab(
+          text: 'Financial',
+        ),
+      );
+    }
+    tabsNames.add(Tab(
+      text: 'Settings',
+    ));
+  }
+
+  void getTabs() {
+    User user = Provider.of<UserProvier>(context,listen: false).user;
+    if (user.permission[0] == '1') {
+      tabs.add(
+        PatientScreen(),
+      );
+    }
+    if (user.permission[1] == '1') {
+      tabs.add(
+        EmployeeScreen(),
+      );
+    }
+    if (user.permission[2] == '1') {
+      tabs.add(
+        DatesScreen(),
+      );
+    }
+    if (user.permission[3] == '1') {
+      tabs.add(
+        FinScreen(),
+      );
+    }
+    tabs.add(
+      SettingsScreen(),
     );
   }
 }

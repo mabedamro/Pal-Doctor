@@ -32,24 +32,6 @@
       "languageVersion": "2.12"
     },
     {
-      "name": "cloud_firestore",
-      "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore-3.1.1",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
-      "name": "cloud_firestore_platform_interface",
-      "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore_platform_interface-5.4.6",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
-      "name": "cloud_firestore_web",
-      "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore_web-2.6.1",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
       "name": "collection",
       "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/collection-1.15.0",
       "packageUri": "lib/",
@@ -74,20 +56,14 @@
       "languageVersion": "2.12"
     },
     {
-      "name": "firebase_core",
-      "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-1.10.2",
+      "name": "ffi",
+      "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/ffi-1.1.2",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
-      "name": "firebase_core_platform_interface",
-      "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_platform_interface-4.2.0",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
-      "name": "firebase_core_web",
-      "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-1.4.0",
+      "name": "file",
+      "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/file-6.1.2",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -112,6 +88,18 @@
     {
       "name": "flutter_web_plugins",
       "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/packages/flutter_web_plugins",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "http",
+      "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/http-0.13.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "http_parser",
+      "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/http_parser-4.0.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -164,8 +152,38 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "path_provider_linux",
+      "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-2.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "path_provider_platform_interface",
+      "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_platform_interface-2.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "path_provider_windows",
+      "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.0.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "pedantic",
+      "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/pedantic-1.11.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "petitparser",
       "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/petitparser-4.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "platform",
+      "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/platform-3.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -176,8 +194,50 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "process",
+      "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/process-4.2.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "provider",
       "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/provider-6.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "shared_preferences",
+      "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-2.0.7",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "shared_preferences_linux",
+      "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_linux-2.0.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "shared_preferences_macos",
+      "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_macos-2.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "shared_preferences_platform_interface",
+      "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_platform_interface-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "shared_preferences_web",
+      "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_web-2.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "shared_preferences_windows",
+      "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_windows-2.0.3",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -248,6 +308,18 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "win32",
+      "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/win32-2.0.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "xdg_directories",
+      "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/xdg_directories-0.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "xml",
       "rootUri": "file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/xml-5.1.2",
       "packageUri": "lib/",
@@ -260,7 +332,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2021-12-04T21:27:00.441029Z",
+  "generated": "2021-12-07T17:53:29.989962Z",
   "generator": "pub",
   "generatorVersion": "2.12.2"
 }

@@ -1,7 +1,8 @@
 import 'dart:io';
 
-import 'package:desktop_version/provider/listProvider.dart';
+import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/loginScreen.dart';
+import 'package:desktop_version/screen/splashScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
     // }
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ListProvider()),
+        ChangeNotifierProvider(create: (_) => UserProvier()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: LoginScreen(),
+        home: SplashScreen(),
       ),
     );
   }
