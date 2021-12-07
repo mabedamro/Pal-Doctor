@@ -373,6 +373,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
                       onPressed: () async {
+                        if(!isLoading){
                         setState(() {
                           isLoading = true;
                         });
@@ -404,6 +405,9 @@ class _AddEmployeeState extends State<AddEmployee> {
                             }
                           }
                         }
+                        setState(() {
+                          isLoading = false;
+                        });}
                       },
                       child: Center(
                         child: Padding(

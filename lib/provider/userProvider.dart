@@ -26,7 +26,6 @@ class UserProvier with ChangeNotifier {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $token',
-        'refreshToken': 'test',
       });
       if (res == false) {
         print('errorOccured');
@@ -102,35 +101,34 @@ class UserProvier with ChangeNotifier {
     }
   }
 
-  Future<bool> creatUser(String uid) async {
+  Future<bool> creatUser(String uid, String body) async {
     bool result = false;
     try {
+      print('AAAAA');
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String token = prefs.getString('token');
       var url = Uri.parse(DataApi.usersApi + '/$uid');
-      Map body = {
-        "fields": {
-          'test': {'stringValue': 'test data'},
-        }
-      };
 
-      var response = await http
-          .patch(url,
-              headers: {
-                'Accept': 'application/json',
-                'Authorization': 'Bearer $token'
-              },
-              body: json.encode(body))
-          .then((value) async {
-        Map res = jsonDecode(value.body);
-        print(res.toString());
+      print('FFFF');
+      var response = await ApiRequest.patchRequest(url,
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token'
+          },
+          body: body);
+
+      print('FFFFAAAA');
+      print(response.toString());
+      if (response == false) {
+        return false;
+      } else {
+        print(response.toString());
         result = true;
-      }).catchError((e) {
-        result = false;
-      });
-
+      }
       return result;
     } catch (e) {
+      print(e.toString());
       return false;
     }
   }
@@ -138,30 +136,65 @@ class UserProvier with ChangeNotifier {
   Future<bool> creatEmp(
       {String email, String pass, String name, List<String> permission}) async {
     try {
+      print('object');
       var url = Uri.parse(AuthApi.signUp);
       bool result = false;
-      var response = await http.post(url, body: {
+      var res = await ApiRequest.postRequest(url, body: {
         'email': email,
         'password': pass,
-      }).then((value) async {
-        Map res = jsonDecode(value.body);
-
-        if (res['error'] == null) {
-          creatUser(res['localId']);
-
-          result = true;
-        } else {
-          result = false;
-        }
-      }).catchError((e) {
-        user = null;
-        return false;
       });
+      if (res != false) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+
+        List<Map> per = [];
+        for (int i = 0; i < permission.length; i++) {
+          per.add({'stringValue': permission[i]});
+        }
+        String permissionsList = jsonEncode(per);
+        print(prefs.getString('uid'));
+        Map userInfo = {
+          'fields': {
+
+            'id': {
+              'string_value': res['localId'],
+            },
+            'createdBy': {
+              'string_value': prefs.getString('uid'),
+            },
+            'email': {
+              'string_value': email,
+            },
+            'isActive': {
+              'string_value': '1',
+            },
+            'level': {
+              'string_value': '0',
+            },
+            'name': {
+              'string_value': name,
+            },
+            'permission': {
+              'arrayValue': {
+                'values': per
+              }
+            }
+          }
+        };
+        String data = json.encode(userInfo);
+        print('SSSS');
+        await creatUser(res['localId'], data);
+
+        result = true;
+      } else {
+        result = false;
+      }
+
       if (user != null) {
         return true;
       }
       return false;
     } catch (e) {
+      print(e.toString());
       return false;
     }
   }

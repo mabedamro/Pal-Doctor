@@ -4,4 +4,7 @@ class DataApi {
   static get usersApi {
     return baseUrl + '/users';
   }
+  static String empApi(String uid) {
+    return baseUrl + ':runQuery';
+  }
 }

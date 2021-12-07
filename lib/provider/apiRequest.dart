@@ -15,32 +15,36 @@ class ApiRequest {
       // String uid = prefs.getString('uid');
       var response =
           await http.post(url, headers: headers, body: body).catchError((e) {
-        return false;
+            print(e.toString());
+        
       });
+      List list = jsonDecode(response.body);
+      print(list.toString());
       Map res = jsonDecode(response.body);
+      print('zz');
       if (res['error'] != null) {
+        print(res.toString()); 
         if (res['error']['code'] == '401') {
+           print('ll');
           //un auth
           bool result = await updateToken();
           if (result) {
             token = prefs.getString('token');
+            headers['Authorization']='Bearer $token';
             // String uid = prefs.getString('uid');
-            var response = await http.get(
+            var response = await http.post(
               url,
-              headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': 'Bearer $token',
-                'refreshToken': 'test',
-              },
+              headers: headers,body: body,
             ).catchError((e) {
               result = false;
             });
             if (result == false) {
+               print('ff');
               return false;
             }
             res = jsonDecode(response.body);
           } else {
+             print(',,');
             await saveToken('', '', '');
             print('goToLogin again');
             SplashScreen.goTo(false);
@@ -52,7 +56,7 @@ class ApiRequest {
       }
       return res;
     } catch (e) {
-      print('error is :');
+      print('error is post :');
       print(e);
       return false;
     }
@@ -62,7 +66,7 @@ class ApiRequest {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
-      // String uid = prefs.getString('uid');
+      print('ss');
       var response = await http
           .get(
         url,
@@ -71,22 +75,22 @@ class ApiRequest {
           .catchError((e) {
         return false;
       });
+      print('ee');
       Map res = jsonDecode(response.body);
+      print(res.toString());
       if (res['error'] != null) {
-        if (res['error']['code'] == '401') {
+        print(res['error']['code']);
+        if (res['error']['code'] == 401) {
+          print('sss');
           //un auth
           bool result = await updateToken();
           if (result) {
             String token = prefs.getString('token');
             // String uid = prefs.getString('uid');
+            headers['Authorization']='Bearer $token';
             var response = await http.get(
               url,
-              headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': 'Bearer $token',
-                'refreshToken': 'test',
-              },
+              headers:headers,
             ).catchError((e) {
               result = false;
             });
@@ -114,21 +118,33 @@ class ApiRequest {
 
   static Future<dynamic> patchRequest(Uri url,
       {dynamic headers, dynamic body}) async {
+
+        print('SSS');
     try {
+      
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
+        print('SS');
+      // Sting bodyString = json.encode(body.toString());
       // String uid = prefs.getString('uid');
       var response = await http
           .patch(
         url,
         headers: headers,
-        body: body,
+        body: body.toString(),
       )
           .catchError((e) {
         print('error is :');
         print(e);
       });
+      print(response.toString());
+
+        print('AAAAAAAAAAAAAAa');
       Map res = jsonDecode(response.body);
+
+      print(res.toString());
+
+        print('AAAAAAAAAAAAAAa');
       if (res['error'] != null) {
         if (res['error']['code'] == '401') {
           //un auth
@@ -136,12 +152,10 @@ class ApiRequest {
           if (result) {
             String token = prefs.getString('token');
             // String uid = prefs.getString('uid');
+            headers['Authorization']='Bearer $token';
             var response = await http.get(
               url,
-              headers: {
-                'Accept': 'application/json',
-                'Authorization': 'Bearer $token'
-              },
+              headers: headers,
             ).catchError((e) {
               result = false;
             });
@@ -152,7 +166,7 @@ class ApiRequest {
           } else {
             await saveToken('', '', '');
             print('goToLogin again');
-            SplashScreen.goTo(false);
+            
             return false;
           }
         } else {
@@ -174,25 +188,23 @@ class ApiRequest {
       String refreshToken = prefs.getString('refreshToken');
 
       print(refreshToken);
-      if(refreshToken==''){
-         result = false;
+      if (refreshToken == '') {
+        result = false;
       }
       var url = Uri.parse(AuthApi.refreshToken);
-      var response = await ApiRequest.postRequest(url, body: {
+      var res = await ApiRequest.postRequest(url, body: {
         'grant_type': 'refresh_token',
         'refresh_token': refreshToken,
-      }).then((value) {
-        Map res = jsonDecode(value.body);
-        print(res.toString());
-        if (res['error'] == null) {
-          saveToken(res['id_token'], res['user_id'], res['refresh_token']);
-          result = true;
-        } else {
-          result = false;
-        }
-      }).catchError((e) {
-        result = false;
       });
+
+      print(res.toString());
+      if (res['error'] == null) {
+        saveToken(res['id_token'], res['user_id'], res['refresh_token']);
+        result = true;
+      } else {
+        result = false;
+      }
+
       return result;
     } catch (e) {
       return false;

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:desktop_version/provider/employeesProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/loginScreen.dart';
 import 'package:desktop_version/screen/splashScreen.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvier()),
+        ChangeNotifierProvider(create: (_) => EmployeesProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

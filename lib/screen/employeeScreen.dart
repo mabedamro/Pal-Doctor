@@ -1,8 +1,10 @@
+import 'package:desktop_version/provider/employeesProvider.dart';
 import 'package:desktop_version/screen/addEmployee.dart';
 import 'package:desktop_version/screen/addPatientScreen.dart';
 import 'package:desktop_version/widgets.dart/patinetInfoSideContainer.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class EmployeeScreen extends StatefulWidget {
   @override
@@ -14,7 +16,7 @@ class _EmployeeScreenState extends State<EmployeeScreen>
   int counter = 0;
   @override
   Widget build(BuildContext context) {
-
+    Provider.of<EmployeesProvider>(context,listen: false).getEmployee();
     final tableHeadersStyle =
         TextStyle(color: Colors.blue, fontWeight: FontWeight.bold);
     return Column(
