@@ -79,52 +79,42 @@
 //   }
 // }
 
+import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/loginScreen.dart';
 import 'package:desktop_version/widgets.dart/tabBarCutome.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
-  static Function goTo;
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
-  TabController _tabController;
+  // TabController _tabController;
 
   @override
   void initState() {
-    _tabController = TabController(length: 2, vsync: this);
+    // _tabController = TabController(length: 2, vsync: this);
     super.initState();
   }
 
   @override
   void dispose() {
     super.dispose();
-    _tabController.dispose();
+    // _tabController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    HomeScreen.goTo=goTo;
-    return Scaffold(
-        body: Column(
-      children: [
-        TabBarCustome(),
-      ],
-    ));
-  }
-
-  void goTo(bool b) {
-    if (b) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => HomeScreen()),
-      );
-    } else {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => LoginScreen()),
-      );
-    }
+    
+     return  Scaffold(
+          body: Column(
+        children: [
+          TabBarCustome(),
+        ],
+      ));
+    
   }
 }

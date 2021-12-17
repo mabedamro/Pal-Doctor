@@ -34,6 +34,7 @@ dependencies:
   dotted_line: ^3.1.0
   http: 0.13.3
   shared_preferences: ^2.0.7
+  firedart: ^0.9.0
 
 dev_dependencies:
   flutter_test:
@@ -67,11 +68,11 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Ubuntu
+    - family: Cairo
       fonts:
-        - asset: assets/font/Ubuntu/Ubuntu-Regular.ttf
-        - asset: assets/font/Ubuntu/Ubuntu-Bold.ttf
-        - asset: assets/font/Ubuntu/Ubuntu-Light.ttf
+        - asset: assets/font/Cairo/Cairo-Regular.ttf
+        - asset: assets/font/Cairo/Cairo-Bold.ttf
+        - asset: assets/font/Cairo/Cairo-Light.ttf
           
   #   - family: Trajan Pro
   #     fonts:

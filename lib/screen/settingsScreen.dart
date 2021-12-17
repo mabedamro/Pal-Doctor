@@ -14,11 +14,33 @@ class SettingsScreen extends StatelessWidget {
         Center(
           child: Text('Settings Screen'),
         ),
-        ElevatedButton(
-            onPressed: () {
-              Provider.of<UserProvier>(context, listen: false).signout();
-            },
-            child: Text('Sign out'))
+            ElevatedButton(
+                      onPressed: () {
+                         Provider.of<UserProvier>(context, listen: false).signout(context);
+                      },
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text(
+                            'Logout',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Cairo',
+                                fontSize: 15),
+                          ),
+                        ),
+                      ),
+                      style: ButtonStyle(
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                    
       ],
     );
   }

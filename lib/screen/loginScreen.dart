@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/homeScreen.dart';
+import 'package:firedart/firedart.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -107,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
-                                fontFamily: 'Ubuntu',
+                                fontFamily: 'Cairo',
                                 fontSize: 15),
                           ),
                         ),
@@ -121,10 +122,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                    isLoading ? Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: CircularProgressIndicator(),
-                    ) : Container()
+                    isLoading
+                        ? Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: CircularProgressIndicator(),
+                          )
+                        : Container(),
+                    
                   ],
                 ),
               ),
@@ -136,18 +140,35 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> login() async {
-    bool result = await Provider.of<UserProvier>(context, listen: false)
+    String result = await Provider.of<UserProvier>(context, listen: false)
         .login(email: _emailController.text, pass: _passwordController.text);
     print(result);
-    if (result) {
+    if (result=='success') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Directionality(textDirection: TextDirection.rtl,child: Text('تم تسجيل الدخول!')),
+          backgroundColor: Colors.green,
+        ),
+      );
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomeScreen()),
       );
-    } else {
+    } else if(result=='fail') {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Wrong Email Or Password'),
+          content: Directionality(textDirection: TextDirection.rtl,child: Text('البريد الإلكتروني أو كلمة السر غير صحيح')),
+          backgroundColor: Colors.red,
+        ),
+      );
+      setState(() {
+        isLoading = false;
+      });
+    }
+    else if (result=='internet fail'){
+ ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Directionality(textDirection: TextDirection.rtl,child:Text('تحقق من الاتصال بالإنترنت'),),
           backgroundColor: Colors.red,
         ),
       );

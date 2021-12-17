@@ -43,55 +43,57 @@ class _TabBarCustomeState extends State<TabBarCustome>
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: Container(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              // give the tab bar a height [can change hheight to preferred height]
-              Row(
-                children: [
-                  SvgPicture.asset(
-                    'assets/images/drawing.svg',
-                    width: 150,
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Container(
-                    width: 800,
-                    height: 45,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(
-                        25.0,
-                      ),
+    return Directionality(textDirection: TextDirection.rtl,
+      child: Flexible(
+        child: Container(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                // give the tab bar a height [can change hheight to preferred height]
+                Row(
+                  children: [
+                    SvgPicture.asset(
+                      'assets/images/drawing.svg',
+                      width: 150,
                     ),
-                    child: TabBar(
-                      controller: _tabController,
-                      // give the indicator a decoration (color and border radius)
-                      indicator: BoxDecoration(
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Container(
+                      width: 800,
+                      height: 45,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
                         borderRadius: BorderRadius.circular(
                           25.0,
                         ),
-                        color: Colors.blue,
                       ),
-                      labelColor: Colors.white,
-                      unselectedLabelColor: Colors.black,
-                      tabs: tabsNames,
+                      child: TabBar(
+                        controller: _tabController,
+                        // give the indicator a decoration (color and border radius)
+                        indicator: BoxDecoration(
+                          borderRadius: BorderRadius.circular(
+                            25.0,
+                          ),
+                          color: Colors.blue,
+                        ),
+                        labelColor: Colors.white,
+                        unselectedLabelColor: Colors.black,
+                        tabs: tabsNames,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              // tab bar view here
-              Expanded(
-                child: TabBarView(
-                  controller: _tabController,
-                  children: tabs,
+                  ],
                 ),
-              ),
-            ],
+                // tab bar view here
+                Expanded(
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: tabs,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -105,33 +107,34 @@ class _TabBarCustomeState extends State<TabBarCustome>
     if (user.permission[0] == '1') {
       tabsNames.add(
         Tab(
-          text: 'Patient',
+          text: 'المرضى',
+          
         ),
       );
     }
     if (user.permission[1] == '1') {
       tabsNames.add(
         Tab(
-          text: 'Employees',
+          text: 'الموظفين',
         ),
       );
     }
     if (user.permission[2] == '1') {
       tabsNames.add(
         Tab(
-          text: 'Dates',
+          text: 'المواعيد',
         ),
       );
     }
     if (user.permission[3] == '1') {
       tabsNames.add(
         Tab(
-          text: 'Financial',
+          text: 'السجل المالي',
         ),
       );
     }
     tabsNames.add(Tab(
-      text: 'Settings',
+      text: 'الإعدادات',
     ));
   }
 

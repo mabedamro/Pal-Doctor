@@ -18,7 +18,7 @@ class _AddDateScreenState extends State<AddDateScreen> {
         centerTitle: true,
         title: Text(
           'Add Patient',
-          style: TextStyle(color: Colors.blue, fontFamily: 'Ubuntu'),
+          style: TextStyle(color: Colors.blue, fontFamily: 'Cairo'),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -112,7 +112,7 @@ class _AddDateScreenState extends State<AddDateScreen> {
                                           }),
                                       Text(
                                         'Male',
-                                        style: TextStyle(fontFamily: 'Ubuntu'),
+                                        style: TextStyle(fontFamily: 'Cairo'),
                                       ),
                                     ],
                                   ),
@@ -128,7 +128,7 @@ class _AddDateScreenState extends State<AddDateScreen> {
                                           }),
                                       Text(
                                         'Female',
-                                        style: TextStyle(fontFamily: 'Ubuntu'),
+                                        style: TextStyle(fontFamily: 'Cairo'),
                                       ),
                                     ],
                                   ),
@@ -301,7 +301,7 @@ class _AddDateScreenState extends State<AddDateScreen> {
                                       }),
                                   Text(
                                     'Male',
-                                    style: TextStyle(fontFamily: 'Ubuntu'),
+                                    style: TextStyle(fontFamily: 'Cairo'),
                                   ),
                                 ],
                               ),
@@ -317,7 +317,7 @@ class _AddDateScreenState extends State<AddDateScreen> {
                                       }),
                                   Text(
                                     'Female',
-                                    style: TextStyle(fontFamily: 'Ubuntu'),
+                                    style: TextStyle(fontFamily: 'Cairo'),
                                   ),
                                 ],
                               ),
@@ -438,7 +438,7 @@ class _AddDateScreenState extends State<AddDateScreen> {
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
-                                        fontFamily: 'Ubuntu',
+                                        fontFamily: 'Cairo',
                                         fontSize: 15),
                                   ),
                                 ),

@@ -76,7 +76,7 @@ class _PatientScreenState extends State<PatientScreen>
                                       'Search',
                                       style: TextStyle(
                                           color: Colors.white,
-                                          fontFamily: 'Ubuntu',
+                                          fontFamily: 'Cairo',
                                           fontSize: 15),
                                     ),
                                   ],
@@ -111,7 +111,7 @@ class _PatientScreenState extends State<PatientScreen>
                                   'Add Patient',
                                   style: TextStyle(
                                       color: Colors.white,
-                                      fontFamily: 'Ubuntu',
+                                      fontFamily: 'Cairo',
                                       fontSize: 15),
                                 ),
                               ],
@@ -194,9 +194,9 @@ class _PatientScreenState extends State<PatientScreen>
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text('10-10-2021'),
-                                  Text('0595709570'),
-                                  Text('محمد أحمد محمود'),
+                                  Text('10-10-2021', style: TextStyle(fontFamily: 'Cairo',fontWeight: FontWeight.bold),),
+                                  Text('0595709570', style: TextStyle(fontFamily: 'Cairo',fontWeight: FontWeight.bold),),
+                                  Text('محمد أحمد محمود', style: TextStyle(fontFamily: 'Cairo',fontWeight: FontWeight.bold),),
                                 ],
                               ),
                             ),

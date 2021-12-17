@@ -1,207 +1,123 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:desktop_version/api/authApi.dart';
 import 'package:desktop_version/api/databaseApi.dart';
 import 'package:desktop_version/models/user.dart';
-import 'package:desktop_version/provider/apiRequest.dart';
 import 'package:desktop_version/screen/homeScreen.dart';
+import 'package:desktop_version/screen/loginScreen.dart';
 import 'package:desktop_version/screen/splashScreen.dart';
+import 'package:firedart/auth/firebase_auth.dart';
+import 'package:firedart/firestore/firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProvier with ChangeNotifier {
   User user;
-  String userToken;
 
-  Future<bool> getUserData(bool isSplashScreen) async {
+  Future<void> getRequestApi() {}
+  Future<void> getUserData(String uid) async {
     try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String uid = prefs.getString('uid');
-
-      String token = prefs.getString('token');
-
-      var url = Uri.parse(DataApi.usersApi + '/$uid');
-      var res = await ApiRequest.getRequest(url, headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
-      });
-      if (res == false) {
-        print('errorOccured');
-        if (isSplashScreen) {
-          SplashScreen.goTo(false);
-        }
-        return false;
-      } else {
-        print(res.toString());
-        if (res['error'] == null) {
-          if (res['fields']['isActive']['stringValue'] == '0') {
-            print('notActive');
-            await ApiRequest.saveToken('', '', '');
-            user = null;
-            if (isSplashScreen) {
-              SplashScreen.goTo(false);
-            }
-            return false;
-          }
-          user = User.fromJson(res['fields']);
-          if (isSplashScreen) {
-            SplashScreen.goTo(true);
-          }
-          return true;
-        } else {
-          print('no');
-          user = null;
-        }
-      }
-
-      if (isSplashScreen) {
-        SplashScreen.goTo(false);
-      }
-      return false;
-    } catch (e) {
-      print(e);
-      user = null;
-      if (isSplashScreen) {
-        SplashScreen.goTo(false);
-      }
-      return false;
-    }
-  }
-
-  Future<bool> login({String email, String pass}) async {
-    try {
-      var url = Uri.parse(AuthApi.login);
-      bool result = false;
-      var response = await http.post(url, body: {
-        'email': email,
-        'password': pass,
-        'returnSecureToken': 'true',
-      }).then((value) async {
-        Map res = jsonDecode(value.body);
-        print(res.toString());
-        if (res['error'] == null) {
-          await ApiRequest.saveToken(
-              res['idToken'], res['localId'], res['refreshToken']);
-          result = await getUserData(false);
-        } else {
-          user = null;
-        }
-        return result;
+      var ref = Firestore.instance.collection('users').document(uid);
+      var data = await ref.get().then((value) {
+        user = User.fromJson(value);
+        print('Data Are Here');
+        notifyListeners();
       }).catchError((e) {
-        print(e);
-        user = null;
-        return false;
+        print('Here Error Man !');
+        print(e.toString());
       });
-
-      return result;
     } catch (e) {
-      return false;
+      print(e.toString());
     }
   }
 
-  Future<bool> creatUser(String uid, String body) async {
-    bool result = false;
+  Future<
+  String> tryToLogin() async {
     try {
-      print('AAAAA');
+      String result = 'false';
+
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      String token = prefs.getString('token');
-      var url = Uri.parse(DataApi.usersApi + '/$uid');
-
-      print('FFFF');
-      var response = await ApiRequest.patchRequest(url,
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer $token'
-          },
-          body: body);
-
-      print('FFFFAAAA');
-      print(response.toString());
-      if (response == false) {
-        return false;
-      } else {
-        print(response.toString());
-        result = true;
+      if (prefs.getString('email') == '') {
+        print('no saved email');
+        return 'false';
       }
+
+      var auth = FirebaseAuth.instance;
+
+      String email = prefs.getString('email');
+      String pass = prefs.getString('password');
+
+      // Sign in with user credentials
+      await auth.signIn(email, pass).then((value) async {
+        await getUserData(auth.userId);
+        if (user.isActive == '0') {
+          result = 'fail';
+        } else {
+          result = 'success';
+        }
+      }).catchError((e){
+        if(e.toString().contains('SocketException')){
+            result= 'internet fail';
+        }
+        else{
+          result='fail';
+        }
+        print(e.toString());
+      });
+
       return result;
     } catch (e) {
-      print(e.toString());
-      return false;
+      return 'false';
     }
   }
 
-  Future<bool> creatEmp(
-      {String email, String pass, String name, List<String> permission}) async {
+  Future<String> login({String email, String pass}) async {
     try {
-      print('object');
-      var url = Uri.parse(AuthApi.signUp);
-      bool result = false;
-      var res = await ApiRequest.postRequest(url, body: {
-        'email': email,
-        'password': pass,
-      });
-      if (res != false) {
+      String result = 'fail';
+
+      var auth = FirebaseAuth.instance;
+      print('Heeee');
+      // Sign in with user credentials
+      await auth.signIn(email, pass).then((value) async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-
-        List<Map> per = [];
-        for (int i = 0; i < permission.length; i++) {
-          per.add({'stringValue': permission[i]});
+        prefs.setString('email', email);
+        prefs.setString('password', pass);
+        await getUserData(auth.userId);
+        if (user.isActive == '0') {
+          result = 'fail';
+        } else {
+          result = 'success';
         }
-        String permissionsList = jsonEncode(per);
-        print(prefs.getString('uid'));
-        Map userInfo = {
-          'fields': {
+      }).catchError((e){
+        if(e.toString().contains('SocketException')){
+            result= 'internet fail';
+        }
+        else{
+          result='fail';
+        }
+        print(e.toString());
+      });
 
-            'id': {
-              'string_value': res['localId'],
-            },
-            'createdBy': {
-              'string_value': prefs.getString('uid'),
-            },
-            'email': {
-              'string_value': email,
-            },
-            'isActive': {
-              'string_value': '1',
-            },
-            'level': {
-              'string_value': '0',
-            },
-            'name': {
-              'string_value': name,
-            },
-            'permission': {
-              'arrayValue': {
-                'values': per
-              }
-            }
-          }
-        };
-        String data = json.encode(userInfo);
-        print('SSSS');
-        await creatUser(res['localId'], data);
-
-        result = true;
-      } else {
-        result = false;
-      }
-
-      if (user != null) {
-        return true;
-      }
-      return false;
-    } catch (e) {
-      print(e.toString());
-      return false;
+      return result;
+    } 
+    
+    catch (e) {
+      return 'fail';
     }
   }
 
-  Future<void> signout() async {
-    await ApiRequest.saveToken('', '', '');
+  Future<void> signout(BuildContext context) async {
+    // await ApiRequest.saveToken('', '', '');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('email', '');
+    prefs.setString('password', '');
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+    );
     user = null;
-    HomeScreen.goTo(false);
   }
 }

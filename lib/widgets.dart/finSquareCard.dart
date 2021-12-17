@@ -13,10 +13,10 @@ class FinSquareCard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-              Text('This Month',style: TextStyle(fontFamily: 'Ubuntu',fontSize: 15),),
+              Text('This Month',style: TextStyle(fontFamily: 'Cairo',fontSize: 15),),
 
-              Text('  120',style: TextStyle(fontFamily: 'Ubuntu',fontSize: 35),),
-              Text('  \₪',style: TextStyle(fontFamily: 'Ubuntu',fontSize: 25,color: Colors.blue),),
+              Text('  120',style: TextStyle(fontFamily: 'Cairo',fontSize: 35),),
+              Text('  \₪',style: TextStyle(fontFamily: 'Cairo',fontSize: 25,color: Colors.blue),),
               
             ],),
           ),
