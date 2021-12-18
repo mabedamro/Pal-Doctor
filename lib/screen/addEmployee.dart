@@ -407,7 +407,11 @@ class _AddEmployeeState extends State<AddEmployee> {
                                             context,
                                             listen: false)
                                         .creatEmp(
-                                          clincId: Provider.of<UserProvier>(context,listen: false).user.clincId,
+                                            clincId: Provider.of<UserProvier>(
+                                                    context,
+                                                    listen: false)
+                                                .user
+                                                .clincId,
                                             createdById:
                                                 FirebaseAuth.instance.userId,
                                             email: emailCon.text,
@@ -418,7 +422,10 @@ class _AddEmployeeState extends State<AddEmployee> {
                                   Navigator.of(context).pop();
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
-                                      content:  Directionality(textDirection: TextDirection.rtl, child:  Text('تمت إضافة الموظف بنجاح !')),
+                                      content: Directionality(
+                                          textDirection: TextDirection.rtl,
+                                          child:
+                                              Text('تمت إضافة الموظف بنجاح !')),
                                       backgroundColor: Colors.green,
                                     ),
                                   );
@@ -426,8 +433,11 @@ class _AddEmployeeState extends State<AddEmployee> {
                                   if (result == 'INVALID_EMAIL') {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
-                                        content:  Directionality(textDirection: TextDirection.rtl, child:Text(
-                                            'البريد الإلكتروني غير صالح !'),),
+                                        content: Directionality(
+                                          textDirection: TextDirection.rtl,
+                                          child: Text(
+                                              'البريد الإلكتروني غير صالح !'),
+                                        ),
                                         backgroundColor: Colors.red,
                                       ),
                                     );
@@ -435,8 +445,24 @@ class _AddEmployeeState extends State<AddEmployee> {
                                   if (result == 'EMAIL_EXISTS') {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
-                                         content:  Directionality(textDirection: TextDirection.rtl, child: Text(
-                                            'البريد الإلكتروني مستخدم بالفعل !'),),
+                                        content: Directionality(
+                                          textDirection: TextDirection.rtl,
+                                          child: Text(
+                                              'البريد الإلكتروني مستخدم بالفعل !'),
+                                        ),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                  }
+
+                                  if (result == 'internet fail') {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Directionality(
+                                          textDirection: TextDirection.rtl,
+                                          child:
+                                              Text('!تحقق من الاتصال بالانترنت'),
+                                        ),
                                         backgroundColor: Colors.red,
                                       ),
                                     );

@@ -3,6 +3,7 @@ class User {
   String email;
   String clincId;
   String isActive;
+  String id;
   List<String> permission = [
     '0',
     '0',
@@ -18,12 +19,14 @@ class User {
     this.createdBy,
     this.isActive,
     this.permission,
+    this.id,
   });
 
   User.fromJson(dynamic res) {
     print(res.toString());
     name = res['name'];
     email = res['email'];
+    id=res['id'];
     clincId = res['clincId'];
     createdBy = res['createdBy'];
 

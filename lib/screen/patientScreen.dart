@@ -37,7 +37,7 @@ class _PatientScreenState extends State<PatientScreen>
                       Row(
                         children: [
                           SizedBox(
-                            width: 600,
+                            width: 400,
                             child: TextField(
                               onSubmitted: (val) {
                                 print('enter button');
@@ -47,7 +47,7 @@ class _PatientScreenState extends State<PatientScreen>
                                 prefixIcon: Icon(
                                   Icons.search,
                                 ),
-                                labelText: "Search...",
+                                labelText: "بحث...",
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(25.0),
                                   borderSide: BorderSide(color: Colors.blue),
@@ -73,7 +73,7 @@ class _PatientScreenState extends State<PatientScreen>
                                   children: [
                                     Icon(Icons.search),
                                     Text(
-                                      'Search',
+                                      'بحث',
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontFamily: 'Cairo',
@@ -94,37 +94,79 @@ class _PatientScreenState extends State<PatientScreen>
                           )
                         ],
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) => AddPatientScreen()),
-                          );
-                        },
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Row(
-                              children: [
-                                Icon(Icons.add),
-                                Text(
-                                  'Add Patient',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Cairo',
-                                      fontSize: 15),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                
+                              },
+                              child: Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.refresh),
+                                      Text(
+                                        'تحديث',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: 'Cairo',
+                                            fontSize: 15),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ],
+                              ),
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.grey),
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50.0),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),  
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) => AddPatientScreen()),
+                                );
+                              },
+                              child: Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.add),
+                                      Text(
+                                        'إضافة مريض',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: 'Cairo',
+                                            fontSize: 15),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              style: ButtonStyle(
+                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50.0),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                        style: ButtonStyle(
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50.0),
-                            ),
-                          ),
-                        ),
+                        ],
                       )
                     ],
                   ),

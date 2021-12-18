@@ -1,6 +1,8 @@
 import 'package:desktop_version/models/user.dart';
+import 'package:desktop_version/provider/employeesProvider.dart';
 import 'package:desktop_version/screen/employeeScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PatientInfoSideContainer extends StatefulWidget {
   static Function setStateForAnimation;
@@ -61,7 +63,7 @@ class __PatientInfoSideContainerpertiesState
           ),
           Icon(
             Icons.assignment_ind_rounded,
-            size: 150,
+            size: showSideMenu ? 120 : 0,
             color: Colors.blue,
           ),
           Padding(
@@ -72,7 +74,10 @@ class __PatientInfoSideContainerpertiesState
               },
               cursorColor: color,
               decoration: new InputDecoration(
-                prefixIcon: Icon(Icons.picture_in_picture_outlined),
+                prefixIcon: Icon(
+                  Icons.picture_in_picture_outlined,
+                  size: showSideMenu ? 20 : 0,
+                ),
                 labelText: "ID",
                 focusedBorder: OutlineInputBorder(
                   borderRadius: new BorderRadius.circular(25.0),
@@ -96,6 +101,7 @@ class __PatientInfoSideContainerpertiesState
               decoration: new InputDecoration(
                 prefixIcon: Icon(
                   Icons.account_circle,
+                  size: showSideMenu ? 20 : 0,
                 ),
                 labelText: "Patient Name",
                 focusedBorder: OutlineInputBorder(
@@ -159,6 +165,7 @@ class __PatientInfoSideContainerpertiesState
               decoration: new InputDecoration(
                 prefixIcon: Icon(
                   Icons.phone_sharp,
+                  size: showSideMenu ? 20 : 0,
                 ),
                 labelText: "Phone",
                 focusedBorder: OutlineInputBorder(
@@ -183,6 +190,7 @@ class __PatientInfoSideContainerpertiesState
               decoration: new InputDecoration(
                 prefixIcon: Icon(
                   Icons.location_city,
+                  size: showSideMenu ? 20 : 0,
                 ),
                 labelText: "Address",
                 focusedBorder: OutlineInputBorder(
@@ -207,6 +215,7 @@ class __PatientInfoSideContainerpertiesState
               decoration: new InputDecoration(
                 prefixIcon: Icon(
                   Icons.date_range_rounded,
+                  size: showSideMenu ? 20 : 0,
                 ),
                 labelText: "Date Of Birth",
                 focusedBorder: OutlineInputBorder(
@@ -229,7 +238,10 @@ class __PatientInfoSideContainerpertiesState
               },
               cursorColor: color,
               decoration: new InputDecoration(
-                prefixIcon: Icon(Icons.medical_services_rounded),
+                prefixIcon: Icon(
+                  Icons.medical_services_rounded,
+                  size: showSideMenu ? 20 : 0,
+                ),
                 labelText: "Reffered By",
                 focusedBorder: OutlineInputBorder(
                   borderRadius: new BorderRadius.circular(25.0),
@@ -258,6 +270,12 @@ class __PatientInfoSideContainerpertiesState
 
 class EmployeeInfoSideContainer extends StatefulWidget {
   EmployeeInfoSideContainer();
+  static List<String> permission = [
+    '0',
+    '0',
+    '0',
+    '0',
+  ];
   static Function setStateForAnimation;
   @override
   __EmployeeInfoSideContainerState createState() =>
@@ -266,32 +284,53 @@ class EmployeeInfoSideContainer extends StatefulWidget {
 
 class __EmployeeInfoSideContainerState
     extends State<EmployeeInfoSideContainer> {
-      TextEditingController nameController=TextEditingController();
+  TextEditingController nameController = TextEditingController();
 
-      TextEditingController emailController=TextEditingController();
-  bool enableEditing = false;
+  TextEditingController emailController = TextEditingController();
   bool showSideMenu = false;
   final double _width = 0;
   bool pat = false, emp = false, date = false, fin = false;
-  List<String> permission = [
-    '0',
-    '0',
-    '0',
-    '0',
-  ];
+
   final double _height = double.infinity;
   final Color _color = Colors.white;
   final BorderRadiusGeometry _borderRadius = BorderRadius.circular(8);
+  bool isLoading = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  void initPermisions() {
+    if (EmployeeInfoSideContainer.permission[0] == '1') {
+      pat = true;
+    } else {
+      pat = false;
+    }
+    if (EmployeeInfoSideContainer.permission[1] == '1') {
+      emp = true;
+    } else {
+      emp = false;
+    }
+    if (EmployeeInfoSideContainer.permission[2] == '1') {
+      date = true;
+    } else {
+      date = false;
+    }
+    if (EmployeeInfoSideContainer.permission[3] == '1') {
+      fin = true;
+    } else {
+      fin = false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-
-    
-
+    initPermisions();
     final color = Colors.blue;
     EmployeeInfoSideContainer.setStateForAnimation = setStateToAnimate;
-    nameController.text=EmployeeScreen.selectedEmployee.name;
-    emailController.text=EmployeeScreen.selectedEmployee.email;
+    nameController.text = EmployeeScreen.selectedEmployee.name;
+    emailController.text = EmployeeScreen.selectedEmployee.email;
     return AnimatedContainer(
       // Use the properties stored in the State class.
       width: showSideMenu ? MediaQuery.of(context).size.width / 3 : _width,
@@ -307,8 +346,127 @@ class __EmployeeInfoSideContainerState
       child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (EmployeeScreen.enableEditing) {
+                          if (EmployeeScreen.selectedEmployee.createdBy ==
+                              'me') {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Directionality(
+                                    textDirection: TextDirection.rtl,
+                                    child: Text(
+                                        'لا يمكنك التعديل على هذا الموظف !')),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          } else {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            String result =
+                                await Provider.of<EmployeesProvider>(context,
+                                        listen: false)
+                                    .updateEmployee(
+                                        nameController.text,
+                                        EmployeeInfoSideContainer.permission,
+                                        EmployeeScreen.selectedEmployee);
+                            if (result == 'success') {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Directionality(
+                                      textDirection: TextDirection.rtl,
+                                      child: Text(
+                                          'تم التعديل على الموظف بنجاح !')),
+                                  backgroundColor: Colors.green,
+                                ),
+                              );
+                            } else if (result == 'internet fail') {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Directionality(
+                                    textDirection: TextDirection.rtl,
+                                    child: Text('!تحقق من الاتصال بالانترنت'),
+                                  ),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            }
+                            setState(() {
+                              isLoading = false;
+                            });
+                          }
+                        }
+                        if (EmployeeScreen.selectedEmployee.createdBy == 'me') {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Directionality(
+                                  textDirection: TextDirection.rtl,
+                                  child: Text(
+                                      'لا يمكنك التعديل على هذا الموظف !')),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        } else {
+                          setState(() {
+                            EmployeeScreen.enableEditing =
+                                !EmployeeScreen.enableEditing;
+                          });
+                        }
+                      },
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Row(
+                            children: [
+                              Icon(
+                                EmployeeScreen.enableEditing
+                                    ? Icons.refresh
+                                    : Icons.edit,
+                                size: showSideMenu ? 20 : 0,
+                              ),
+                              Text(
+                                EmployeeScreen.enableEditing
+                                    ? 'تحديث معلومات الموظف'
+                                    : 'تعديل',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: 'Cairo',
+                                    fontSize: 15),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                            EmployeeScreen.enableEditing
+                                ? Colors.blue
+                                : Colors.grey),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  isLoading
+                      ? SizedBox(
+                          width: 30,
+                          height: 30,
+                          child: CircularProgressIndicator(),
+                        )
+                      : Container(),
+                ],
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: FittedBox(
@@ -318,6 +476,7 @@ class __EmployeeInfoSideContainerState
                         size: 30,
                       ),
                       onTap: () {
+                        EmployeeScreen.enableEditing = false;
                         setStateToAnimate(false);
                       }),
                 ),
@@ -326,20 +485,23 @@ class __EmployeeInfoSideContainerState
           ),
           Icon(
             Icons.person,
-            size: 150,
+            size: showSideMenu ? 120 : 0,
             color: Colors.blue,
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextFormField(
               controller: nameController,
-              enabled: enableEditing,
+              enabled: EmployeeScreen.enableEditing,
               onFieldSubmitted: (val) {
                 // FocusScope.of(context).requestFocus(focus);
               },
               cursorColor: color,
               decoration: new InputDecoration(
-                prefixIcon: Icon(Icons.person),
+                prefixIcon: Icon(
+                  Icons.person,
+                  size: showSideMenu ? 20 : 0,
+                ),
                 labelText: "الإسم",
                 focusedBorder: OutlineInputBorder(
                   borderRadius: new BorderRadius.circular(25.0),
@@ -363,7 +525,10 @@ class __EmployeeInfoSideContainerState
               },
               cursorColor: color,
               decoration: new InputDecoration(
-                prefixIcon: Icon(Icons.person),
+                prefixIcon: Icon(
+                  Icons.email,
+                  size: showSideMenu ? 20 : 0,
+                ),
                 labelText: "البريد الألكتروني",
                 focusedBorder: OutlineInputBorder(
                   borderRadius: new BorderRadius.circular(25.0),
@@ -397,14 +562,18 @@ class __EmployeeInfoSideContainerState
                         Checkbox(
                             value: pat,
                             onChanged: (val) {
-                              setState(() {
-                                pat = val;
-                                if (pat) {
-                                  permission[0] = '1';
-                                } else {
-                                  permission[0] = '0';
-                                }
-                              });
+                              if (EmployeeScreen.enableEditing) {
+                                setState(() {
+                                  pat = val;
+                                  if (pat) {
+                                    EmployeeInfoSideContainer.permission[0] =
+                                        '1';
+                                  } else {
+                                    EmployeeInfoSideContainer.permission[0] =
+                                        '0';
+                                  }
+                                });
+                              }
                             }),
                         Text(
                           'الوصول لسجل المرضى',
@@ -416,30 +585,25 @@ class __EmployeeInfoSideContainerState
                     Row(
                       children: [
                         Checkbox(
-                            value: emp,
-                            onChanged: (val) {
+                          value: emp,
+                          onChanged: (val) {
+                            if (EmployeeScreen.enableEditing) {
                               setState(() {
                                 emp = val;
                                 if (emp) {
-                                  permission[1] = '1';
+                                  EmployeeInfoSideContainer.permission[1] = '1';
                                 } else {
-                                  permission[1] = '0';
+                                  EmployeeInfoSideContainer.permission[1] = '0';
                                 }
                               });
-                            }),
+                            }
+                          },
+                        ),
                         Text(
                           'الوصول الى سجل الموظفين',
                           style: TextStyle(
                               fontFamily: 'Cairo', fontWeight: FontWeight.bold),
                         ),
-                        Text(
-                          ' تحذير : سيكون الموظف قادر على إضافة وحذف موظفين.',
-                          style: TextStyle(
-                              fontFamily: 'Cairo',
-                              color: Colors.red,
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold),
-                        )
                       ],
                     ),
                     Row(
@@ -447,14 +611,18 @@ class __EmployeeInfoSideContainerState
                         Checkbox(
                             value: date,
                             onChanged: (val) {
-                              setState(() {
-                                date = val;
-                                if (date) {
-                                  permission[2] = '1';
-                                } else {
-                                  permission[2] = '0';
-                                }
-                              });
+                              if (EmployeeScreen.enableEditing) {
+                                setState(() {
+                                  date = val;
+                                  if (date) {
+                                    EmployeeInfoSideContainer.permission[2] =
+                                        '1';
+                                  } else {
+                                    EmployeeInfoSideContainer.permission[2] =
+                                        '0';
+                                  }
+                                });
+                              }
                             }),
                         Text(
                           'الوصول الى المواعيد',
@@ -468,34 +636,99 @@ class __EmployeeInfoSideContainerState
                         Checkbox(
                             value: fin,
                             onChanged: (val) {
-                              setState(() {
-                                fin = val;
-                                if (fin) {
-                                  permission[3] = '1';
-                                } else {
-                                  permission[3] = '0';
-                                }
-                              });
+                              if (EmployeeScreen.enableEditing) {
+                                setState(() {
+                                  fin = val;
+                                  if (fin) {
+                                    EmployeeInfoSideContainer.permission[3] =
+                                        '1';
+                                  } else {
+                                    EmployeeInfoSideContainer.permission[3] =
+                                        '0';
+                                  }
+                                });
+                              }
                             }),
                         Text(
                           'الوصول الى السجل المالي',
                           style: TextStyle(
                               fontFamily: 'Cairo', fontWeight: FontWeight.bold),
                         ),
-                        Text(
-                          ' تحذير : سيكون الموظف قادر على الوصول للسجل المالي',
-                          style: TextStyle(
-                              fontFamily: 'Cairo',
-                              fontSize: 13,
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold),
-                        )
                       ],
                     ),
                   ],
                 ),
               ],
             ),
+          ),
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.attach_money,
+                          ),
+                          Text(
+                            'السجل المالي',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'Cairo',
+                                fontSize: 15),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50.0),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8),
+                            child: Icon(Icons.person_add_disabled),
+                          ),
+                          Text(
+                            'إلغاء تفعيل الموظف',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'Cairo',
+                                fontSize: 15),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50.0),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

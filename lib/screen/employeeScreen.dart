@@ -10,7 +10,9 @@ import 'package:provider/provider.dart';
 class EmployeeScreen extends StatefulWidget {
   @override
   _EmployeeScreenState createState() => _EmployeeScreenState();
-  static User selectedEmployee = User(name: '',email: '');
+  static User selectedEmployee = User(name: '', email: '');
+
+  static bool enableEditing = false;
 }
 
 class _EmployeeScreenState extends State<EmployeeScreen>
@@ -23,11 +25,13 @@ class _EmployeeScreenState extends State<EmployeeScreen>
     // TODO: implement initState
     super.initState();
     Provider.of<EmployeesProvider>(context, listen: false).getEmployee(
-        Provider.of<UserProvier>(context, listen: false).user.clincId);
+        Provider.of<UserProvier>(context, listen: false).user.clincId,context);
   }
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController searchController = TextEditingController();
+    
     final tableHeadersStyle =
         TextStyle(color: Colors.blue, fontWeight: FontWeight.bold);
     // return ElevatedButton(onPressed: (){
@@ -51,10 +55,19 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                       Row(
                         children: [
                           SizedBox(
-                            width: 600,
+                            width: 400,
                             child: TextField(
+                              controller: searchController,
                               onSubmitted: (val) {
                                 print('enter button');
+                                 Provider.of<EmployeesProvider>(context,
+                                        listen: false)
+                                    .search(val);
+                              },
+                              onChanged: (val) {
+                                Provider.of<EmployeesProvider>(context,
+                                        listen: false)
+                                    .search(val);
                               },
                               cursorColor: Colors.blue,
                               decoration: new InputDecoration(
@@ -79,7 +92,9 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                             width: 10,
                           ),
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () { Provider.of<EmployeesProvider>(context,
+                                        listen: false)
+                                    .search(searchController.text);},
                             child: Center(
                               child: Padding(
                                 padding: const EdgeInsets.all(12.0),
@@ -120,7 +135,7 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                                             context,
                                             listen: false)
                                         .user
-                                        .clincId);
+                                        .clincId,context);
                               },
                               child: Center(
                                 child: Padding(
@@ -265,20 +280,24 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                   height: double.infinity,
                   child: Consumer<EmployeesProvider>(
                       builder: (_, empProvider, child) {
-                    return empProvider.employees.length == 0
+                    return empProvider.searchList.length == 0
                         ? Center(
                             child: SizedBox(
                                 height: 50,
                                 width: 50,
                                 child: CircularProgressIndicator()))
                         : ListView.builder(
-                            itemCount: empProvider.employees.length,
+                            itemCount: empProvider.searchList.length,
                             itemBuilder: (_, index) {
                               return Card(
                                 child: InkWell(
                                   onTap: () {
+                                    EmployeeScreen.enableEditing=false;
                                     EmployeeScreen.selectedEmployee =
-                                        empProvider.employees[index];
+                                        empProvider.searchList[index];
+                                    EmployeeInfoSideContainer.permission =
+                                        EmployeeScreen
+                                            .selectedEmployee.permission;
                                     EmployeeInfoSideContainer
                                         .setStateForAnimation(true);
                                   },
@@ -294,7 +313,7 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                                             child: Center(
                                               child: Text(
                                                 empProvider
-                                                    .employees[index].name,
+                                                    .searchList[index].name,
                                                 style: TextStyle(
                                                     fontFamily: 'Cairo',
                                                     fontWeight:
@@ -306,7 +325,7 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                                             child: Center(
                                               child: Text(
                                                 empProvider
-                                                    .employees[index].email,
+                                                    .searchList[index].email,
                                                 style: TextStyle(
                                                     fontFamily: 'Cairo',
                                                     fontWeight:
@@ -317,7 +336,7 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                                           Expanded(
                                             child: Center(
                                               child: Text(
-                                                empProvider.employees[index]
+                                                empProvider.searchList[index]
                                                     .permissionString,
                                                 style: TextStyle(
                                                     fontFamily: 'Cairo',
