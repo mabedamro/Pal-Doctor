@@ -102,7 +102,7 @@ class EmployeesProvider with ChangeNotifier {
             emp.permission = List.from(permissions);
             notifyListeners();
           })
-          .timeout(Duration(seconds: 3))
+          .timeout(Duration(seconds: 5))
           .catchError((e) {
             print('HOOOOOOOn');
             print(e.toString());
@@ -147,7 +147,7 @@ class EmployeesProvider with ChangeNotifier {
             notifyListeners();
             result = 'success';
           })
-          .timeout(Duration(seconds: 3))
+          .timeout(Duration(seconds: 5))
           .catchError((e) {
             print('FFFFFFFFFFFFFF');
             print(e.toString());
