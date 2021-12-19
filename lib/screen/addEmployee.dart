@@ -113,7 +113,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                   },
                                   cursorColor: color,
                                   validator: (val) {
-                                    if (val.length < 5) {
+                                    if (trim(val).length < 5) {
                                       return 'too short name';
                                     }
                                     return null;
@@ -203,7 +203,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                   obscureText: true,
                                   cursorColor: color,
                                   validator: (val) {
-                                    if (val.length < 8) {
+                                    if (trim(val).length < 8) {
                                       return 'كلمة المرور قصيرة جدا';
                                     }
 
@@ -239,7 +239,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                     // FocusScope.of(context).requestFocus(focus);
                                   },
                                   validator: (val) {
-                                    if (passConCon.text != passCon.text) {
+                                    if (passConCon.text.trim() != passCon.text.trim()) {
                                       return 'كلمة المرور غير متطابقة';
                                     }
 
@@ -525,5 +525,43 @@ class _AddEmployeeState extends State<AddEmployee> {
         ),
       
     );
+  }
+  String trim(String s) {
+    s = s.trim();
+    if (s == '') {
+      return s;
+    } else {
+      String temp = '';
+      for (var i = 0; i < s.length; i++) {
+        if (s[i].codeUnitAt(0) != 32 && s[i].codeUnitAt(0) != 8207) {
+          temp += s[i];
+          for (var j = i + 1; j < s.length; j++) {
+            temp += s[j];
+          }
+          break;
+        }
+      }
+      print(temp);
+      String temp2 = '';
+      for (var i = temp.length - 1; i >= 0; i--) {
+        if (temp[i].codeUnitAt(0) != 32 && temp[i].codeUnitAt(0) != 8207) {
+          temp2 += temp[i];
+          for (var j = i - 1; j >= 0; j--) {
+            temp2 += temp[j];
+          }
+          break;
+        }
+      }
+      String result='';
+      for (var i = temp2.length - 1; i >= 0; i--) {
+        result+=temp2[i];
+      }
+      
+      
+      print(result);
+      print(temp.length);
+
+      return result;
+    }
   }
 }

@@ -16,13 +16,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProvier with ChangeNotifier {
   User user;
+  User clincUser;
 
-  Future<void> getRequestApi() {}
-  Future<void> getUserData(String uid) async {
+  Future<void> getClincData() async {
     try {
-      var ref = Firestore.instance.collection('users').document(uid);
+      if (user.clincId == user.id) {
+        return;
+      }
+      var ref = Firestore.instance.collection('users').document(user.clincId);
       var data = await ref.get().then((value) {
-        user = User.fromJson(value);
+        clincUser = User.fromJson(value);
         print('Data Are Here');
         notifyListeners();
       }).catchError((e) {
@@ -34,8 +37,24 @@ class UserProvier with ChangeNotifier {
     }
   }
 
-  Future<
-  String> tryToLogin() async {
+  Future<void> getUserData(String uid) async {
+    try {
+      var ref = Firestore.instance.collection('users').document(uid);
+      var data = await ref.get().then((value) async {
+        user = User.fromJson(value);
+        print('Data Are Here');
+        await getClincData();
+        notifyListeners();
+      }).catchError((e) {
+        print('Here Error Man !');
+        print(e.toString());
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<String> tryToLogin() async {
     try {
       String result = 'false';
 
@@ -58,12 +77,11 @@ class UserProvier with ChangeNotifier {
         } else {
           result = 'success';
         }
-      }).catchError((e){
-        if(e.toString().contains('SocketException')){
-            result= 'internet fail';
-        }
-        else{
-          result='fail';
+      }).catchError((e) {
+        if (e.toString().contains('SocketException')) {
+          result = 'internet fail';
+        } else {
+          result = 'fail';
         }
         print(e.toString());
       });
@@ -91,20 +109,17 @@ class UserProvier with ChangeNotifier {
         } else {
           result = 'success';
         }
-      }).catchError((e){
-        if(e.toString().contains('SocketException')){
-            result= 'internet fail';
-        }
-        else{
-          result='fail';
+      }).catchError((e) {
+        if (e.toString().contains('SocketException')) {
+          result = 'internet fail';
+        } else {
+          result = 'fail';
         }
         print(e.toString());
       });
 
       return result;
-    } 
-    
-    catch (e) {
+    } catch (e) {
       return 'fail';
     }
   }

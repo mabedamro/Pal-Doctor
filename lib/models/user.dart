@@ -11,6 +11,9 @@ class User {
     '0',
   ];
   String createdBy;
+  List<String> clincDiags = [];
+
+  List<String> clincTests = [];
 
   User({
     this.email,
@@ -26,13 +29,24 @@ class User {
     print(res.toString());
     name = res['name'];
     email = res['email'];
-    id=res['id'];
+    id = res['id'];
     clincId = res['clincId'];
     createdBy = res['createdBy'];
 
     isActive = res['isActive'];
     for (int i = 0; i < permission.length; i++) {
       permission[i] = res['permission'][i];
+    }
+
+    if (res['clincDiags'] != null) {
+      for (int i = 0; i < res['clincDiags'].length; i++) {
+        clincDiags.add(res['clincDiags'][i]);
+      }
+    }
+    if (res['clincTests'] != null) {
+      for (int i = 0; i < res['clincTests'].length; i++) {
+        clincTests.add(res['clincTests'][i]);
+      }
     }
   }
   get permissionString {
