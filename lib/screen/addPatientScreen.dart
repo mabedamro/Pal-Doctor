@@ -1,4 +1,7 @@
+import 'package:desktop_version/models/case.dart';
+import 'package:desktop_version/models/patient.dart';
 import 'package:desktop_version/provider/dateTimeProvider.dart';
+import 'package:desktop_version/provider/patinetProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/widgets.dart/caseDialog.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +14,21 @@ class AddPatientScreen extends StatefulWidget {
 }
 
 class _AddPatientScreenState extends State<AddPatientScreen> {
+  List<String> diags = [];
+
+  List<String> tests = [];
+  bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
   TextEditingController cityController = TextEditingController(text: 'الخليل');
   TextEditingController diagsController = TextEditingController();
+
+  TextEditingController idNumberController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController adressController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
+  TextEditingController refferController = TextEditingController();
+  TextEditingController noteController = TextEditingController();
   bool male = true;
 
   bool female = false;
@@ -133,6 +148,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: TextFormField(
+                          controller: idNumberController,
                           onFieldSubmitted: (val) {
                             FocusScope.of(context).requestFocus(focusName);
                           },
@@ -169,6 +185,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: TextFormField(
+                          controller: nameController,
                           focusNode: focusName,
                           style: feildStyle,
                           onFieldSubmitted: (val) {
@@ -241,8 +258,9 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: TextFormField(
+                          controller: phoneController,
                           onFieldSubmitted: (val) {
-                            FocusScope.of(context).requestFocus(focusAdress);
+                            FocusScope.of(context).requestFocus(focusCity);
                           },
                           validator: (val) {
                             try {
@@ -277,75 +295,93 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                           ),
                         ),
                       ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: TextFormField(
+                                onFieldSubmitted: (val) {
+                                  FocusScope.of(context)
+                                      .requestFocus(focusAdress);
+                                },
+                                style: feildStyle,
+                                cursorColor: color,
+                                focusNode: focusCity,
+                                validator: (val) {
+                                  if (trim(val) == '') {
+                                    return 'لا يمكنك ترك هذا الحقل فارغاَ';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                controller: cityController,
+                                decoration: new InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.gps_fixed,
+                                  ),
 
-                      // Padding(
-                      //   padding: const EdgeInsets.only(top: 8.0),
-                      //   child: TextFormField(
-                      //     onFieldSubmitted: (val) {
-                      //       FocusScope.of(context)
-                      //           .requestFocus(focusAdress);
-                      //     },
-                      //     style: feildStyle,
-                      //     cursorColor: color,
-                      //     focusNode: focusCity,
-                      //     controller: cityController,
-                      //     decoration: new InputDecoration(
-                      //       prefixIcon: Icon(
-                      //         Icons.gps_fixed,
-                      //       ),
-                      //       labelText: "المدينة",
-                      //       focusedBorder: OutlineInputBorder(
-                      //         borderRadius:
-                      //             new BorderRadius.circular(60.0),
-                      //         borderSide: BorderSide(color: color),
-                      //       ),
-                      //       enabledBorder: OutlineInputBorder(
-                      //         borderRadius:
-                      //             new BorderRadius.circular(60.0),
-                      //         // borderSide: BorderSide(color: color),
-                      //       ),
-                      //       //fillColor: Colors.green),
-                      //     ),
-                      //   ),
-                      // ),
-
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: TextFormField(
-                          onFieldSubmitted: (val) {
-                            FocusScope.of(context).requestFocus(focusAge);
-                          },
-                          validator: (val) {
-                            if (trim(val) == '') {
-                              return 'لا يمكنك ترك هذا الحقل فارغاَ';
-                            } else {
-                              return null;
-                            }
-                          },
-                          style: feildStyle,
-                          cursorColor: color,
-                          focusNode: focusAdress,
-                          decoration: new InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.location_city,
+                                  labelText: "المدينة",
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(60.0),
+                                    borderSide: BorderSide(color: color),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(60.0),
+                                    // borderSide: BorderSide(color: color),
+                                  ),
+                                  //fillColor: Colors.green),
+                                ),
+                              ),
                             ),
-                            labelText: "العنوان",
-
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(60.0),
-                              borderSide: BorderSide(color: color),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(60.0),
-                              // borderSide: BorderSide(color: color),
-                            ),
-                            //fillColor: Colors.green),
                           ),
-                        ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: TextFormField(
+                                controller: adressController,
+                                onFieldSubmitted: (val) {
+                                  FocusScope.of(context).requestFocus(focusAge);
+                                },
+                                validator: (val) {
+                                  if (trim(val) == '') {
+                                    return 'لا يمكنك ترك هذا الحقل فارغاَ';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                style: feildStyle,
+                                cursorColor: color,
+                                focusNode: focusAdress,
+                                decoration: new InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.location_city,
+                                  ),
+                                  labelText: "العنوان",
+
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(60.0),
+                                    borderSide: BorderSide(color: color),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(60.0),
+                                    // borderSide: BorderSide(color: color),
+                                  ),
+                                  //fillColor: Colors.green),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: TextFormField(
+                          controller: ageController,
                           onFieldSubmitted: (val) {
                             FocusScope.of(context)
                                 .requestFocus(focusRefferFrom);
@@ -356,7 +392,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
 
                               return null;
                             } catch (e) {
-                              return 'ليس عمراَ';
+                              return 'القيمة المدخلة ليست عمراَ';
                             }
                           },
                           style: feildStyle,
@@ -382,6 +418,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: TextFormField(
+                          controller: refferController,
                           onFieldSubmitted: (val) {
                             FocusScope.of(context).requestFocus(focusDiag);
                           },
@@ -567,6 +604,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                           Padding(
                             padding: const EdgeInsets.only(top: 8.0),
                             child: TextFormField(
+                              controller: noteController,
                               onFieldSubmitted: (val) {
                                 // FocusScope.of(context).requestFocus(focus);
                               },
@@ -597,20 +635,124 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                         child: Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: ElevatedButton(
-                            onPressed: () {
-                              if (_formKey.currentState.validate()) {}
+                            onPressed: () async {
+                              if (!isLoading) {
+                                if (_formKey.currentState.validate()) {
+                                  Patient p = Patient(
+                                    id: Provider.of<UserProvier>(context,
+                                                listen: false)
+                                            .user
+                                            .id +
+                                        DateTime.now().toString(),
+                                    IDNumber: trim(idNumberController.text),
+                                    name: trim(nameController.text),
+                                    addingDate: DateTime.now(),
+                                    address: trim(adressController.text),
+                                    age: trim(ageController.text),
+                                    city: trim(cityController.text),
+                                    clincId: Provider.of<UserProvier>(context,
+                                            listen: false)
+                                        .user
+                                        .clincId,
+                                    notes: trim(noteController.text),
+                                    phone: trim(phoneController.text),
+                                    refferedFrom: trim(refferController.text),
+                                    sex: male,
+                                    cases: isWithCase()
+                                        ? [
+                                            Case(
+                                                diags: diags,
+                                                tests: tests,
+                                                id: Provider.of<UserProvier>(
+                                                        context,
+                                                        listen: false)
+                                                    .user
+                                                    .id,
+                                                notes: ''),
+                                          ]
+                                        : [],
+                                  );
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  String result =
+                                      await Provider.of<PatientProvider>(
+                                              context,
+                                              listen: false)
+                                          .creatPat(
+                                              p,
+                                              Provider.of<UserProvier>(context,
+                                                      listen: false)
+                                                  .user
+                                                  .id);
+
+                                  if (result == 'success') {
+                                    diags.clear();
+                                    tests.clear();
+                                    CaseDialog.clincDiagsBools.clear();
+                                    CaseDialog.clincTestsBools.clear();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Directionality(
+                                            textDirection: TextDirection.rtl,
+                                            child: Text(
+                                                'تمت إضافة المريض بنجاح !')),
+                                        backgroundColor: Colors.green,
+                                      ),
+                                    );
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    Navigator.of(context).pop();
+                                  } else if (result == 'fail') {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Directionality(
+                                            textDirection: TextDirection.rtl,
+                                            child: Text('حدث خطأ غير متوقع!')),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                  } else if (result == 'internet fail') {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Directionality(
+                                          textDirection: TextDirection.rtl,
+                                          child:
+                                              Text('تحقق من الاتصال بالإنترنت'),
+                                        ),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                  }
+                                }
+                              }
                             },
                             child: Center(
                               child: Padding(
                                 padding: const EdgeInsets.all(12.0),
-                                child: Text(
-                                  'إضافة المريض',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'Cairo',
-                                      fontSize: 15),
-                                ),
+                                child: isLoading
+                                    ? SizedBox(
+                                        width: 30,
+                                        height: 30,
+                                        child: CircularProgressIndicator(
+                                          backgroundColor: Colors.white,
+                                        ),
+                                      )
+                                    : Text(
+                                        'إضافة المريض',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Cairo',
+                                            fontSize: 15),
+                                      ),
                               ),
                             ),
                             style: ButtonStyle(
@@ -639,6 +781,49 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
             ),
           ),
         ));
+  }
+
+  bool isWithCase() {
+    for (var i = 0; i < CaseDialog.clincDiagsBools.length; i++) {
+      if (CaseDialog.clincDiagsBools[i]) {
+        for (var i = 0; i < CaseDialog.clincDiagsBools.length; i++) {
+          if (CaseDialog.clincDiagsBools[i]) {
+            diags.add(Provider.of<UserProvier>(context, listen: false)
+                .clincUser
+                .clincDiags[i]);
+          }
+        }
+        for (var i = 0; i < CaseDialog.clincTestsBools.length; i++) {
+          if (CaseDialog.clincTestsBools[i]) {
+            tests.add(Provider.of<UserProvier>(context, listen: false)
+                .clincUser
+                .clincTests[i]);
+          }
+        }
+
+        return true;
+      }
+    }
+    for (var i = 0; i < CaseDialog.clincTestsBools.length; i++) {
+      if (CaseDialog.clincTestsBools[i]) {
+        for (var i = 0; i < CaseDialog.clincDiagsBools.length; i++) {
+          if (CaseDialog.clincDiagsBools[i]) {
+            diags.add(Provider.of<UserProvier>(context, listen: false)
+                .clincUser
+                .clincDiags[i]);
+          }
+        }
+        for (var i = 0; i < CaseDialog.clincTestsBools.length; i++) {
+          if (CaseDialog.clincTestsBools[i]) {
+            tests.add(Provider.of<UserProvier>(context, listen: false)
+                .clincUser
+                .clincTests[i]);
+          }
+        }
+        return true;
+      }
+    }
+    return false;
   }
 
   String trim(String s) {

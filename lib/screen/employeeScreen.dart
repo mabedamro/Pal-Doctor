@@ -19,19 +19,26 @@ class _EmployeeScreenState extends State<EmployeeScreen>
     with AutomaticKeepAliveClientMixin {
   bool showSideInfo = false;
   int counter = 0;
-
+  bool isLoading = true;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    Provider.of<EmployeesProvider>(context, listen: false).getEmployee(
-        Provider.of<UserProvier>(context, listen: false).user.clincId,context);
+    initScreen();
+  }
+
+  Future<void> initScreen() async {
+    await Provider.of<EmployeesProvider>(context, listen: false).getEmployee(
+        Provider.of<UserProvier>(context, listen: false).user.clincId, context);
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     TextEditingController searchController = TextEditingController();
-    
+
     final tableHeadersStyle =
         TextStyle(color: Colors.blue, fontWeight: FontWeight.bold);
     // return ElevatedButton(onPressed: (){
@@ -60,7 +67,7 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                               controller: searchController,
                               onSubmitted: (val) {
                                 print('enter button');
-                                 Provider.of<EmployeesProvider>(context,
+                                Provider.of<EmployeesProvider>(context,
                                         listen: false)
                                     .search(val);
                               },
@@ -92,9 +99,11 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                             width: 10,
                           ),
                           ElevatedButton(
-                            onPressed: () { Provider.of<EmployeesProvider>(context,
-                                        listen: false)
-                                    .search(searchController.text);},
+                            onPressed: () {
+                              Provider.of<EmployeesProvider>(context,
+                                      listen: false)
+                                  .search(searchController.text);
+                            },
                             child: Center(
                               child: Padding(
                                 padding: const EdgeInsets.all(12.0),
@@ -128,14 +137,23 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ElevatedButton(
-                              onPressed: () {
-                                Provider.of<EmployeesProvider>(context,
+                              onPressed: () async {
+                                setState(() {
+                                  isLoading = true;
+                                });
+                                EmployeeInfoSideContainer.setStateForAnimation(
+                                    false);
+                                await Provider.of<EmployeesProvider>(context,
                                         listen: false)
-                                    .getEmployee(Provider.of<UserProvier>(
-                                            context,
-                                            listen: false)
-                                        .user
-                                        .clincId,context);
+                                    .getEmployee(
+                                        Provider.of<UserProvier>(context,
+                                                listen: false)
+                                            .user
+                                            .clincId,
+                                        context);
+                                setState(() {
+                                  isLoading = false;
+                                });
                               },
                               child: Center(
                                 child: Padding(
@@ -280,7 +298,7 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                   height: double.infinity,
                   child: Consumer<EmployeesProvider>(
                       builder: (_, empProvider, child) {
-                    return empProvider.searchList.length == 0
+                    return isLoading
                         ? Center(
                             child: SizedBox(
                                 height: 50,
@@ -292,7 +310,7 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                               return Card(
                                 child: InkWell(
                                   onTap: () {
-                                    EmployeeScreen.enableEditing=false;
+                                    EmployeeScreen.enableEditing = false;
                                     EmployeeScreen.selectedEmployee =
                                         empProvider.searchList[index];
                                     EmployeeInfoSideContainer.permission =

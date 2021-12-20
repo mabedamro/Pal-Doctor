@@ -1,17 +1,35 @@
+import 'package:desktop_version/models/patient.dart';
+import 'package:desktop_version/provider/patinetProvider.dart';
+import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/addPatientScreen.dart';
 import 'package:desktop_version/widgets.dart/patinetInfoSideContainer.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class PatientScreen extends StatefulWidget {
+  static bool isLoading = false;
+  static Patient selectedPatient;
   @override
   _PatientScreenState createState() => _PatientScreenState();
 }
 
 class _PatientScreenState extends State<PatientScreen>
     with AutomaticKeepAliveClientMixin {
-      bool showSideInfo=false;
+  bool showSideInfo = false;
   int counter = 0;
+  TextEditingController searchController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    PatientScreen.isLoading = true;
+    Provider.of<PatientProvider>(context, listen: false).getPatients(
+        Provider.of<UserProvier>(context, listen: false).user.clincId, context);
+  }
+
   @override
   Widget build(BuildContext context) {
     final tableHeadersStyle =
@@ -42,6 +60,12 @@ class _PatientScreenState extends State<PatientScreen>
                               onSubmitted: (val) {
                                 print('enter button');
                               },
+                              onChanged: (val) {
+                                Provider.of<PatientProvider>(context,
+                                        listen: false)
+                                    .search(val);
+                              },
+                              controller: searchController,
                               cursorColor: Colors.blue,
                               decoration: new InputDecoration(
                                 prefixIcon: Icon(
@@ -65,7 +89,11 @@ class _PatientScreenState extends State<PatientScreen>
                             width: 10,
                           ),
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Provider.of<PatientProvider>(context,
+                                      listen: false)
+                                  .search(searchController.text);
+                            },
                             child: Center(
                               child: Padding(
                                 padding: const EdgeInsets.all(12.0),
@@ -84,8 +112,8 @@ class _PatientScreenState extends State<PatientScreen>
                               ),
                             ),
                             style: ButtonStyle(
-                              shape:
-                                  MaterialStateProperty.all<RoundedRectangleBorder>(
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50.0),
                                 ),
@@ -100,7 +128,18 @@ class _PatientScreenState extends State<PatientScreen>
                             padding: const EdgeInsets.all(8.0),
                             child: ElevatedButton(
                               onPressed: () {
-                                
+                                setState(() {
+                                  PatientScreen.isLoading = true;
+                                });
+                                Provider.of<PatientProvider>(context,
+                                        listen: false)
+                                    .getPatients(
+                                        Provider.of<UserProvier>(context,
+                                                listen: false)
+                                            .user
+                                            .clincId,
+                                        context);
+                                        PatientInfoSideContainer.setStateForAnimation(false);
                               },
                               child: Center(
                                 child: Padding(
@@ -130,7 +169,7 @@ class _PatientScreenState extends State<PatientScreen>
                                 ),
                               ),
                             ),
-                          ),  
+                          ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ElevatedButton(
@@ -158,7 +197,8 @@ class _PatientScreenState extends State<PatientScreen>
                                 ),
                               ),
                               style: ButtonStyle(
-                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(50.0),
                                   ),
@@ -191,17 +231,38 @@ class _PatientScreenState extends State<PatientScreen>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Last Edit',
-                        style: tableHeadersStyle,
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            'الإسم',
+                            style: TextStyle(
+                                color: Colors.blue,
+                                fontFamily: 'Cairo',
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       ),
-                      Text(
-                        'Phone',
-                        style: tableHeadersStyle,
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            'رقم الهوية',
+                            style: TextStyle(
+                                color: Colors.blue,
+                                fontFamily: 'Cairo',
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       ),
-                      Text(
-                        'Name',
-                        style: tableHeadersStyle,
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            'تاريخ الإضافة',
+                            style: TextStyle(
+                                color: Colors.blue,
+                                fontFamily: 'Cairo',
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -219,35 +280,77 @@ class _PatientScreenState extends State<PatientScreen>
                 dashGapRadius: 0.0,
               ),
               Expanded(
-                child: Container(
-                  height: double.infinity,
-                  child: ListView.builder(
-                    itemCount: 50,
-                    itemBuilder: (_, index) {
-                      return Card(
-                        child: InkWell(
-                          onTap: () {
-                            PatientInfoSideContainer.setStateForAnimation(true);
-                          },
-                          child: Container(
-                            height: 50,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text('10-10-2021', style: TextStyle(fontFamily: 'Cairo',fontWeight: FontWeight.bold),),
-                                  Text('0595709570', style: TextStyle(fontFamily: 'Cairo',fontWeight: FontWeight.bold),),
-                                  Text('محمد أحمد محمود', style: TextStyle(fontFamily: 'Cairo',fontWeight: FontWeight.bold),),
-                                ],
+                child:
+                    Consumer<PatientProvider>(builder: (_, patProvider, child) {
+                  return PatientScreen.isLoading
+                      ? Center(
+                          child: SizedBox(
+                              height: 50,
+                              width: 50,
+                              child: CircularProgressIndicator()))
+                      : ListView.builder(
+                          itemCount: patProvider.searchList.length,
+                          itemBuilder: (_, index) {
+                            return Card(
+                              child: InkWell(
+                                onTap: () {
+                                  PatientScreen.selectedPatient =
+                                      patProvider.searchList[index];
+                                  
+                                  PatientInfoSideContainer
+                                      .setStateForAnimation(true);
+                                },
+                                child: Container(
+                                  height: 50,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: Center(
+                                            child: Text(
+                                              patProvider
+                                                  .searchList[index].name,
+                                              style: TextStyle(
+                                                  fontFamily: 'Cairo',
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Center(
+                                            child: Text(
+                                              patProvider
+                                                  .searchList[index].IDNumber,
+                                              style: TextStyle(
+                                                  fontFamily: 'Cairo',
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Center(
+                                            child: Text(
+                                              DateFormat('yyyy-MM-dd').format(
+                                                  patProvider.searchList[index]
+                                                      .addingDate),
+                                              style: TextStyle(
+                                                  fontFamily: 'Cairo',
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                            );
+                          },
+                        );
+                }),
               )
             ],
           ),

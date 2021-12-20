@@ -128,6 +128,9 @@ class _CaseDialogState extends State<CaseDialog> {
                                           CaseDialog.clincDiagsBools[index] =
                                               !CaseDialog
                                                   .clincDiagsBools[index];
+
+
+
                                         });
                                       }),
                                   Text(

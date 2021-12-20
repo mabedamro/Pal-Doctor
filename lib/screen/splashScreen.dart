@@ -12,6 +12,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  bool isNoInterNet = false;
   @override
   Widget build(BuildContext context) {
     tryToLogin();
@@ -27,7 +28,48 @@ class _SplashScreenState extends State<SplashScreen> {
                 width: 300,
               ),
             ),
-            SizedBox(width: 30, height: 30, child: CircularProgressIndicator())
+            isNoInterNet
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          isNoInterNet = false;
+                        });
+                      },
+                      child: SizedBox(
+                        width: 200,
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'إعادة المحاولة',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Cairo',
+                                    fontSize: 15),
+                              ),
+                              Icon(Icons.refresh),
+                            ],
+                          ),
+                        ),
+                      ),
+                      style: ButtonStyle(
+                        elevation: MaterialStateProperty.all<double>(0),
+                        backgroundColor: MaterialStateProperty.all(Colors.grey),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                : SizedBox(
+                    width: 30, height: 30, child: CircularProgressIndicator())
           ],
         ),
       ),
@@ -52,6 +94,10 @@ class _SplashScreenState extends State<SplashScreen> {
           backgroundColor: Colors.red,
         ),
       );
+      if(isNoInterNet==false){
+      setState(() {
+        isNoInterNet = true;
+      });}
     } else {
       Navigator.pushReplacement(
         context,

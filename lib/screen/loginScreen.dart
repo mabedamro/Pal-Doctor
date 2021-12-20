@@ -128,7 +128,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: CircularProgressIndicator(),
                           )
                         : Container(),
-                    
                   ],
                 ),
               ),
@@ -143,10 +142,12 @@ class _LoginScreenState extends State<LoginScreen> {
     String result = await Provider.of<UserProvier>(context, listen: false)
         .login(email: _emailController.text, pass: _passwordController.text);
     print(result);
-    if (result=='success') {
+    if (result == 'success') {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Directionality(textDirection: TextDirection.rtl,child: Text('تم تسجيل الدخول!')),
+          content: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Text('تم تسجيل الدخول!')),
           backgroundColor: Colors.green,
         ),
       );
@@ -154,21 +155,25 @@ class _LoginScreenState extends State<LoginScreen> {
         context,
         MaterialPageRoute(builder: (context) => HomeScreen()),
       );
-    } else if(result=='fail') {
+    } else if (result == 'fail') {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Directionality(textDirection: TextDirection.rtl,child: Text('البريد الإلكتروني أو كلمة السر غير صحيح')),
+          content: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Text('البريد الإلكتروني أو كلمة السر غير صحيح')),
           backgroundColor: Colors.red,
         ),
       );
       setState(() {
         isLoading = false;
       });
-    }
-    else if (result=='internet fail'){
- ScaffoldMessenger.of(context).showSnackBar(
+    } else if (result == 'internet fail') {
+      ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Directionality(textDirection: TextDirection.rtl,child:Text('تحقق من الاتصال بالإنترنت'),),
+          content: Directionality(
+            textDirection: TextDirection.rtl,
+            child: Text('تحقق من الاتصال بالإنترنت'),
+          ),
           backgroundColor: Colors.red,
         ),
       );

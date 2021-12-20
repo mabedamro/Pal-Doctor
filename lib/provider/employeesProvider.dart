@@ -187,6 +187,7 @@ class EmployeesProvider with ChangeNotifier {
   }
 
   void search(String text) {
+    text=text.toLowerCase();
     searchList.clear();
     if (text == '') {
       print('all employees');
@@ -194,7 +195,7 @@ class EmployeesProvider with ChangeNotifier {
     } else {
       print(employees[0].name);
       for (int i = 0; i < employees.length; i++) {
-        if (employees[i].name.contains(text)) {
+        if (employees[i].name.toLowerCase().contains(text)) {
           searchList.add(employees[i]);
         }
       }
