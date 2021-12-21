@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:desktop_version/api/authApi.dart';
 import 'package:desktop_version/models/user.dart';
+import 'package:desktop_version/provider/userProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:firedart/firestore/firestore.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class EmployeesProvider with ChangeNotifier {
@@ -18,7 +20,8 @@ class EmployeesProvider with ChangeNotifier {
       String pass,
       String email,
       String clincId,
-      List<String> permissions}) async {
+      List<String> permissions,
+      @required BuildContext context}) async {
     String result = 'fail';
     try {
       var url = Uri.parse(AuthApi.signUp);
@@ -62,11 +65,31 @@ class EmployeesProvider with ChangeNotifier {
           }));
           search('');
           notifyListeners();
-        }).catchError((e) {
+        }).catchError((e) async {
           print(e.toString());
           if (e.toString().contains('SocketException')) {
             result = 'internet fail';
           }
+
+          if (e.toString().contains('PERMISSION_DENIED') ||
+              e.toString().contains('UNAUTHENTICATED')) {
+            String result =
+                await Provider.of<UserProvier>(context, listen: false)
+                    .tryToLogin();
+            if (result == 'success') {
+              creatEmp(
+                  clincId: clincId,
+                  name: name,
+                  pass: pass,
+                  email: email,
+                  permissions: permissions,
+                  createdById: createdById,
+                  context: context);
+            } else {
+              Provider.of<UserProvier>(context, listen: false).signout(context);
+            }
+          }
+
           result = 'fail';
         });
       } else {
@@ -84,8 +107,8 @@ class EmployeesProvider with ChangeNotifier {
     }
   }
 
-  Future<String> updateEmployee(
-      String name, List<String> permissions, User emp) async {
+  Future<String> updateEmployee(String name, List<String> permissions, User emp,
+      {@required BuildContext context}) async {
     try {
       var ref = Firestore.instance.collection('users');
       String result = 'false';
@@ -103,7 +126,7 @@ class EmployeesProvider with ChangeNotifier {
             notifyListeners();
           })
           .timeout(Duration(seconds: 5))
-          .catchError((e) {
+          .catchError((e) async {
             print('HOOOOOOOn');
             print(e.toString());
 
@@ -111,6 +134,17 @@ class EmployeesProvider with ChangeNotifier {
               result = 'internet fail';
             } else if (e.toString().contains('SocketException')) {
               result = 'internet fail';
+            } else if (e.toString().contains('PERMISSION_DENIED') ||
+                e.toString().contains('UNAUTHENTICATED')) {
+              String result =
+                  await Provider.of<UserProvier>(context, listen: false)
+                      .tryToLogin();
+              if (result == 'success') {
+                updateEmployee(name, permissions, emp, context: context);
+              } else {
+                Provider.of<UserProvier>(context, listen: false)
+                    .signout(context);
+              }
             } else {
               result = 'fail';
             }
@@ -148,13 +182,24 @@ class EmployeesProvider with ChangeNotifier {
             result = 'success';
           })
           .timeout(Duration(seconds: 5))
-          .catchError((e) {
+          .catchError((e) async {
             print('FFFFFFFFFFFFFF');
             print(e.toString());
             if (e.toString().contains('TimeoutException')) {
               result = 'internet fail';
             } else if (e.toString().contains('SocketException')) {
               result = 'internet fail';
+            } else if (e.toString().contains('PERMISSION_DENIED') ||
+                e.toString().contains('UNAUTHENTICATED')) {
+              String result =
+                  await Provider.of<UserProvier>(context, listen: false)
+                      .tryToLogin();
+              if (result == 'success') {
+                getEmployee(clincId, context);
+              } else {
+                Provider.of<UserProvier>(context, listen: false)
+                    .signout(context);
+              }
             } else {
               result = 'fail';
             }
@@ -187,7 +232,7 @@ class EmployeesProvider with ChangeNotifier {
   }
 
   void search(String text) {
-    text=text.toLowerCase();
+    text = text.toLowerCase();
     searchList.clear();
     if (text == '') {
       print('all employees');

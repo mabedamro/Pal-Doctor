@@ -31,6 +31,7 @@ class UserProvier with ChangeNotifier {
       }).catchError((e) {
         print('Here Error Man !');
         print(e.toString());
+        
       });
     } catch (e) {
       print(e.toString());
@@ -48,6 +49,7 @@ class UserProvier with ChangeNotifier {
       }).catchError((e) {
         print('Here Error Man !');
         print(e.toString());
+        
       });
     } catch (e) {
       print(e.toString());
@@ -81,6 +83,8 @@ class UserProvier with ChangeNotifier {
         if (e.toString().contains('SocketException')) {
           result = 'internet fail';
         } else {
+          prefs.setString('email', '');
+          prefs.setString('password', '');
           result = 'fail';
         }
         print(e.toString());

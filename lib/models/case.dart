@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
 class Case {
+  String userName='';
   DateTime date = DateTime.now();
   List<String> tests = [];
   List<String> diags = [];
@@ -11,6 +12,8 @@ class Case {
   Case.fromJson(dynamic res) {
     date = DateTime.parse(res['date']) ?? DateTime.now();
     id = res['id'] ?? '';
+    userName = res['userName'] ?? '';
+
     notes = res['notes'] ?? '';
     for (int i = 0; i < res['tests'].length; i++) {
       tests.add(res['tests'][i]);
@@ -24,6 +27,7 @@ class Case {
     List<String> tests,
     String id,
     this.notes,
+    @required this.userName,
   }) {
     this.id = id + date.toString();
 
@@ -37,6 +41,7 @@ class Case {
       'tests': tests,
       'id': id,
       'notes': notes,
+      'userName':userName,
     };
     return map;
   }

@@ -41,6 +41,7 @@ class _AddEmployeeState extends State<AddEmployee> {
     final color = Colors.blue;
     return Scaffold(
       appBar: AppBar(
+        
         centerTitle: true,
         // title: Text(
         //   'إضافة موظف',
@@ -429,7 +430,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                                 email: emailCon.text,
                                                 pass: passCon.text,
                                                 name: nameCon.text,
-                                                permissions: permission);
+                                                permissions: permission,context: context);
                                     if (result == 'success') {
                                       Navigator.of(context).pop();
                                       ScaffoldMessenger.of(context).showSnackBar(

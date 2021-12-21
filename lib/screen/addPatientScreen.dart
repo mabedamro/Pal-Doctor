@@ -60,6 +60,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
         textDirection: TextDirection.rtl,
         child: Scaffold(
           appBar: AppBar(
+            leading: Container(),
             centerTitle: true,
             title: Text(
               'إضافة مريض',
@@ -511,7 +512,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                                         child: Padding(
                                           padding: const EdgeInsets.all(16.0),
                                           child: Text(
-                                            'إضافة تشخيص',
+                                            'إضافة جلسة',
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold,
@@ -615,7 +616,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                                 prefixIcon: Icon(
                                   Icons.account_circle,
                                 ),
-                                labelText: "ملاحظات",
+                                labelText: "ملاحظات حول المريض",
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(60.0),
                                   borderSide: BorderSide(color: color),
@@ -661,14 +662,21 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                                     cases: isWithCase()
                                         ? [
                                             Case(
-                                                diags: diags,
-                                                tests: tests,
-                                                id: Provider.of<UserProvier>(
-                                                        context,
-                                                        listen: false)
-                                                    .user
-                                                    .id,
-                                                notes: ''),
+                                              diags: diags,
+                                              tests: tests,
+                                              id: Provider.of<UserProvier>(
+                                                      context,
+                                                      listen: false)
+                                                  .user
+                                                  .id,
+                                              notes: '',
+                                              userName:
+                                                  Provider.of<UserProvier>(
+                                                          context,
+                                                          listen: false)
+                                                      .user
+                                                      .name,
+                                            ),
                                           ]
                                         : [],
                                   );

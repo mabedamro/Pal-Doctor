@@ -1,14 +1,16 @@
 import 'package:desktop_version/models/patient.dart';
+import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/patientScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firedart/firestore/firestore.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class PatientProvider with ChangeNotifier {
   List<Patient> patients = [];
   List<Patient> searchList = [];
 
-  Future<String> creatPat(Patient p, String empId) async {
+  Future<String> creatPat(Patient p, String empId,{BuildContext context}) async {
     String result = 'fail';
     try {
       var ref = Firestore.instance.collection('patients');
@@ -18,11 +20,22 @@ class PatientProvider with ChangeNotifier {
         patients.add(p);
         search('');
         notifyListeners();
-      }).catchError((e) {
+      }).catchError((e) async{
         print(e.toString());
         if (e.toString().contains('SocketException')) {
           result = 'internet fail';
-        }
+        }else if (e.toString().contains('PERMISSION_DENIED') ||
+                e.toString().contains('UNAUTHENTICATED')) {
+              String result =
+                  await Provider.of<UserProvier>(context, listen: false)
+                      .tryToLogin();
+              if (result == 'success') {
+                creatPat( p,  empId,context: context);
+              } else {
+                Provider.of<UserProvier>(context, listen: false)
+                    .signout(context);
+              }
+            } 
         result = 'fail';
       });
 
@@ -33,46 +46,6 @@ class PatientProvider with ChangeNotifier {
       return result;
     }
   }
-
-  // Future<String> updateEmployee(
-  //     String name, List<String> permissions, User emp) async {
-  //   try {
-  //     var ref = Firestore.instance.collection('patients');
-  //     String result = 'false';
-  //     Map<String, dynamic> empData = {
-  //       'name': name,
-  //       'permission': permissions,
-  //     };
-  //     await ref
-  //         .document(emp.id)
-  //         .update(empData)
-  //         .then((value) {
-  //           result = 'success';
-  //           emp.name = name;
-  //           emp.permission = List.from(permissions);
-  //           notifyListeners();
-  //         })
-  //         .timeout(Duration(seconds: 5))
-  //         .catchError((e) {
-  //           print('HOOOOOOOn');
-  //           print(e.toString());
-
-  //           if (e.toString().contains('TimeoutException')) {
-  //             result = 'internet fail';
-  //           } else if (e.toString().contains('SocketException')) {
-  //             result = 'internet fail';
-  //           } else {
-  //             result = 'fail';
-  //           }
-  //         });
-
-  //     return result;
-  //   } catch (e) {
-  //     print('EEEEEEEEEE');
-  //     print(e.toString());
-  //     return 'false';
-  //   }
-  // }
 
   Future<void> getPatients(String clincId, BuildContext context) async {
     String result = '';
@@ -99,14 +72,25 @@ class PatientProvider with ChangeNotifier {
             result = 'success';
           })
           .timeout(Duration(seconds: 5))
-          .catchError((e) {
+          .catchError((e) async{
             print('FFFFFFFFFFFFFF');
             print(e.toString());
             if (e.toString().contains('TimeoutException')) {
               result = 'internet fail';
             } else if (e.toString().contains('SocketException')) {
               result = 'internet fail';
-            } else {
+            }else if (e.toString().contains('PERMISSION_DENIED') ||
+                e.toString().contains('UNAUTHENTICATED')) {
+              String result =
+                  await Provider.of<UserProvier>(context, listen: false)
+                      .tryToLogin();
+              if (result == 'success') {
+                getPatients(clincId,context);
+              } else {
+                Provider.of<UserProvier>(context, listen: false)
+                    .signout(context);
+              }
+            }  else {
               result = 'fail';
             }
           });

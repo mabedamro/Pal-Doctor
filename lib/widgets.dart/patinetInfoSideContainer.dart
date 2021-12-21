@@ -4,6 +4,7 @@ import 'package:desktop_version/provider/employeesProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/employeeScreen.dart';
 import 'package:desktop_version/screen/patientScreen.dart';
+import 'package:desktop_version/screen/sessionsScreen.dart';
 import 'package:desktop_version/widgets.dart/caseDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -111,53 +112,161 @@ class __PatientInfoSideContainerpertiesState
               children: [
                 Row(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          if (EmployeeScreen.enableEditing) {}
-                          setState(() {
-                            EmployeeScreen.enableEditing =
-                                !EmployeeScreen.enableEditing;
-                          });
-                        },
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  EmployeeScreen.enableEditing
-                                      ? Icons.refresh
-                                      : Icons.edit,
-                                  size: showSideMenu ? 20 : 0,
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              if (EmployeeScreen.enableEditing) {}
+                              setState(() {
+                                EmployeeScreen.enableEditing =
+                                    !EmployeeScreen.enableEditing;
+                              });
+                            },
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      EmployeeScreen.enableEditing
+                                          ? Icons.refresh
+                                          : Icons.edit,
+                                      size: showSideMenu ? 20 : 0,
+                                    ),
+                                    Text(
+                                      EmployeeScreen.enableEditing
+                                          ? 'تحديث معلومات المريض'
+                                          : 'تعديل',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'Cairo',
+                                          fontSize: 15),
+                                    ),
+                                  ],
                                 ),
-                                Text(
+                              ),
+                            ),
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
                                   EmployeeScreen.enableEditing
-                                      ? 'تحديث معلومات المريض'
-                                      : 'تعديل',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Cairo',
-                                      fontSize: 15),
+                                      ? Colors.blue
+                                      : Colors.grey),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50.0),
                                 ),
-                              ],
+                              ),
                             ),
                           ),
                         ),
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              EmployeeScreen.enableEditing
-                                  ? Colors.blue
-                                  : Colors.grey),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50.0),
+                        // GestureDetector(
+
+                        //   child: Container(
+                        //     child: Row(
+                        //       children: [
+                        //         Icon(Icons.keyboard_arrow_down_sharp),
+                        //         Text('المزيد',style: TextStyle(fontFamily: 'Cairo',fontSize: 15,fontWeight: FontWeight.bold),),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // )
+                        PopupMenuButton(
+                            onSelected: (value) {
+                              if (value == 2) {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) => SessionsScreen()),
+                                );
+                              } 
+                            },
+                            child: Container(
+                              child: Row(
+                                children: [
+                                  Icon(Icons.keyboard_arrow_down_sharp),
+                                  Text(
+                                    'المزيد',
+                                    style: TextStyle(
+                                        fontFamily: 'Cairo',
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
+                            itemBuilder: (context) => [
+                                  // PopupMenuItem(
+                                  //   child: Row(
+                                  //     mainAxisAlignment:
+                                  //         MainAxisAlignment.center,
+                                  //     children: [
+                                  //       Icon(Icons.add),
+                                  //       Text(
+                                  //         'إضافة تشخيص',
+                                  //         style: TextStyle(
+                                  //             fontFamily: 'Cairo',
+                                  //             fontSize: 15,
+                                  //             fontWeight: FontWeight.bold),
+                                  //       ),
+                                  //     ],
+                                  //   ),
+                                  //   value: 1,
+                                  // ),
+                                  PopupMenuItem(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.assignment),
+                                        Text(
+                                          'عرض الجلسات',
+                                          style: TextStyle(
+                                              fontFamily: 'Cairo',
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                    value: 2,
+                                  ),
+                                  PopupMenuItem(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.add),
+                                        Text(
+                                          'إضافة دفعة',
+                                          style: TextStyle(
+                                              fontFamily: 'Cairo',
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                    value: 3,
+                                  ),
+                                  PopupMenuItem(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.attach_money),
+                                        Text(
+                                          'عرض السجل المالي',
+                                          style: TextStyle(
+                                              fontFamily: 'Cairo',
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                    value: 4,
+                                  )
+                                ])
+                      ],
                     ),
                     isLoading
                         ? SizedBox(
@@ -200,84 +309,7 @@ class __PatientInfoSideContainerpertiesState
                           size: 120,
                           color: Colors.blue,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: ElevatedButton(
-                                onPressed: () {},
-                                child: Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(12.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(Icons.assignment),
-                                        Text(
-                                          'عرض التشخيصات',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontFamily: 'Cairo',
-                                              fontSize: 13),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                style: ButtonStyle(
-                                  shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(50.0),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Provider.of<UserProvier>(context, listen: false)
-                                        .user
-                                        .permission[3] ==
-                                    '1'
-                                ? Expanded(
-                                    child: ElevatedButton(
-                                      onPressed: () {},
-                                      child: Center(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(12.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Icon(Icons.attach_money_outlined),
-                                              Text(
-                                                'عرض السجل المالي',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontFamily: 'Cairo',
-                                                    fontSize: 13),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      style: ButtonStyle(
-                                        shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(50.0),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                : Container(),
-                          ],
-                        ),
+
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: TextFormField(
@@ -581,136 +613,92 @@ class __PatientInfoSideContainerpertiesState
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            SizedBox(
-                              width: width / 2,
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          showDialog(
-                                            context: context,
-                                            builder: (_) {
-                                              return CaseDialog(
-                                                onPressed: () {
-                                                  String diag = '';
-                                                  for (int i = 0;
-                                                      i <
-                                                          Provider.of<UserProvier>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .clincUser
-                                                              .clincDiags
-                                                              .length;
-                                                      i++) {
-                                                    if (CaseDialog
-                                                        .clincDiagsBools[i]) {
-                                                      diag += Provider.of<
-                                                                      UserProvier>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .clincUser
-                                                              .clincDiags[i] +
-                                                          ',';
-                                                    }
-                                                  }
-                                                  for (int i = 0;
-                                                      i <
-                                                          Provider.of<UserProvier>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .clincUser
-                                                              .clincTests
-                                                              .length;
-                                                      i++) {
-                                                    if (CaseDialog
-                                                        .clincTestsBools[i]) {
-                                                      diag += Provider.of<
-                                                                      UserProvier>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .clincUser
-                                                              .clincTests[i] +
-                                                          ',';
-                                                    }
-                                                  }
-                                                  diagsController.text = diag;
-                                                  Navigator.of(context).pop();
-                                                },
-                                              );
-                                            },
-                                          );
-                                        },
-                                        child: Center(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(16.0),
-                                            child: Text(
-                                              'إضافة تشخيص',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontFamily: 'Cairo',
-                                                  fontSize: 15),
-                                            ),
-                                          ),
-                                        ),
-                                        style: ButtonStyle(
-                                          shape: MaterialStateProperty.all<
-                                              RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(50.0),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: TextFormField(
-                                        controller: diagsController,
-                                        enabled: false,
-                                        onFieldSubmitted: (val) {
-                                          FocusScope.of(context)
-                                              .requestFocus(focusRays);
-                                        },
-                                        style: feildStyle,
-                                        cursorColor: color,
-                                        focusNode: focusDiag,
-                                        decoration: new InputDecoration(
-                                          prefixIcon: Icon(Icons.assignment),
-                                          labelText: "التشخيص",
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                new BorderRadius.circular(60.0),
-                                            borderSide:
-                                                BorderSide(color: color),
-                                          ),
-                                          disabledBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                new BorderRadius.circular(60.0),
-                                            // borderSide: BorderSide(color: color),
-                                          ),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                new BorderRadius.circular(60.0),
-                                            // borderSide: BorderSide(color: color),
-                                          ),
-                                          //fillColor: Colors.green),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            // SizedBox(
+                            //   width: width / 2,
+                            //   child: Row(
+                            //     children: [
+                            //       Expanded(
+                            //         child: Padding(
+                            //           padding: const EdgeInsets.only(top: 8.0),
+                            //           child: ElevatedButton(
+                            //             onPressed: () {
+                            //               showDialog(
+                            //                 context: context,
+                            //                 builder: (_) {
+                            //                   return CaseDialog(
+                            //                     onPressed: () { },
+                            //                   );
+                            //                 },
+                            //               );
+                            //             },
+                            //             child: Center(
+                            //               child: Padding(
+                            //                 padding: const EdgeInsets.all(16.0),
+                            //                 child: Text(
+                            //                   'إضافة تشخيص',
+                            //                   style: TextStyle(
+                            //                       color: Colors.white,
+                            //                       fontWeight: FontWeight.bold,
+                            //                       fontFamily: 'Cairo',
+                            //                       fontSize: 15),
+                            //                 ),
+                            //               ),
+                            //             ),
+                            //             style: ButtonStyle(
+                            //               shape: MaterialStateProperty.all<
+                            //                   RoundedRectangleBorder>(
+                            //                 RoundedRectangleBorder(
+                            //                   borderRadius:
+                            //                       BorderRadius.circular(50.0),
+                            //                 ),
+                            //               ),
+                            //             ),
+                            //           ),
+                            //         ),
+                            //       ),
+                            //       SizedBox(
+                            //         width: 10,
+                            //       ),
+                            //       Expanded(
+                            //         child: Padding(
+                            //           padding: const EdgeInsets.only(top: 8.0),
+                            //           child: TextFormField(
+                            //             controller: diagsController,
+                            //             enabled: false,
+                            //             onFieldSubmitted: (val) {
+                            //               FocusScope.of(context)
+                            //                   .requestFocus(focusRays);
+                            //             },
+                            //             style: feildStyle,
+                            //             cursorColor: color,
+                            //             focusNode: focusDiag,
+                            //             decoration: new InputDecoration(
+                            //               prefixIcon: Icon(Icons.assignment),
+                            //               labelText: "التشخيص",
+                            //               focusedBorder: OutlineInputBorder(
+                            //                 borderRadius:
+                            //                     new BorderRadius.circular(60.0),
+                            //                 borderSide:
+                            //                     BorderSide(color: color),
+                            //               ),
+                            //               disabledBorder: OutlineInputBorder(
+                            //                 borderRadius:
+                            //                     new BorderRadius.circular(60.0),
+                            //                 // borderSide: BorderSide(color: color),
+                            //               ),
+                            //               enabledBorder: OutlineInputBorder(
+                            //                 borderRadius:
+                            //                     new BorderRadius.circular(60.0),
+                            //                 // borderSide: BorderSide(color: color),
+                            //               ),
+                            //               //fillColor: Colors.green),
+                            //             ),
+                            //           ),
+                            //         ),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
 
                             // Padding(
                             //   padding: const EdgeInsets.only(top: 8.0),
@@ -752,7 +740,7 @@ class __PatientInfoSideContainerpertiesState
                                   prefixIcon: Icon(
                                     Icons.account_circle,
                                   ),
-                                  labelText: "ملاحظات",
+                                  labelText: "ملاحظات حول المريض",
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius:
                                         new BorderRadius.circular(60.0),
@@ -1069,7 +1057,8 @@ class __EmployeeInfoSideContainerState
                                     .updateEmployee(
                                         nameController.text,
                                         EmployeeInfoSideContainer.permission,
-                                        EmployeeScreen.selectedEmployee);
+                                        EmployeeScreen.selectedEmployee,
+                                        context: context);
                             if (result == 'success') {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
