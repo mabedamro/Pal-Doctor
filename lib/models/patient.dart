@@ -6,6 +6,7 @@ class Patient {
   String id;
   DateTime addingDate;
   String clincId;
+  String craetedById;
   String IDNumber;
   String name;
   bool sex;
@@ -30,36 +31,22 @@ class Patient {
     @required this.phone,
     @required this.refferedFrom,
     @required this.sex,
+    @required createdById,
   });
 
   Patient.fromJson(dynamic json) {
     print(json.toString());
-    print('object');
     addingDate = DateTime.parse(json['addingDate']) ?? DateTime.now();
 
-    print('object1');
     clincId = json['clincId'] ?? '';
-
-    print('object1');
     IDNumber = json['IDNumber'] ?? '';
-
-    print('object1');
+    craetedById = json['craetedById'] ?? '';
     id = json['id'] ?? '';
-
-    print('object1');
     name = json['name'] ?? '';
-
-    print('object1');
     sex = json['sex'] ?? true;
     phone = json['phone'] ?? '';
-
-    print('object1');
     city = json['city'] ?? '';
-    print('object1');
     address = json['address'] ?? '';
-
-    print('object1');
-
     age = json['age'] ?? '';
     refferedFrom = json['refferedFrom'] ?? '';
 
@@ -84,6 +71,7 @@ class Patient {
       'notes': notes,
       'cases': casesToListOfMaps,
       'addingDate': DateFormat('yyyy-MM-dd HH:mm:ss').format(addingDate),
+      'craetedById': craetedById,
     };
     return map;
   }

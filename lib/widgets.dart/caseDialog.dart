@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CaseDialog extends StatefulWidget {
+  static TextEditingController noteController = TextEditingController();
   Function onPressed;
   CaseDialog({this.onPressed});
   static List<bool> clincDiagsBools = [];
@@ -12,7 +13,7 @@ class CaseDialog extends StatefulWidget {
 }
 
 class _CaseDialogState extends State<CaseDialog> {
-  TextEditingController noteController = TextEditingController();
+  
   @override
   void initState() {
     // TODO: implement initState
@@ -163,6 +164,7 @@ class _CaseDialogState extends State<CaseDialog> {
                           ElevatedButton(
                             onPressed: () {
                               setState(() {
+                                
                                 for (int i = 0;
                                     i < CaseDialog.clincTestsBools.length;
                                     i++) {
@@ -232,7 +234,7 @@ class _CaseDialogState extends State<CaseDialog> {
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: TextFormField(
-                          controller: noteController,
+                          controller: CaseDialog.noteController,
                           onFieldSubmitted: (val) {
                             // FocusScope.of(context).requestFocus(focus);
                           },

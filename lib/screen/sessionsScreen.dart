@@ -1,8 +1,8 @@
 import 'package:desktop_version/models/case.dart';
-import 'package:desktop_version/models/patient.dart';
 import 'package:desktop_version/provider/dateTimeProvider.dart';
 import 'package:desktop_version/provider/patinetProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
+import 'package:desktop_version/screen/patientScreen.dart';
 import 'package:desktop_version/widgets.dart/caseDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,8 +14,18 @@ class SessionsScreen extends StatefulWidget {
 }
 
 class _SessionsScreenState extends State<SessionsScreen> {
+  List<Case> cases = [];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+
+  }
+
   @override
   Widget build(BuildContext context) {
+        cases = List.from(PatientScreen.selectedPatient.cases);
     double width = MediaQuery.of(context).size.width;
     final color = Colors.blue;
     var feildStyle =
@@ -44,8 +54,9 @@ class _SessionsScreenState extends State<SessionsScreen> {
                       context: context,
                       builder: (_) {
                         return CaseDialog(
-                          onPressed: () {
-                            String diag = '';
+                          onPressed: () async {
+                            List<String> diags = [];
+                            List<String> tests = [];
                             for (int i = 0;
                                 i <
                                     Provider.of<UserProvier>(context,
@@ -55,11 +66,10 @@ class _SessionsScreenState extends State<SessionsScreen> {
                                         .length;
                                 i++) {
                               if (CaseDialog.clincDiagsBools[i]) {
-                                diag += Provider.of<UserProvier>(context,
-                                            listen: false)
-                                        .clincUser
-                                        .clincDiags[i] +
-                                    ',';
+                                diags.add(Provider.of<UserProvier>(context,
+                                        listen: false)
+                                    .clincUser
+                                    .clincDiags[i]);
                               }
                             }
                             for (int i = 0;
@@ -71,12 +81,41 @@ class _SessionsScreenState extends State<SessionsScreen> {
                                         .length;
                                 i++) {
                               if (CaseDialog.clincTestsBools[i]) {
-                                diag += Provider.of<UserProvier>(context,
-                                            listen: false)
-                                        .clincUser
-                                        .clincTests[i] +
-                                    ',';
+                                tests.add(Provider.of<UserProvier>(context,
+                                        listen: false)
+                                    .clincUser
+                                    .clincTests[i]);
                               }
+                            }
+                            Case newCase = Case(
+                              diags: diags,
+                              tests: tests,
+                              id: Provider.of<UserProvier>(context,
+                                      listen: false)
+                                  .user
+                                  .id,
+                              notes: CaseDialog.noteController.text,
+                              userName: Provider.of<UserProvier>(context,
+                                      listen: false)
+                                  .user
+                                  .name,
+                              uid: Provider.of<UserProvier>(context,
+                                      listen: false)
+                                  .user
+                                  .id,
+                            );
+                            PatientScreen.selectedPatient.cases
+                                .insert(0, newCase);
+                            String result = await Provider.of<PatientProvider>(
+                                    context,
+                                    listen: false)
+                                .updatePat(
+                                    PatientScreen.selectedPatient,
+                                    
+                                    context: context);
+                            if (result == 'success') {
+                              Navigator.of(context).pop();
+                              setState(() {});
                             }
                           },
                         );
@@ -151,47 +190,117 @@ class _SessionsScreenState extends State<SessionsScreen> {
             ],
           ),
           body: Container(
-            child:ListView.builder(
-              itemCount: 10,
-              itemBuilder: (context,index){
-              return Card(child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('التشخيص:',style: TextStyle(fontFamily: 'Cairo',fontWeight: FontWeight.bold,fontSize: 18),),
-
-                      Text('elbo,head,',style: TextStyle(fontFamily: 'Cairo',fontWeight: FontWeight.bold,fontSize: 15),),
-
-                      Text('الفحوصات \ أشعة:',style: TextStyle(fontFamily: 'Cairo',fontWeight: FontWeight.bold,fontSize: 18),),
-
-                      Text('elbo,head,',style: TextStyle(fontFamily: 'Cairo',fontWeight: FontWeight.bold,fontSize: 15),),
-                    ],
-                  ),
-                  Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-
-                          Text(' Doctor Name  ',style: TextStyle(fontFamily: 'Cairo',fontWeight: FontWeight.bold,fontSize: 15),),
-
-                          Text(' by  ',style: TextStyle(fontFamily: 'Cairo',fontWeight: FontWeight.bold,fontSize: 15),),
-
-                          Text('10-10-2000',style: TextStyle(fontFamily: 'Cairo',fontWeight: FontWeight.bold,fontSize: 15),),
-
-                        ],
+              child: ListView.builder(
+                  itemCount: cases.length,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      'التشخيص: ',
+                                      style: TextStyle(
+                                          fontFamily: 'Cairo',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                          color: Colors.red),
+                                    ),
+                                    Text(
+                                      cases[index].diagsToString,
+                                      style: TextStyle(
+                                          fontFamily: 'Cairo',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      'الفحوصات / أشعة: ',
+                                      style: TextStyle(
+                                        fontFamily: 'Cairo',
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                    Text(
+                                      cases[index].testsToString,
+                                      style: TextStyle(
+                                          fontFamily: 'Cairo',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      'ملاحظات: ',
+                                      style: TextStyle(
+                                        fontFamily: 'Cairo',
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                    Text(
+                                      cases[index].notes,
+                                      style: TextStyle(
+                                          fontFamily: 'Cairo',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      cases[index].userName,
+                                      style: TextStyle(
+                                          fontFamily: 'Cairo',
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.blue,
+                                          fontSize: 15),
+                                    ),
+                                    Text(
+                                      ' BY  ',
+                                      style: TextStyle(
+                                          fontFamily: 'Cairo',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15),
+                                    ),
+                                    Text(
+                                      DateTimeProvider.dateAndTime(
+                                          cases[index].date),
+                                      style: TextStyle(
+                                          fontFamily: 'Cairo',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-
-
-                    ],
-                  ),
-                ],
-              ),);
-            })
-          ),
+                    );
+                  })),
         ));
   }
 }

@@ -2,7 +2,8 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
 class Case {
-  String userName='';
+  String userName = '';
+  String uid = '';
   DateTime date = DateTime.now();
   List<String> tests = [];
   List<String> diags = [];
@@ -14,6 +15,8 @@ class Case {
     id = res['id'] ?? '';
     userName = res['userName'] ?? '';
 
+    userName = res['userName'] ?? '';
+    uid = res['uid'] ?? '';
     notes = res['notes'] ?? '';
     for (int i = 0; i < res['tests'].length; i++) {
       tests.add(res['tests'][i]);
@@ -28,6 +31,7 @@ class Case {
     String id,
     this.notes,
     @required this.userName,
+    @required this.uid,
   }) {
     this.id = id + date.toString();
 
@@ -41,8 +45,24 @@ class Case {
       'tests': tests,
       'id': id,
       'notes': notes,
-      'userName':userName,
+      'userName': userName,
+      'uid': uid,
     };
     return map;
+  }
+
+  get diagsToString {
+    String s = '';
+    for (var i = 0; i < diags.length; i++) {
+      s += diags[i] + ',';
+    }
+    return s;
+  }
+  get testsToString {
+    String s = '';
+    for (var i = 0; i < tests.length; i++) {
+      s += tests[i] + ',';
+    }
+    return s;
   }
 }

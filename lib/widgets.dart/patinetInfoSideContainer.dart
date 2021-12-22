@@ -1,6 +1,7 @@
 import 'package:desktop_version/models/user.dart';
 import 'package:desktop_version/provider/dateTimeProvider.dart';
 import 'package:desktop_version/provider/employeesProvider.dart';
+import 'package:desktop_version/provider/patinetProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/employeeScreen.dart';
 import 'package:desktop_version/screen/patientScreen.dart';
@@ -118,11 +119,60 @@ class __PatientInfoSideContainerpertiesState
                           padding: const EdgeInsets.all(8.0),
                           child: ElevatedButton(
                             onPressed: () async {
-                              if (EmployeeScreen.enableEditing) {}
-                              setState(() {
-                                EmployeeScreen.enableEditing =
-                                    !EmployeeScreen.enableEditing;
-                              });
+                              if (EmployeeScreen.enableEditing) {
+                                if (!isLoading) {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  if (_formKey.currentState.validate()) {
+                                    PatientScreen.selectedPatient.IDNumber =
+                                        trim(idNumberController.text);
+                                    PatientScreen.selectedPatient.name =
+                                        trim(nameController.text);
+                                    PatientScreen.selectedPatient.sex = male;
+                                    PatientScreen.selectedPatient.phone =
+                                        trim(phoneController.text);
+                                    PatientScreen.selectedPatient.city =
+                                        trim(cityController.text);
+
+                                    PatientScreen.selectedPatient.address =
+                                        trim(adressController.text);
+                                    PatientScreen.selectedPatient.age =
+                                        trim(ageController.text);
+                                    PatientScreen.selectedPatient.refferedFrom =
+                                        trim(refferController.text);
+                                    PatientScreen.selectedPatient.notes =
+                                        trim(noteController.text);
+
+                                    String result =
+                                        await Provider.of<PatientProvider>(
+                                                context,
+                                                listen: false)
+                                            .updatePat(
+                                                PatientScreen.selectedPatient,
+                                                context: context);
+                                    if (result == 'success') {
+                                      setState(() {
+                                        isLoading = false;
+                                        EmployeeScreen.enableEditing =
+                                            !EmployeeScreen.enableEditing;
+                                      });
+                                    }
+                                    else{
+                                      setState(() {
+                                        isLoading = false;
+                                       
+                                      });
+                                    }
+                                  }
+                                }
+                              } else {
+                                setState(() {
+                                  isLoading = false;
+                                  EmployeeScreen.enableEditing =
+                                      !EmployeeScreen.enableEditing;
+                                });
+                              }
                             },
                             child: Center(
                               child: Padding(
@@ -173,99 +223,102 @@ class __PatientInfoSideContainerpertiesState
                         //     ),
                         //   ),
                         // )
-                        PopupMenuButton(
-                            onSelected: (value) {
-                              if (value == 2) {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (context) => SessionsScreen()),
-                                );
-                              } 
-                            },
-                            child: Container(
-                              child: Row(
-                                children: [
-                                  Icon(Icons.keyboard_arrow_down_sharp),
-                                  Text(
-                                    'المزيد',
-                                    style: TextStyle(
-                                        fontFamily: 'Cairo',
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold),
+                        EmployeeScreen.enableEditing
+                            ? Container()
+                            : PopupMenuButton(
+                                onSelected: (value) {
+                                  if (value == 2) {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              SessionsScreen()),
+                                    );
+                                  }
+                                },
+                                child: Container(
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.keyboard_arrow_down_sharp),
+                                      Text(
+                                        'المزيد',
+                                        style: TextStyle(
+                                            fontFamily: 'Cairo',
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ),
-                            itemBuilder: (context) => [
-                                  // PopupMenuItem(
-                                  //   child: Row(
-                                  //     mainAxisAlignment:
-                                  //         MainAxisAlignment.center,
-                                  //     children: [
-                                  //       Icon(Icons.add),
-                                  //       Text(
-                                  //         'إضافة تشخيص',
-                                  //         style: TextStyle(
-                                  //             fontFamily: 'Cairo',
-                                  //             fontSize: 15,
-                                  //             fontWeight: FontWeight.bold),
-                                  //       ),
-                                  //     ],
-                                  //   ),
-                                  //   value: 1,
-                                  // ),
-                                  PopupMenuItem(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(Icons.assignment),
-                                        Text(
-                                          'عرض الجلسات',
-                                          style: TextStyle(
-                                              fontFamily: 'Cairo',
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold),
+                                ),
+                                itemBuilder: (context) => [
+                                      // PopupMenuItem(
+                                      //   child: Row(
+                                      //     mainAxisAlignment:
+                                      //         MainAxisAlignment.center,
+                                      //     children: [
+                                      //       Icon(Icons.add),
+                                      //       Text(
+                                      //         'إضافة تشخيص',
+                                      //         style: TextStyle(
+                                      //             fontFamily: 'Cairo',
+                                      //             fontSize: 15,
+                                      //             fontWeight: FontWeight.bold),
+                                      //       ),
+                                      //     ],
+                                      //   ),
+                                      //   value: 1,
+                                      // ),
+                                      PopupMenuItem(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.assignment),
+                                            Text(
+                                              'عرض الجلسات',
+                                              style: TextStyle(
+                                                  fontFamily: 'Cairo',
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                    value: 2,
-                                  ),
-                                  PopupMenuItem(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(Icons.add),
-                                        Text(
-                                          'إضافة دفعة',
-                                          style: TextStyle(
-                                              fontFamily: 'Cairo',
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold),
+                                        value: 2,
+                                      ),
+                                      PopupMenuItem(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.add),
+                                            Text(
+                                              'إضافة دفعة',
+                                              style: TextStyle(
+                                                  fontFamily: 'Cairo',
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                    value: 3,
-                                  ),
-                                  PopupMenuItem(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(Icons.attach_money),
-                                        Text(
-                                          'عرض السجل المالي',
-                                          style: TextStyle(
-                                              fontFamily: 'Cairo',
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold),
+                                        value: 3,
+                                      ),
+                                      PopupMenuItem(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.attach_money),
+                                            Text(
+                                              'عرض السجل المالي',
+                                              style: TextStyle(
+                                                  fontFamily: 'Cairo',
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                    value: 4,
-                                  )
-                                ])
+                                        value: 4,
+                                      )
+                                    ])
                       ],
                     ),
                     isLoading
@@ -313,6 +366,7 @@ class __PatientInfoSideContainerpertiesState
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: TextFormField(
+                            enabled: EmployeeScreen.enableEditing,
                             controller: idNumberController,
                             onFieldSubmitted: (val) {
                               FocusScope.of(context).requestFocus(focusName);
@@ -351,6 +405,7 @@ class __PatientInfoSideContainerpertiesState
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: TextFormField(
+                            enabled: EmployeeScreen.enableEditing,
                             controller: nameController,
                             focusNode: focusName,
                             style: feildStyle,
@@ -424,6 +479,7 @@ class __PatientInfoSideContainerpertiesState
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: TextFormField(
+                            enabled: EmployeeScreen.enableEditing,
                             controller: phoneController,
                             onFieldSubmitted: (val) {
                               FocusScope.of(context).requestFocus(focusCity);
@@ -467,6 +523,7 @@ class __PatientInfoSideContainerpertiesState
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 8.0),
                                 child: TextFormField(
+                                  enabled: EmployeeScreen.enableEditing,
                                   onFieldSubmitted: (val) {
                                     FocusScope.of(context)
                                         .requestFocus(focusAdress);
@@ -510,6 +567,7 @@ class __PatientInfoSideContainerpertiesState
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 8.0),
                                 child: TextFormField(
+                                  enabled: EmployeeScreen.enableEditing,
                                   controller: adressController,
                                   onFieldSubmitted: (val) {
                                     FocusScope.of(context)
@@ -551,6 +609,7 @@ class __PatientInfoSideContainerpertiesState
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: TextFormField(
+                            enabled: EmployeeScreen.enableEditing,
                             controller: ageController,
                             onFieldSubmitted: (val) {
                               FocusScope.of(context)
@@ -588,6 +647,7 @@ class __PatientInfoSideContainerpertiesState
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: TextFormField(
+                            enabled: EmployeeScreen.enableEditing,
                             controller: refferController,
                             onFieldSubmitted: (val) {
                               FocusScope.of(context).requestFocus(focusDiag);
@@ -729,6 +789,7 @@ class __PatientInfoSideContainerpertiesState
                             Padding(
                               padding: const EdgeInsets.only(top: 8.0),
                               child: TextFormField(
+                                enabled: EmployeeScreen.enableEditing,
                                 controller: noteController,
                                 onFieldSubmitted: (val) {
                                   // FocusScope.of(context).requestFocus(focus);

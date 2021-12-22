@@ -5,8 +5,14 @@ class DateTimeProvider {
     String s = DateFormat('yyyy-MM-dd').format(DateTime.now());
     return s;
   }
+
   static String timeNow() {
-    String s =DateFormat().add_jm().format(DateTime.now());
+    String s = DateFormat().add_jm().format(DateTime.now());
+    return s;
+  }
+
+  static String dateAndTime(DateTime date) {
+    String s = DateFormat('yyyy-MM-dd HH:mm').format(date);
     return s;
   }
 }

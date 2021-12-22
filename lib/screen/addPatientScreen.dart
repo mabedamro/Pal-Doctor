@@ -640,6 +640,11 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                               if (!isLoading) {
                                 if (_formKey.currentState.validate()) {
                                   Patient p = Patient(
+                                    createdById: Provider.of<UserProvier>(
+                                            context,
+                                            listen: false)
+                                        .user
+                                        .id,
                                     id: Provider.of<UserProvier>(context,
                                                 listen: false)
                                             .user
@@ -676,6 +681,11 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                                                           listen: false)
                                                       .user
                                                       .name,
+                                              uid: Provider.of<UserProvier>(
+                                                      context,
+                                                      listen: false)
+                                                  .user
+                                                  .id,
                                             ),
                                           ]
                                         : [],
@@ -687,12 +697,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                                       await Provider.of<PatientProvider>(
                                               context,
                                               listen: false)
-                                          .creatPat(
-                                              p,
-                                              Provider.of<UserProvier>(context,
-                                                      listen: false)
-                                                  .user
-                                                  .id);
+                                          .creatPat(p, context: context);
 
                                   if (result == 'success') {
                                     diags.clear();

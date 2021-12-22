@@ -139,7 +139,8 @@ class _PatientScreenState extends State<PatientScreen>
                                             .user
                                             .clincId,
                                         context);
-                                        PatientInfoSideContainer.setStateForAnimation(false);
+                                PatientInfoSideContainer.setStateForAnimation(
+                                    false);
                               },
                               child: Center(
                                 child: Padding(
@@ -293,12 +294,18 @@ class _PatientScreenState extends State<PatientScreen>
                           itemBuilder: (_, index) {
                             return Card(
                               child: InkWell(
+                                hoverColor: Colors.grey[300],
+                                // // focusColor: Colors.red,
+                                // overlayColor:
+                                //     MaterialStateProperty.all(Colors.red),
+                                // highlightColor: Colors.red,
+                                
                                 onTap: () {
                                   PatientScreen.selectedPatient =
                                       patProvider.searchList[index];
-                                  
-                                  PatientInfoSideContainer
-                                      .setStateForAnimation(true);
+
+                                  PatientInfoSideContainer.setStateForAnimation(
+                                      true);
                                 },
                                 child: Container(
                                   height: 50,
