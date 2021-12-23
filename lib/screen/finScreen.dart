@@ -1,3 +1,4 @@
+import 'package:desktop_version/widgets.dart/addBondDialog.dart';
 import 'package:desktop_version/widgets.dart/patinetInfoSideContainer.dart';
 import 'package:desktop_version/widgets.dart/finWidget.dart';
 import 'package:dotted_line/dotted_line.dart';
@@ -6,12 +7,98 @@ import 'package:flutter/material.dart';
 class FinScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final tableHeadersStyle =
-        TextStyle(color: Colors.blue, fontWeight: FontWeight.bold);
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        FinWidget(),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            width: double.infinity,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Row(
+                              children: [
+                                Icon(Icons.refresh),
+                                Text(
+                                  'تحديث',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Cairo',
+                                      fontSize: 15),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.grey),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          showDialog(
+                                      context: context,
+                                      builder: (_) {
+                                        return AddBondDialog('decrease');
+                                      },
+                                    );
+                        },
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Row(
+                              children: [
+                                Icon(Icons.add),
+                                Text(
+                                  'إضافة سند صرف',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Cairo',
+                                      fontSize: 15),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Icon(Icons.filter_list_alt),
+              ],
+            ),
+          ),
+        ),
+
+        // FinWidget(),
         DottedLine(
           direction: Axis.horizontal,
           lineLength: double.infinity,
@@ -31,17 +118,38 @@ class FinScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Date',
-                  style: tableHeadersStyle,
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      'النوع',
+                      style: TextStyle(
+                          color: Colors.blue,
+                          fontFamily: 'Cairo',
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 ),
-                Text(
-                  'Value',
-                  style: tableHeadersStyle,
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      'المبلغ',
+                      style: TextStyle(
+                          color: Colors.blue,
+                          fontFamily: 'Cairo',
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 ),
-                Text(
-                  'Type',
-                  style: tableHeadersStyle,
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      'التاريخ',
+                      style: TextStyle(
+                          color: Colors.blue,
+                          fontFamily: 'Cairo',
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -62,13 +170,11 @@ class FinScreen extends StatelessWidget {
           child: Container(
             height: double.infinity,
             child: ListView.builder(
-              itemCount: 50,
+              itemCount: 5,
               itemBuilder: (_, index) {
                 return Card(
                   child: InkWell(
-                    onTap: () {
-                     
-                    },
+                    onTap: () {},
                     child: Container(
                       height: 50,
                       child: Padding(

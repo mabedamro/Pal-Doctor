@@ -61,7 +61,7 @@ class User {
       result += ' ,المواعيد';
     }
     if (permission[3] == '1') {
-      result += ' ,المالية';
+      result += ' ,السجل المالي';
     }
     return result;
   }

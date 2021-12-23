@@ -11,6 +11,8 @@ import 'package:provider/provider.dart';
 class PatientScreen extends StatefulWidget {
   static bool isLoading = false;
   static Patient selectedPatient;
+
+  static bool enableEditing = false;
   @override
   _PatientScreenState createState() => _PatientScreenState();
 }

@@ -6,7 +6,9 @@ import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/employeeScreen.dart';
 import 'package:desktop_version/screen/patientScreen.dart';
 import 'package:desktop_version/screen/sessionsScreen.dart';
+import 'package:desktop_version/widgets.dart/addBondDialog.dart';
 import 'package:desktop_version/widgets.dart/caseDialog.dart';
+import 'package:desktop_version/widgets.dart/checkBoxForSideWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -66,7 +68,8 @@ class __PatientInfoSideContainerpertiesState
   Widget build(BuildContext context) {
     if (PatientScreen.selectedPatient == null) {
       idNumberController.text = '';
-
+      CheckBoxForSideContainer.male = true;
+      CheckBoxForSideContainer.female = false;
       nameController.text = '';
       phoneController.text = '';
       cityController.text = '';
@@ -78,6 +81,13 @@ class __PatientInfoSideContainerpertiesState
     } else {
       idNumberController.text = PatientScreen.selectedPatient.IDNumber;
 
+      if (PatientScreen.selectedPatient.sex) {
+        male = true;
+        female = false;
+      } else {
+        male = false;
+        female = true;
+      }
       nameController.text = PatientScreen.selectedPatient.name;
       phoneController.text = PatientScreen.selectedPatient.phone;
       cityController.text = PatientScreen.selectedPatient.city;
@@ -85,6 +95,8 @@ class __PatientInfoSideContainerpertiesState
       refferController.text = PatientScreen.selectedPatient.refferedFrom;
       ageController.text = PatientScreen.selectedPatient.age;
 
+      CheckBoxForSideContainer.male = PatientScreen.selectedPatient.sex;
+      CheckBoxForSideContainer.female = !PatientScreen.selectedPatient.sex;
       noteController.text = PatientScreen.selectedPatient.notes;
     }
     var feildStyle =
@@ -119,12 +131,13 @@ class __PatientInfoSideContainerpertiesState
                           padding: const EdgeInsets.all(8.0),
                           child: ElevatedButton(
                             onPressed: () async {
-                              if (EmployeeScreen.enableEditing) {
-                                if (!isLoading) {
-                                  setState(() {
-                                    isLoading = true;
-                                  });
-                                  if (_formKey.currentState.validate()) {
+                              if (PatientScreen.enableEditing) {
+                                if (_formKey.currentState.validate()) {
+                                  if (!isLoading) {
+                                    setState(() {
+                                      isLoading = true;
+                                    });
+
                                     PatientScreen.selectedPatient.IDNumber =
                                         trim(idNumberController.text);
                                     PatientScreen.selectedPatient.name =
@@ -143,6 +156,8 @@ class __PatientInfoSideContainerpertiesState
                                         trim(refferController.text);
                                     PatientScreen.selectedPatient.notes =
                                         trim(noteController.text);
+                                    PatientScreen.selectedPatient.sex =
+                                        CheckBoxForSideContainer.male;
 
                                     String result =
                                         await Provider.of<PatientProvider>(
@@ -152,16 +167,16 @@ class __PatientInfoSideContainerpertiesState
                                                 PatientScreen.selectedPatient,
                                                 context: context);
                                     if (result == 'success') {
+                                      CheckBoxForSideContainer.male = true;
+                                      CheckBoxForSideContainer.female = false;
                                       setState(() {
                                         isLoading = false;
-                                        EmployeeScreen.enableEditing =
-                                            !EmployeeScreen.enableEditing;
+                                        PatientScreen.enableEditing =
+                                            !PatientScreen.enableEditing;
                                       });
-                                    }
-                                    else{
+                                    } else {
                                       setState(() {
                                         isLoading = false;
-                                       
                                       });
                                     }
                                   }
@@ -169,8 +184,8 @@ class __PatientInfoSideContainerpertiesState
                               } else {
                                 setState(() {
                                   isLoading = false;
-                                  EmployeeScreen.enableEditing =
-                                      !EmployeeScreen.enableEditing;
+                                  PatientScreen.enableEditing =
+                                      !PatientScreen.enableEditing;
                                 });
                               }
                             },
@@ -180,13 +195,13 @@ class __PatientInfoSideContainerpertiesState
                                 child: Row(
                                   children: [
                                     Icon(
-                                      EmployeeScreen.enableEditing
+                                      PatientScreen.enableEditing
                                           ? Icons.refresh
                                           : Icons.edit,
                                       size: showSideMenu ? 20 : 0,
                                     ),
                                     Text(
-                                      EmployeeScreen.enableEditing
+                                      PatientScreen.enableEditing
                                           ? 'تحديث معلومات المريض'
                                           : 'تعديل',
                                       style: TextStyle(
@@ -200,7 +215,7 @@ class __PatientInfoSideContainerpertiesState
                             ),
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all(
-                                  EmployeeScreen.enableEditing
+                                  PatientScreen.enableEditing
                                       ? Colors.blue
                                       : Colors.grey),
                               shape: MaterialStateProperty.all<
@@ -223,7 +238,7 @@ class __PatientInfoSideContainerpertiesState
                         //     ),
                         //   ),
                         // )
-                        EmployeeScreen.enableEditing
+                        PatientScreen.enableEditing
                             ? Container()
                             : PopupMenuButton(
                                 onSelected: (value) {
@@ -232,6 +247,13 @@ class __PatientInfoSideContainerpertiesState
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               SessionsScreen()),
+                                    );
+                                  } else if (value == 3) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (_) {
+                                        return AddBondDialog('increase');
+                                      },
                                     );
                                   }
                                 },
@@ -318,7 +340,7 @@ class __PatientInfoSideContainerpertiesState
                                         ),
                                         value: 4,
                                       )
-                                    ])
+                                    ]),
                       ],
                     ),
                     isLoading
@@ -339,7 +361,7 @@ class __PatientInfoSideContainerpertiesState
                           size: 30,
                         ),
                         onTap: () {
-                          EmployeeScreen.enableEditing = false;
+                          PatientScreen.enableEditing = false;
                           setStateToAnimate(false);
                         }),
                   ),
@@ -366,7 +388,7 @@ class __PatientInfoSideContainerpertiesState
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: TextFormField(
-                            enabled: EmployeeScreen.enableEditing,
+                            enabled: PatientScreen.enableEditing,
                             controller: idNumberController,
                             onFieldSubmitted: (val) {
                               FocusScope.of(context).requestFocus(focusName);
@@ -405,7 +427,7 @@ class __PatientInfoSideContainerpertiesState
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: TextFormField(
-                            enabled: EmployeeScreen.enableEditing,
+                            enabled: PatientScreen.enableEditing,
                             controller: nameController,
                             focusNode: focusName,
                             style: feildStyle,
@@ -438,48 +460,12 @@ class __PatientInfoSideContainerpertiesState
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Row(
-                            children: [
-                              Row(
-                                children: [
-                                  Checkbox(
-                                      value: male,
-                                      onChanged: (val) {
-                                        setState(() {
-                                          male = val;
-                                          female = !val;
-                                        });
-                                      }),
-                                  Text(
-                                    'ذكر',
-                                    style: feildStyle,
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Checkbox(
-                                      value: female,
-                                      onChanged: (val) {
-                                        setState(() {
-                                          female = val;
-                                          male = !val;
-                                        });
-                                      }),
-                                  Text(
-                                    'أنثى',
-                                    style: feildStyle,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: CheckBoxForSideContainer()),
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: TextFormField(
-                            enabled: EmployeeScreen.enableEditing,
+                            enabled: PatientScreen.enableEditing,
                             controller: phoneController,
                             onFieldSubmitted: (val) {
                               FocusScope.of(context).requestFocus(focusCity);
@@ -523,7 +509,7 @@ class __PatientInfoSideContainerpertiesState
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 8.0),
                                 child: TextFormField(
-                                  enabled: EmployeeScreen.enableEditing,
+                                  enabled: PatientScreen.enableEditing,
                                   onFieldSubmitted: (val) {
                                     FocusScope.of(context)
                                         .requestFocus(focusAdress);
@@ -567,7 +553,7 @@ class __PatientInfoSideContainerpertiesState
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 8.0),
                                 child: TextFormField(
-                                  enabled: EmployeeScreen.enableEditing,
+                                  enabled: PatientScreen.enableEditing,
                                   controller: adressController,
                                   onFieldSubmitted: (val) {
                                     FocusScope.of(context)
@@ -609,7 +595,7 @@ class __PatientInfoSideContainerpertiesState
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: TextFormField(
-                            enabled: EmployeeScreen.enableEditing,
+                            enabled: PatientScreen.enableEditing,
                             controller: ageController,
                             onFieldSubmitted: (val) {
                               FocusScope.of(context)
@@ -647,7 +633,7 @@ class __PatientInfoSideContainerpertiesState
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: TextFormField(
-                            enabled: EmployeeScreen.enableEditing,
+                            enabled: PatientScreen.enableEditing,
                             controller: refferController,
                             onFieldSubmitted: (val) {
                               FocusScope.of(context).requestFocus(focusDiag);
@@ -789,7 +775,7 @@ class __PatientInfoSideContainerpertiesState
                             Padding(
                               padding: const EdgeInsets.only(top: 8.0),
                               child: TextFormField(
-                                enabled: EmployeeScreen.enableEditing,
+                                enabled: PatientScreen.enableEditing,
                                 controller: noteController,
                                 onFieldSubmitted: (val) {
                                   // FocusScope.of(context).requestFocus(focus);
@@ -1208,6 +1194,106 @@ class __EmployeeInfoSideContainerState
                           child: CircularProgressIndicator(),
                         )
                       : Container(),
+                      PatientScreen.enableEditing
+                            ? Container()
+                            : PopupMenuButton(
+                                onSelected: (value) {
+                                  if (value == 2) {
+                                    
+                                  } else if (value == 3) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (_) {
+                                        return AddBondDialog('decrease emp');
+                                      },
+                                    );
+                                  }
+                                },
+                                child: Container(
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.keyboard_arrow_down_sharp),
+                                      Text(
+                                        'المزيد',
+                                        style: TextStyle(
+                                            fontFamily: 'Cairo',
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                itemBuilder: (context) => [
+                                      // PopupMenuItem(
+                                      //   child: Row(
+                                      //     mainAxisAlignment:
+                                      //         MainAxisAlignment.center,
+                                      //     children: [
+                                      //       Icon(Icons.add),
+                                      //       Text(
+                                      //         'إضافة تشخيص',
+                                      //         style: TextStyle(
+                                      //             fontFamily: 'Cairo',
+                                      //             fontSize: 15,
+                                      //             fontWeight: FontWeight.bold),
+                                      //       ),
+                                      //     ],
+                                      //   ),
+                                      //   value: 1,
+                                      // ),
+                                      PopupMenuItem(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.attach_money),
+                                            Text(
+                                              'السجل المالي للموظف',
+                                              style: TextStyle(
+                                                  fontFamily: 'Cairo',
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                        value: 2,
+                                      ),
+                                      PopupMenuItem(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.add),
+                                            Text(
+                                              'إضافة مسحوبات للموظف',
+                                              style: TextStyle(
+                                                  fontFamily: 'Cairo',
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                        value: 3,
+                                      ),
+                                      PopupMenuItem(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.power_settings_new_outlined),
+                                            Text(
+                                              'إلغاء تفعيل الموظف',
+                                              style: TextStyle(
+                                                  fontFamily: 'Cairo',
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                        value: 4,
+                                      )
+                                    ]),
+
                 ],
               ),
               Padding(
@@ -1404,75 +1490,75 @@ class __EmployeeInfoSideContainerState
               ],
             ),
           ),
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.attach_money,
-                          ),
-                          Text(
-                            'السجل المالي',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'Cairo',
-                                fontSize: 15),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50.0),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8),
-                            child: Icon(Icons.person_add_disabled),
-                          ),
-                          Text(
-                            'إلغاء تفعيل الموظف',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'Cairo',
-                                fontSize: 15),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50.0),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+          // Row(
+          //   children: [
+          //     Padding(
+          //       padding: const EdgeInsets.all(8.0),
+          //       child: ElevatedButton(
+          //         onPressed: () {},
+          //         child: Center(
+          //           child: Padding(
+          //             padding: const EdgeInsets.all(12.0),
+          //             child: Row(
+          //               children: [
+          //                 Icon(
+          //                   Icons.attach_money,
+          //                 ),
+          //                 Text(
+          //                   'السجل المالي',
+          //                   style: TextStyle(
+          //                       color: Colors.white,
+          //                       fontFamily: 'Cairo',
+          //                       fontSize: 15),
+          //                 ),
+          //               ],
+          //             ),
+          //           ),
+          //         ),
+          //         style: ButtonStyle(
+          //           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          //             RoundedRectangleBorder(
+          //               borderRadius: BorderRadius.circular(50.0),
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //     Padding(
+          //       padding: const EdgeInsets.all(8.0),
+          //       child: ElevatedButton(
+          //         onPressed: () {},
+          //         child: Center(
+          //           child: Padding(
+          //             padding: const EdgeInsets.all(12.0),
+          //             child: Row(
+          //               children: [
+          //                 Padding(
+          //                   padding: const EdgeInsets.only(left: 8),
+          //                   child: Icon(Icons.person_add_disabled),
+          //                 ),
+          //                 Text(
+          //                   'إلغاء تفعيل الموظف',
+          //                   style: TextStyle(
+          //                       color: Colors.white,
+          //                       fontFamily: 'Cairo',
+          //                       fontSize: 15),
+          //                 ),
+          //               ],
+          //             ),
+          //           ),
+          //         ),
+          //         style: ButtonStyle(
+          //           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          //             RoundedRectangleBorder(
+          //               borderRadius: BorderRadius.circular(50.0),
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );

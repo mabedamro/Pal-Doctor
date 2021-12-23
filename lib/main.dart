@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:desktop_version/api/authApi.dart';
+import 'package:desktop_version/provider/bondsProvider.dart';
 import 'package:desktop_version/provider/employeesProvider.dart';
 import 'package:desktop_version/provider/patinetProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
@@ -28,9 +29,9 @@ class MyApp extends StatelessWidget {
     // }
     return MultiProvider(
       providers: [
-
+        ChangeNotifierProvider(create: (_) => BondsProvider()),
         ChangeNotifierProvider(create: (_) => PatientProvider()),
-        ChangeNotifierProvider(create: (_) => UserProvier()),
+        ChangeNotifierProvider(create: (_) => UserProvier()), 
         ChangeNotifierProvider(create: (_) => EmployeesProvider()),
       ],
       child: MaterialApp(
