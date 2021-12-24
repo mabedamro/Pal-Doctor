@@ -28,7 +28,7 @@ class PatientProvider with ChangeNotifier {
         } else if (e.toString().contains('PERMISSION_DENIED') ||
             e.toString().contains('UNAUTHENTICATED')) {
           String result = await Provider.of<UserProvier>(context, listen: false)
-              .tryToLogin();
+              .tryToLogin(context);
           if (result == 'success') {
             creatPat(p, context: context);
           } else {
@@ -82,7 +82,7 @@ class PatientProvider with ChangeNotifier {
                 e.toString().contains('UNAUTHENTICATED')) {
               String result =
                   await Provider.of<UserProvier>(context, listen: false)
-                      .tryToLogin();
+                      .tryToLogin(context);
               if (result == 'success') {
                 getPatients(clincId, context);
               } else {
@@ -147,7 +147,7 @@ class PatientProvider with ChangeNotifier {
                 e.toString().contains('UNAUTHENTICATED')) {
               String result =
                   await Provider.of<UserProvier>(context, listen: false)
-                      .tryToLogin();
+                      .tryToLogin(context);
               if (result == 'success') {
                 updatePat(p, context: context);
               } else {

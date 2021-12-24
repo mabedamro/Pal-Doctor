@@ -1,8 +1,6 @@
 import 'package:desktop_version/models/bond.dart';
-import 'package:desktop_version/models/patient.dart';
 import 'package:desktop_version/provider/userProvider.dart';
-import 'package:desktop_version/screen/patientScreen.dart';
-import 'package:desktop_version/widgets.dart/caseDialog.dart';
+import 'package:desktop_version/screen/finScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firedart/firestore/firestore.dart';
 import 'package:flutter/widgets.dart';
@@ -10,7 +8,7 @@ import 'package:provider/provider.dart';
 
 class BondsProvider with ChangeNotifier {
   List<Bond> allBonds = [];
-
+  String filterString = '';
   Future<void> creatBond(Bond b, {BuildContext context}) async {
     String result = 'fail';
     try {
@@ -19,6 +17,7 @@ class BondsProvider with ChangeNotifier {
       await ref.document(b.id).set(b.toMap).then((value) {
         result = 'success';
         allBonds.insert(0, b);
+
         // search('');
         notifyListeners();
       }).catchError((e) async {
@@ -29,7 +28,7 @@ class BondsProvider with ChangeNotifier {
         } else if (e.toString().contains('PERMISSION_DENIED') ||
             e.toString().contains('UNAUTHENTICATED')) {
           String result = await Provider.of<UserProvier>(context, listen: false)
-              .tryToLogin();
+              .tryToLogin(context);
           if (result == 'success') {
             creatBond(b, context: context);
           } else {
@@ -44,7 +43,7 @@ class BondsProvider with ChangeNotifier {
     }
     if (result == 'success') {
       Navigator.pop(context);
-      
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Directionality(
@@ -75,81 +74,78 @@ class BondsProvider with ChangeNotifier {
     }
   }
 
-  // Future<void> getPatients(String clincId, BuildContext context) async {
-  //   String result = '';
-  //   try {
-  //     print('sSSSSSSSSSss');
-  //     var ref = Firestore.instance.collection('patients');
-  //     var data = await ref
-  //         .where('clincId', isEqualTo: clincId)
-  //         .get()
-  //         .then((value) {
-  //           patients.clear();
+  Future<void> getBonds(String clincId, BuildContext context) async {
+    String result = '';
+    try {
+      print('sSSSSSSSSSss');
+      var ref = Firestore.instance.collection('bonds');
+      var data = await ref
+          .where('clincId', isEqualTo: clincId)
+          .get()
+          .then((value) {
+            allBonds.clear();
+            filterString = '';
 
-  //           searchList.clear();
-  //           print('Data Are Here @');
-  //           for (int i = 0; i < value.length; i++) {
-  //             patients.insert(0, Patient.fromJson(value[i]));
-  //             searchList.insert(0, Patient.fromJson(value[i]));
-  //           }
-  //           print(patients.length);
+            print('Data Are Here @');
+            for (int i = 0; i < value.length; i++) {
+              allBonds.insert(0, Bond.fromJson(value[i]));
+            }
+            print('LLLLLLL');
+            FinScreen.isLoading = false;
+            notifyListeners();
+            result = 'success';
+          })
+          .timeout(Duration(seconds: 5))
+          .catchError((e) async {
+            print('FFFFFFFFFFFFFF');
+            print(e.toString());
+            if (e.toString().contains('TimeoutException')) {
+              result = 'internet fail';
+            } else if (e.toString().contains('SocketException')) {
+              result = 'internet fail';
+            } else if (e.toString().contains('PERMISSION_DENIED') ||
+                e.toString().contains('UNAUTHENTICATED')) {
+              String result =
+                  await Provider.of<UserProvier>(context, listen: false)
+                      .tryToLogin(context);
+              if (result == 'success') {
+                getBonds(clincId, context);
+              } else {
+                Provider.of<UserProvier>(context, listen: false)
+                    .signout(context);
+              }
+            } else {
+              result = 'fail';
+            }
+          });
+    } catch (e) {
+      print(e.toString());
+      result = 'fail';
+    }
 
-  //           print('LLLLLLL');
-  //           PatientScreen.isLoading = false;
-  //           notifyListeners();
-  //           result = 'success';
-  //         })
-  //         .timeout(Duration(seconds: 5))
-  //         .catchError((e) async {
-  //           print('FFFFFFFFFFFFFF');
-  //           print(e.toString());
-  //           if (e.toString().contains('TimeoutException')) {
-  //             result = 'internet fail';
-  //           } else if (e.toString().contains('SocketException')) {
-  //             result = 'internet fail';
-  //           } else if (e.toString().contains('PERMISSION_DENIED') ||
-  //               e.toString().contains('UNAUTHENTICATED')) {
-  //             String result =
-  //                 await Provider.of<UserProvier>(context, listen: false)
-  //                     .tryToLogin();
-  //             if (result == 'success') {
-  //               getPatients(clincId, context);
-  //             } else {
-  //               Provider.of<UserProvier>(context, listen: false)
-  //                   .signout(context);
-  //             }
-  //           } else {
-  //             result = 'fail';
-  //           }
-  //         });
-  //   } catch (e) {
-  //     print(e.toString());
-  //     result = 'fail';
-  //   }
-
-  //   if (result == 'fail') {
-  //     PatientScreen.isLoading = false;
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(
-  //         content: Directionality(
-  //             textDirection: TextDirection.rtl,
-  //             child: Text('حدث خطأ غير متوقع')),
-  //         backgroundColor: Colors.red,
-  //       ),
-  //     );
-  //   } else if (result == 'internet fail') {
-  //     PatientScreen.isLoading = false;
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(
-  //         content: Directionality(
-  //           textDirection: TextDirection.rtl,
-  //           child: Text('تحقق من الاتصال بالإنترنت'),
-  //         ),
-  //         backgroundColor: Colors.red,
-  //       ),
-  //     );
-  //   }
-  // }
+    if (result == 'fail') {
+      FinScreen.isLoading = false;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Text('حدث خطأ غير متوقع')),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } else if (result == 'internet fail') {
+      FinScreen.isLoading = false;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Directionality(
+            textDirection: TextDirection.rtl,
+            child: Text('تحقق من الاتصال بالإنترنت'),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 
   // Future<String> updatePat(Patient p, {BuildContext context}) async {
   //   String result = 'fail';
@@ -176,7 +172,7 @@ class BondsProvider with ChangeNotifier {
   //               e.toString().contains('UNAUTHENTICATED')) {
   //             String result =
   //                 await Provider.of<UserProvier>(context, listen: false)
-  //                     .tryToLogin();
+  //                     .tryToLogin(context);
   //             if (result == 'success') {
   //               updatePat(p, context: context);
   //             } else {

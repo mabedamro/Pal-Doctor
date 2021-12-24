@@ -403,6 +403,11 @@ class _AddBondDialogState extends State<AddBondDialog> {
 
                                       if (widget.type == 'increase') {
                                         Bond b = Bond(
+                                            clincId: Provider.of<UserProvier>(
+                                                    context,
+                                                    listen: false)
+                                                .user
+                                                .clincId,
                                             date: DateTime.now(),
                                             uid: user.id,
                                             userName: user.name,
@@ -426,6 +431,11 @@ class _AddBondDialogState extends State<AddBondDialog> {
                                       } else if (widget.type ==
                                           'decrease emp') {
                                         Bond b = Bond(
+                                            clincId: Provider.of<UserProvier>(
+                                                    context,
+                                                    listen: false)
+                                                .user
+                                                .clincId,
                                             date: DateTime.now(),
                                             uid: user.id,
                                             userName: user.name,
@@ -450,6 +460,11 @@ class _AddBondDialogState extends State<AddBondDialog> {
                                         if (selectedKind !=
                                             'لم يتم اختيار نوع الصرف') {
                                           Bond b = Bond(
+                                              clincId: Provider.of<UserProvier>(
+                                                      context,
+                                                      listen: false)
+                                                  .user
+                                                  .clincId,
                                               date: DateTime.now(),
                                               uid: user.id,
                                               userName: user.name,

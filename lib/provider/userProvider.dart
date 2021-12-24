@@ -31,7 +31,6 @@ class UserProvier with ChangeNotifier {
       }).catchError((e) {
         print('Here Error Man !');
         print(e.toString());
-        
       });
     } catch (e) {
       print(e.toString());
@@ -49,14 +48,13 @@ class UserProvier with ChangeNotifier {
       }).catchError((e) {
         print('Here Error Man !');
         print(e.toString());
-        
       });
     } catch (e) {
       print(e.toString());
     }
   }
 
-  Future<String> tryToLogin() async {
+  Future<String> tryToLogin(BuildContext context) async {
     try {
       String result = 'false';
 
@@ -75,6 +73,7 @@ class UserProvier with ChangeNotifier {
       await auth.signIn(email, pass).then((value) async {
         await getUserData(auth.userId);
         if (user.isActive == '0') {
+          signout(context);
           result = 'fail';
         } else {
           result = 'success';

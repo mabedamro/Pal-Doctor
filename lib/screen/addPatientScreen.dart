@@ -134,12 +134,12 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                         child: Row(
                           children: [
                             Text(
-                              DateTimeProvider.dateNow(),
+                              DateTimeProvider.date(DateTime.now()),
                               style:
                                   TextStyle(color: Colors.blue, fontSize: 18),
                             ),
                             Text(
-                              '    ' + DateTimeProvider.timeNow(),
+                              '    ' + DateTimeProvider.time(DateTime.now()),
                               style:
                                   TextStyle(color: Colors.blue, fontSize: 18),
                             ),

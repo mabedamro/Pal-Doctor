@@ -5,6 +5,7 @@ class Bond {
   String id = '';
   String type = '';
   double amount = 0;
+  String clincId = '';
 
   String userName = '';
   String uid = '';
@@ -25,6 +26,7 @@ class Bond {
     @required this.uid,
     @required this.userName,
     @required this.amount,
+    @required this.clincId,
     this.description,
     @required this.note,
     this.patName,
@@ -37,6 +39,7 @@ class Bond {
 
   Bond.fromJson(dynamic res) {
     type = res['type'] ?? '';
+    clincId = res['clincId'];
     id = res['id'] ?? '';
     empId = res['empId'] ?? '';
     empName = res['empName'] ?? '';
@@ -60,6 +63,7 @@ class Bond {
       'amount': amount,
       'description': description,
       'note': note,
+      'clincId': clincId,
       'patName': patName,
       'pid': pid,
       'type': type,

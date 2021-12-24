@@ -75,7 +75,7 @@ class EmployeesProvider with ChangeNotifier {
               e.toString().contains('UNAUTHENTICATED')) {
             String result =
                 await Provider.of<UserProvier>(context, listen: false)
-                    .tryToLogin();
+                    .tryToLogin(context);
             if (result == 'success') {
               creatEmp(
                   clincId: clincId,
@@ -138,7 +138,7 @@ class EmployeesProvider with ChangeNotifier {
                 e.toString().contains('UNAUTHENTICATED')) {
               String result =
                   await Provider.of<UserProvier>(context, listen: false)
-                      .tryToLogin();
+                      .tryToLogin(context);
               if (result == 'success') {
                 updateEmployee(name, permissions, emp, context: context);
               } else {
@@ -193,7 +193,7 @@ class EmployeesProvider with ChangeNotifier {
                 e.toString().contains('UNAUTHENTICATED')) {
               String result =
                   await Provider.of<UserProvier>(context, listen: false)
-                      .tryToLogin();
+                      .tryToLogin(context);
               if (result == 'success') {
                 getEmployee(clincId, context);
               } else {

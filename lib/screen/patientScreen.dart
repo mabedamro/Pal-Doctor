@@ -105,6 +105,7 @@ class _PatientScreenState extends State<PatientScreen>
                                     Text(
                                       'بحث',
                                       style: TextStyle(
+                                         fontWeight: FontWeight.bold,
                                           color: Colors.white,
                                           fontFamily: 'Cairo',
                                           fontSize: 15),
@@ -151,8 +152,9 @@ class _PatientScreenState extends State<PatientScreen>
                                     children: [
                                       Icon(Icons.refresh),
                                       Text(
-                                        'تحديث',
+                                        'تحد يث',
                                         style: TextStyle(
+                                           fontWeight: FontWeight.bold,
                                             color: Colors.white,
                                             fontFamily: 'Cairo',
                                             fontSize: 15),
@@ -191,6 +193,7 @@ class _PatientScreenState extends State<PatientScreen>
                                       Text(
                                         'إضافة مريض',
                                         style: TextStyle(
+                                           fontWeight: FontWeight.bold,
                                             color: Colors.white,
                                             fontFamily: 'Cairo',
                                             fontSize: 15),

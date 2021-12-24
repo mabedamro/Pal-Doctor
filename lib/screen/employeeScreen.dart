@@ -113,6 +113,7 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                                     Text(
                                       'بحث',
                                       style: TextStyle(
+                                         fontWeight: FontWeight.bold,
                                           color: Colors.white,
                                           fontFamily: 'Cairo',
                                           fontSize: 15),
@@ -162,8 +163,9 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                                     children: [
                                       Icon(Icons.refresh),
                                       Text(
-                                        'تحديث',
+                                        'تحد يث',
                                         style: TextStyle(
+                                           fontWeight: FontWeight.bold,
                                             color: Colors.white,
                                             fontFamily: 'Cairo',
                                             fontSize: 15),
@@ -201,7 +203,9 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                                       Icon(Icons.add),
                                       Text(
                                         'إضافة موظف',
+
                                         style: TextStyle(
+                                           fontWeight: FontWeight.bold,
                                             color: Colors.white,
                                             fontFamily: 'Cairo',
                                             fontSize: 15),

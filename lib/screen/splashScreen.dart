@@ -15,7 +15,7 @@ class _SplashScreenState extends State<SplashScreen> {
   bool isNoInterNet = false;
   @override
   Widget build(BuildContext context) {
-    tryToLogin();
+    tryToLogin(context);
     return Scaffold(
       body: Center(
         child: Column(
@@ -76,9 +76,9 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  Future<void> tryToLogin() async {
+  Future<void> tryToLogin(context) async {
     String result =
-        await Provider.of<UserProvier>(context, listen: false).tryToLogin();
+        await Provider.of<UserProvier>(context, listen: false).tryToLogin(context);
     if (result == 'success') {
       Navigator.pushReplacement(
         context,
