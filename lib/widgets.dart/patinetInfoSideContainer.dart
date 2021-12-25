@@ -9,6 +9,8 @@ import 'package:desktop_version/screen/sessionsScreen.dart';
 import 'package:desktop_version/widgets.dart/addBondDialog.dart';
 import 'package:desktop_version/widgets.dart/caseDialog.dart';
 import 'package:desktop_version/widgets.dart/checkBoxForSideWidget.dart';
+import 'package:desktop_version/widgets.dart/employeeBondsDialog.dart';
+import 'package:desktop_version/widgets.dart/patientBonds.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -255,6 +257,14 @@ class __PatientInfoSideContainerpertiesState
                                         return AddBondDialog('increase');
                                       },
                                     );
+                                  }else if(value==4){
+                                    showDialog(
+                                  context: context,
+                                  builder: (_) {
+                                    return PatientBondsDialog(
+                                        PatientScreen.selectedPatient);
+                                  },
+                                );
                                   }
                                 },
                                 child: Container(
@@ -1200,6 +1210,12 @@ class __EmployeeInfoSideContainerState
                                 onSelected: (value) {
                                   if (value == 2) {
                                     
+                                     showDialog(
+                                      context: context,
+                                      builder: (_) {
+                                        return EmployeeBondsDialog(EmployeeScreen.selectedEmployee);
+                                      },
+                                    );
                                   } else if (value == 3) {
                                     showDialog(
                                       context: context,
