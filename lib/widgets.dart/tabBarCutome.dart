@@ -112,17 +112,17 @@ class _TabBarCustomeState extends State<TabBarCustome>
         ),
       );
     }
-    if (user.permission[1] == '1') {
-      tabsNames.add(
-        Tab(
-          text: 'الموظفين',
-        ),
-      );
-    }
     if (user.permission[2] == '1') {
       tabsNames.add(
         Tab(
           text: 'المواعيد',
+        ),
+      );
+    }
+    if (user.permission[1] == '1') {
+      tabsNames.add(
+        Tab(
+          text: 'الموظفين',
         ),
       );
     }
@@ -145,14 +145,14 @@ class _TabBarCustomeState extends State<TabBarCustome>
         PatientScreen(),
       );
     }
-    if (user.permission[1] == '1') {
-      tabs.add(
-        EmployeeScreen(),
-      );
-    }
     if (user.permission[2] == '1') {
       tabs.add(
         DatesScreen(),
+      );
+    }
+    if (user.permission[1] == '1') {
+      tabs.add(
+        EmployeeScreen(),
       );
     }
     if (user.permission[3] == '1') {

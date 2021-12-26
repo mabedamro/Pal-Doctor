@@ -1,16 +1,20 @@
+import 'package:desktop_version/models/patDate.dart';
 import 'package:desktop_version/models/user.dart';
 import 'package:desktop_version/provider/dateTimeProvider.dart';
 import 'package:desktop_version/provider/employeesProvider.dart';
+import 'package:desktop_version/provider/patDatesProvider.dart';
 import 'package:desktop_version/provider/patinetProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/employeeScreen.dart';
 import 'package:desktop_version/screen/patientScreen.dart';
 import 'package:desktop_version/screen/sessionsScreen.dart';
 import 'package:desktop_version/widgets.dart/addBondDialog.dart';
+import 'package:desktop_version/widgets.dart/addDateDialog.dart';
 import 'package:desktop_version/widgets.dart/caseDialog.dart';
 import 'package:desktop_version/widgets.dart/checkBoxForSideWidget.dart';
 import 'package:desktop_version/widgets.dart/employeeBondsDialog.dart';
 import 'package:desktop_version/widgets.dart/patientBonds.dart';
+import 'package:desktop_version/widgets.dart/patientDatesDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -61,10 +65,66 @@ class __PatientInfoSideContainerpertiesState
 
   final focusNotes = FocusNode();
   bool showSideMenu = false;
+
+  DateTime selectedDate = DateTime.now();
+
+  TimeOfDay selectedTime = TimeOfDay(hour: 00, minute: 00);
   final double _width = 0;
   final double _height = double.infinity;
   final Color _color = Colors.white;
   final BorderRadiusGeometry _borderRadius = BorderRadius.circular(8);
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        initialDatePickerMode: DatePickerMode.day,
+        firstDate: DateTime(2015),
+        lastDate: DateTime(2101));
+    if (picked != null) {
+      selectedDate = picked;
+      _selectTime(context);
+    }
+  }
+
+  Future<Null> _selectTime(BuildContext context) async {
+    final TimeOfDay picked = await showTimePicker(
+      context: context,
+      initialTime: selectedTime,
+    );
+    if (picked != null) {
+      selectedTime = picked;
+      String hour = '';
+      String min = '';
+      if (selectedTime.hour < 10) {
+        hour = '0' + selectedTime.hour.toString();
+      } else {
+        hour = selectedTime.hour.toString();
+      }
+
+      if (selectedTime.minute < 10) {
+        min = '0' + selectedTime.minute.toString();
+      } else {
+        min = selectedTime.minute.toString();
+      }
+      String s =
+          DateTimeProvider.date(selectedDate) + ' ' + hour + ':' + min + ':00';
+      print(s);
+
+      var date = DateTime.parse(s);
+      var d = PatDate(
+          clincId:
+              Provider.of<UserProvier>(context, listen: false).user.clincId,
+          pid: PatientScreen.selectedPatient.id,
+          date: date,
+          note: '',
+          id: Provider.of<UserProvier>(context, listen: false).user.clincId +
+              DateTimeProvider.date(date),
+          empId: Provider.of<UserProvier>(context, listen: false).user.id);
+      await Provider.of<PatDateProvider>(context, listen: false)
+          .createDate(d, context: context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -243,7 +303,7 @@ class __PatientInfoSideContainerpertiesState
                         PatientScreen.enableEditing
                             ? Container()
                             : PopupMenuButton(
-                                onSelected: (value) {
+                                onSelected: (value) async {
                                   if (value == 2) {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
@@ -257,14 +317,28 @@ class __PatientInfoSideContainerpertiesState
                                         return AddBondDialog('increase');
                                       },
                                     );
-                                  }else if(value==4){
+                                  } else if (value == 4) {
                                     showDialog(
-                                  context: context,
-                                  builder: (_) {
-                                    return PatientBondsDialog(
-                                        PatientScreen.selectedPatient);
-                                  },
-                                );
+                                      context: context,
+                                      builder: (_) {
+                                        return PatientBondsDialog(
+                                            PatientScreen.selectedPatient);
+                                      },
+                                    );
+                                  } else if (value == 1) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (_) {
+                                        return AddDateDialog();
+                                      },
+                                    );
+                                  }else if (value == 5) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (_) {
+                                        return PatientDatesDialog(PatientScreen.selectedPatient);
+                                      },
+                                    );
                                   }
                                 },
                                 child: Container(
@@ -299,6 +373,40 @@ class __PatientInfoSideContainerpertiesState
                                       //   ),
                                       //   value: 1,
                                       // ),
+                                      PopupMenuItem(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.add),
+                                            Text(
+                                              'إضافة موعد',
+                                              style: TextStyle(
+                                                  fontFamily: 'Cairo',
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                        value: 1,
+                                      ),
+                                      PopupMenuItem(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.calendar_today_rounded),
+                                            Text(
+                                              'عرض المواعيد',
+                                              style: TextStyle(
+                                                  fontFamily: 'Cairo',
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                        value: 5,
+                                      ),
                                       PopupMenuItem(
                                         child: Row(
                                           mainAxisAlignment:
@@ -1204,33 +1312,66 @@ class __EmployeeInfoSideContainerState
                           child: CircularProgressIndicator(),
                         )
                       : Container(),
-                      PatientScreen.enableEditing
-                            ? Container()
-                            : PopupMenuButton(
-                                onSelected: (value) {
-                                  if (value == 2) {
-                                    
-                                     showDialog(
-                                      context: context,
-                                      builder: (_) {
-                                        return EmployeeBondsDialog(EmployeeScreen.selectedEmployee);
-                                      },
-                                    );
-                                  } else if (value == 3) {
-                                    showDialog(
-                                      context: context,
-                                      builder: (_) {
-                                        return AddBondDialog('decrease emp');
-                                      },
-                                    );
-                                  }
+                  PatientScreen.enableEditing
+                      ? Container()
+                      : PopupMenuButton(
+                          onSelected: (value) {
+                            if (value == 2) {
+                              showDialog(
+                                context: context,
+                                builder: (_) {
+                                  return EmployeeBondsDialog(
+                                      EmployeeScreen.selectedEmployee);
                                 },
-                                child: Container(
+                              );
+                            } else if (value == 3) {
+                              showDialog(
+                                context: context,
+                                builder: (_) {
+                                  return AddBondDialog('decrease emp');
+                                },
+                              );
+                            }
+                          },
+                          child: Container(
+                            child: Row(
+                              children: [
+                                Icon(Icons.keyboard_arrow_down_sharp),
+                                Text(
+                                  'المزيد',
+                                  style: TextStyle(
+                                      fontFamily: 'Cairo',
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                          itemBuilder: (context) => [
+                                // PopupMenuItem(
+                                //   child: Row(
+                                //     mainAxisAlignment:
+                                //         MainAxisAlignment.center,
+                                //     children: [
+                                //       Icon(Icons.add),
+                                //       Text(
+                                //         'إضافة تشخيص',
+                                //         style: TextStyle(
+                                //             fontFamily: 'Cairo',
+                                //             fontSize: 15,
+                                //             fontWeight: FontWeight.bold),
+                                //       ),
+                                //     ],
+                                //   ),
+                                //   value: 1,
+                                // ),
+                                PopupMenuItem(
                                   child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Icon(Icons.keyboard_arrow_down_sharp),
+                                      Icon(Icons.attach_money),
                                       Text(
-                                        'المزيد',
+                                        'السجل المالي للموظف',
                                         style: TextStyle(
                                             fontFamily: 'Cairo',
                                             fontSize: 15,
@@ -1238,78 +1379,41 @@ class __EmployeeInfoSideContainerState
                                       ),
                                     ],
                                   ),
+                                  value: 2,
                                 ),
-                                itemBuilder: (context) => [
-                                      // PopupMenuItem(
-                                      //   child: Row(
-                                      //     mainAxisAlignment:
-                                      //         MainAxisAlignment.center,
-                                      //     children: [
-                                      //       Icon(Icons.add),
-                                      //       Text(
-                                      //         'إضافة تشخيص',
-                                      //         style: TextStyle(
-                                      //             fontFamily: 'Cairo',
-                                      //             fontSize: 15,
-                                      //             fontWeight: FontWeight.bold),
-                                      //       ),
-                                      //     ],
-                                      //   ),
-                                      //   value: 1,
-                                      // ),
-                                      PopupMenuItem(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(Icons.attach_money),
-                                            Text(
-                                              'السجل المالي للموظف',
-                                              style: TextStyle(
-                                                  fontFamily: 'Cairo',
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
-                                        ),
-                                        value: 2,
+                                PopupMenuItem(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.add),
+                                      Text(
+                                        'إضافة مسحوبات للموظف',
+                                        style: TextStyle(
+                                            fontFamily: 'Cairo',
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold),
                                       ),
-                                      PopupMenuItem(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(Icons.add),
-                                            Text(
-                                              'إضافة مسحوبات للموظف',
-                                              style: TextStyle(
-                                                  fontFamily: 'Cairo',
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
-                                        ),
-                                        value: 3,
+                                    ],
+                                  ),
+                                  value: 3,
+                                ),
+                                PopupMenuItem(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.power_settings_new_outlined),
+                                      Text(
+                                        'إلغاء تفعيل الموظف',
+                                        style: TextStyle(
+                                            fontFamily: 'Cairo',
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold),
                                       ),
-                                      PopupMenuItem(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(Icons.power_settings_new_outlined),
-                                            Text(
-                                              'إلغاء تفعيل الموظف',
-                                              style: TextStyle(
-                                                  fontFamily: 'Cairo',
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
-                                        ),
-                                        value: 4,
-                                      )
-                                    ]),
-
+                                    ],
+                                  ),
+                                  value: 4,
+                                )
+                              ]),
                 ],
               ),
               Padding(

@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:desktop_version/api/authApi.dart';
+import 'package:desktop_version/models/patDate.dart';
 import 'package:desktop_version/provider/bondsProvider.dart';
 import 'package:desktop_version/provider/employeesProvider.dart';
+import 'package:desktop_version/provider/patDatesProvider.dart';
 import 'package:desktop_version/provider/patinetProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/loginScreen.dart';
@@ -29,6 +31,7 @@ class MyApp extends StatelessWidget {
     // }
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => PatDateProvider()),
         ChangeNotifierProvider(create: (_) => BondsProvider()),
         ChangeNotifierProvider(create: (_) => PatientProvider()),
         ChangeNotifierProvider(create: (_) => UserProvier()), 
