@@ -36,7 +36,6 @@ class EmployeesProvider with ChangeNotifier {
       });
       Map res = jsonDecode(response.body);
 
-      print(res.toString());
       if (res['error'] == null) {
         var ref = Firestore.instance.collection('users');
 

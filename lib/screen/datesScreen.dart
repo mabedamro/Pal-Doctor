@@ -1,3 +1,4 @@
+import 'package:desktop_version/models/patDate.dart';
 import 'package:desktop_version/provider/dateTimeProvider.dart';
 import 'package:desktop_version/provider/patDatesProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
@@ -13,8 +14,12 @@ class DatesScreen extends StatefulWidget {
 }
 
 class _DatesScreenState extends State<DatesScreen> {
+  PatDate selectedDate;
   bool isLoading = false;
   DateTime _selectedDay;
+  TextEditingController patNameController = TextEditingController();
+
+  TextEditingController noteController = TextEditingController();
   DateTime _focusedDay;
   @override
   void initState() {
@@ -25,42 +30,174 @@ class _DatesScreenState extends State<DatesScreen> {
         Provider.of<UserProvier>(context, listen: false).user.clincId +
             DateTimeProvider.date(_selectedDay),
         context);
+    if (Provider.of<PatDateProvider>(context, listen: false)
+        .tempDates
+        .isNotEmpty) {
+      selectedDate =
+          Provider.of<PatDateProvider>(context, listen: false).tempDates[0];
+      patNameController.text = selectedDate.patName;
+      noteController.text = selectedDate.note;
+    }
+    patNameController.text = selectedDate == null ? '' : selectedDate.patName;
+    noteController.text = selectedDate == null ? '' : selectedDate.note;
   }
 
   @override
   Widget build(BuildContext context) {
+    var feildStyle =
+        TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.bold);
     double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return SizedBox(
       width: width - 50,
       child: Row(
         children: [
           SizedBox(
             width: width / 2.05,
-            child: TableCalendar(
-              selectedDayPredicate: (day) {
-                return isSameDay(_selectedDay, day);
-              },
-              onDaySelected: (selectedDay, focusedDay) async {
-                setState(() {
-                  isLoading = true;
-                  _selectedDay = selectedDay;
-                  _focusedDay = focusedDay; // update `_focusedDay` here as well
-                });
+            child: SingleChildScrollView(
+              child: SizedBox(
+                height: height - 10,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: TableCalendar(
+                        selectedDayPredicate: (day) {
+                          return isSameDay(_selectedDay, day);
+                        },
+                        onDaySelected: (selectedDay, focusedDay) async {
+                          setState(() {
+                            isLoading = true;
+                            _selectedDay = selectedDay;
+                            _focusedDay =
+                                focusedDay; // update `_focusedDay` here as well
+                          });
 
-                await Provider.of<PatDateProvider>(context, listen: false)
-                    .getDates(
-                        Provider.of<UserProvier>(context, listen: false)
-                                .user
-                                .clincId +
-                            DateTimeProvider.date(_selectedDay),
-                        context);
-                setState(() {
-                  isLoading = false;
-                });
-              },
-              firstDay: DateTime.utc(2010, 10, 16),
-              lastDay: DateTime.utc(2030, 3, 14),
-              focusedDay: _selectedDay,
+                          await Provider.of<PatDateProvider>(context,
+                                  listen: false)
+                              .getDates(
+                                  Provider.of<UserProvier>(context,
+                                              listen: false)
+                                          .user
+                                          .clincId +
+                                      DateTimeProvider.date(_selectedDay),
+                                  context);
+                          setState(() {
+                            isLoading = false;
+                          });
+                        },
+                        firstDay: DateTime.utc(2010, 10, 16),
+                        lastDay: DateTime.utc(2030, 3, 14),
+                        focusedDay: _selectedDay,
+                      ),
+                    ),
+                    Expanded(
+                        child: Container(
+                      // color: Colors.red,
+                      child: Column(
+                        children: [
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          selectedDate == null
+                                              ? 'التاريخ:                          '
+                                              : 'التاريخ: ${DateTimeProvider.date(selectedDate.date)}      ',
+                                          style: TextStyle(
+                                              fontFamily: 'Cairo',
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 25),
+                                        ),
+                                        Text(
+                                          selectedDate == null
+                                              ? 'الوقت:                 '
+                                              : 'الوقت: ${DateTimeProvider.time(selectedDate.date)}',
+                                          style: TextStyle(
+                                              fontFamily: 'Cairo',
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 25),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ]),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10.0),
+                            child: TextFormField(
+                              enabled: false,
+                              style: feildStyle,
+                              controller: patNameController,
+                              decoration: new InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.account_circle,
+                                ),
+                                labelText: "إسم المريض",
+
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: new BorderRadius.circular(60.0),
+                                  // borderSide: BorderSide(color: color),
+                                ),
+                                //fillColor: Colors.green),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 15.0),
+                            child: TextFormField(
+                              enabled: false,
+                              style: feildStyle,
+                              cursorColor: Colors.blue,
+                              initialValue:
+                                  selectedDate == null ? '' : selectedDate.note,
+                              decoration: new InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.account_circle,
+                                ),
+                                labelText: "ملاحظات",
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: new BorderRadius.circular(60.0),
+                                  borderSide: BorderSide(color: Colors.blue),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: new BorderRadius.circular(60.0),
+                                  // borderSide: BorderSide(color: color),
+                                ),
+                                //fillColor: Colors.green),
+                              ),
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                "توقيع:  ",
+                                style: TextStyle(
+                                    fontFamily: 'Cairo',
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20),
+                              ),
+                              Text(
+                                selectedDate == null
+                                    ? '                        '
+                                    : selectedDate.userName,
+                                style: TextStyle(
+                                    fontFamily: 'Cairo',
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blue,
+                                    fontSize: 20),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ))
+                  ],
+                ),
+              ),
             ),
           ),
           Column(
@@ -146,7 +283,14 @@ class _DatesScreenState extends State<DatesScreen> {
                             itemBuilder: (_, index) {
                               return Card(
                                 child: InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    setState(() {
+                                      selectedDate =
+                                          datesProvider.tempDates[index];
+                                          patNameController.text = selectedDate.patName;
+                                          noteController.text = selectedDate.note;
+                                    });
+                                  },
                                   child: Container(
                                     height: 50,
                                     child: Padding(
