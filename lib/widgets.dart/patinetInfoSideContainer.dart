@@ -332,11 +332,12 @@ class __PatientInfoSideContainerpertiesState
                                         return AddDateDialog();
                                       },
                                     );
-                                  }else if (value == 5) {
+                                  } else if (value == 5) {
                                     showDialog(
                                       context: context,
                                       builder: (_) {
-                                        return PatientDatesDialog(PatientScreen.selectedPatient);
+                                        return PatientDatesDialog(
+                                            PatientScreen.selectedPatient);
                                       },
                                     );
                                   }
@@ -1331,6 +1332,34 @@ class __EmployeeInfoSideContainerState
                                   return AddBondDialog('decrease emp');
                                 },
                               );
+                            } else if (value == 4) {
+                              if (EmployeeScreen.selectedEmployee.createdBy ==
+                                  'me') {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Directionality(
+                                        textDirection: TextDirection.rtl,
+                                        child: Text(
+                                            'لا يمكنك إلغاء تفعيل هذا الموظف !')),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              } else {
+                                if (EmployeeScreen.selectedEmployee.isActive ==
+                                    '0') {
+                                  Provider.of<EmployeesProvider>(context,
+                                          listen: false)
+                                      .changeActive(
+                                          EmployeeScreen.selectedEmployee, '1',
+                                          context: context);
+                                } else {
+                                  Provider.of<EmployeesProvider>(context,
+                                          listen: false)
+                                      .changeActive(
+                                          EmployeeScreen.selectedEmployee, '0',
+                                          context: context);
+                                }
+                              }
                             }
                           },
                           child: Container(
@@ -1403,7 +1432,7 @@ class __EmployeeInfoSideContainerState
                                     children: [
                                       Icon(Icons.power_settings_new_outlined),
                                       Text(
-                                        'إلغاء تفعيل الموظف',
+                                       EmployeeScreen.selectedEmployee.isActive=='1' ? 'إلغاء تفعيل الموظف':'تفعيل الموظف',
                                         style: TextStyle(
                                             fontFamily: 'Cairo',
                                             fontSize: 15,

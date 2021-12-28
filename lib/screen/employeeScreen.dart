@@ -10,7 +10,8 @@ import 'package:provider/provider.dart';
 class EmployeeScreen extends StatefulWidget {
   @override
   _EmployeeScreenState createState() => _EmployeeScreenState();
-  static User selectedEmployee = User(name: '', email: '');
+  static User selectedEmployee =
+      User(name: '', email: '', pass: '', createdDate: '');
 
   static bool enableEditing = false;
 }
@@ -113,7 +114,7 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                                     Text(
                                       'بحث',
                                       style: TextStyle(
-                                         fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.bold,
                                           color: Colors.white,
                                           fontFamily: 'Cairo',
                                           fontSize: 15),
@@ -165,7 +166,7 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                                       Text(
                                         'تحد يث',
                                         style: TextStyle(
-                                           fontWeight: FontWeight.bold,
+                                            fontWeight: FontWeight.bold,
                                             color: Colors.white,
                                             fontFamily: 'Cairo',
                                             fontSize: 15),
@@ -203,9 +204,8 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                                       Icon(Icons.add),
                                       Text(
                                         'إضافة موظف',
-
                                         style: TextStyle(
-                                           fontWeight: FontWeight.bold,
+                                            fontWeight: FontWeight.bold,
                                             color: Colors.white,
                                             fontFamily: 'Cairo',
                                             fontSize: 15),
@@ -308,73 +308,94 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                                 height: 50,
                                 width: 50,
                                 child: CircularProgressIndicator()))
-                        : ListView.builder(
-                            itemCount: empProvider.searchList.length,
-                            itemBuilder: (_, index) {
-                              return Card(
-                                child: InkWell(
-                                  onTap: () {
-                                    EmployeeScreen.enableEditing = false;
-                                    EmployeeScreen.selectedEmployee =
-                                        empProvider.searchList[index];
-                                    EmployeeInfoSideContainer.permission =
-                                        EmployeeScreen
-                                            .selectedEmployee.permission;
-                                    EmployeeInfoSideContainer
-                                        .setStateForAnimation(true);
-                                  },
-                                  child: Container(
-                                    height: 50,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            child: Center(
-                                              child: Text(
-                                                empProvider
-                                                    .searchList[index].name,
-                                                style: TextStyle(
-                                                    fontFamily: 'Cairo',
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                        : empProvider.searchList.length == 0
+                            ? Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.search,
+                                      size: 60,
+                                      color: Colors.blue,
+                                    ),
+                                    Text(
+                                      'لا توجد بيانات لعرضها',
+                                      style: TextStyle(
+                                          fontFamily: 'Cairo',
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
+                              )
+                            : ListView.builder(
+                                itemCount: empProvider.searchList.length,
+                                itemBuilder: (_, index) {
+                                  return Card(
+                                    child: InkWell(
+                                      onTap: () {
+                                        EmployeeScreen.enableEditing = false;
+                                        EmployeeScreen.selectedEmployee =
+                                            empProvider.searchList[index];
+                                        EmployeeInfoSideContainer.permission =
+                                            EmployeeScreen
+                                                .selectedEmployee.permission;
+                                        EmployeeInfoSideContainer
+                                            .setStateForAnimation(true);
+                                      },
+                                      child: Container(
+                                        height: 50,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: Center(
+                                                  child: Text(
+                                                    empProvider
+                                                        .searchList[index].name,
+                                                    style: TextStyle(
+                                                        fontFamily: 'Cairo',
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Center(
-                                              child: Text(
-                                                empProvider
-                                                    .searchList[index].email,
-                                                style: TextStyle(
-                                                    fontFamily: 'Cairo',
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                              Expanded(
+                                                child: Center(
+                                                  child: Text(
+                                                    empProvider
+                                                        .searchList[index]
+                                                        .email,
+                                                    style: TextStyle(
+                                                        fontFamily: 'Cairo',
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Center(
-                                              child: Text(
-                                                empProvider.searchList[index]
-                                                    .permissionString,
-                                                style: TextStyle(
-                                                    fontFamily: 'Cairo',
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                              Expanded(
+                                                child: Center(
+                                                  child: Text(
+                                                    empProvider
+                                                        .searchList[index]
+                                                        .permissionString,
+                                                    style: TextStyle(
+                                                        fontFamily: 'Cairo',
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
+                                            ],
                                           ),
-                                        ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
+                                  );
+                                },
                               );
-                            },
-                          );
                   }),
                 ),
               ),

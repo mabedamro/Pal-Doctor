@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:desktop_version/api/authApi.dart';
 import 'package:desktop_version/api/databaseApi.dart';
+import 'package:desktop_version/models/appConstants.dart';
 import 'package:desktop_version/models/user.dart';
 import 'package:desktop_version/screen/homeScreen.dart';
 import 'package:desktop_version/screen/loginScreen.dart';
@@ -17,7 +18,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class UserProvier with ChangeNotifier {
   User user;
   User clincUser;
-
+  String updateUrl;
+  String appVersion;
+  String stopAll;
   Future<void> getClincData() async {
     try {
       if (user.clincId == user.id) {
@@ -26,8 +29,27 @@ class UserProvier with ChangeNotifier {
       var ref = Firestore.instance.collection('users').document(user.clincId);
       var data = await ref.get().then((value) {
         clincUser = User.fromJson(value);
+
         print('Data Are Here');
         notifyListeners();
+      }).catchError((e) {
+        print('Here Error Man !');
+        print(e.toString());
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> getAppConstants() async {
+    try {
+      var ref = Firestore.instance
+          .collection('appConstants')
+          .document('appConstants');
+      var data = await ref.get().then((value) {
+        appVersion = value['appVersion'];
+        updateUrl = value['updateUrl'];
+        stopAll = value['stopAll'];
       }).catchError((e) {
         print('Here Error Man !');
         print(e.toString());
@@ -44,6 +66,7 @@ class UserProvier with ChangeNotifier {
         user = User.fromJson(value);
         print('Data Are Here');
         await getClincData();
+        await getAppConstants();
         notifyListeners();
       }).catchError((e) {
         print('Here Error Man !');
@@ -72,11 +95,29 @@ class UserProvier with ChangeNotifier {
       // Sign in with user credentials
       await auth.signIn(email, pass).then((value) async {
         await getUserData(auth.userId);
-        if (user.isActive == '0') {
+
+        if (clincUser.isActive == '0') {
           signout(context);
           result = 'fail';
         } else {
-          result = 'success';
+          if (user.isActive == '0') {
+            signout(context);
+            result = 'fail';
+          } else {
+            if (stopAll == '1') {
+              signout(context);
+              result = 'fail';
+            } else {
+              if (appVersion != AppConstants.appVersion) {
+                //need Update
+                print('needUpdate');
+                goToUpdateScreen();
+
+              } else {
+                result = 'success';
+              }
+            }
+          }
         }
       }).catchError((e) {
         if (e.toString().contains('SocketException')) {
@@ -94,7 +135,9 @@ class UserProvier with ChangeNotifier {
       return 'false';
     }
   }
+  void goToUpdateScreen(){
 
+  }
   Future<String> login({String email, String pass}) async {
     try {
       String result = 'fail';

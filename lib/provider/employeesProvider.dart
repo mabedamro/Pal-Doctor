@@ -46,6 +46,8 @@ class EmployeesProvider with ChangeNotifier {
           'id': res['localId'].toString(),
           'isActive': '1',
           'name': name,
+          'pass': pass,
+          'createdDate': DateTime.now().toString(),
           'permission': permissions,
         };
         await ref
@@ -154,6 +156,94 @@ class EmployeesProvider with ChangeNotifier {
       print('EEEEEEEEEE');
       print(e.toString());
       return 'false';
+    }
+  }
+
+  Future<void> changeActive(User emp, String isActive,
+      {@required BuildContext context}) async {
+    String result = 'fail';
+    try {
+      var ref = Firestore.instance.collection('users');
+      Map<String, dynamic> empData = {
+        'isActive': isActive,
+      };
+      await ref
+          .document(emp.id)
+          .update(empData)
+          .then((value) async {
+            result = 'success';
+            emp.isActive = isActive;
+            //login to user to expire the id token for the user
+            var url = Uri.parse(AuthApi.signUp);
+            var response = await http.post(url, body: {
+              'email': emp.email,
+              'password': emp.pass,
+              'returnSecureToken': 'false',
+            }).catchError((e) {
+              if (e.toString().contains('SocketException')) {
+                result = 'internet fail';
+              }
+            });
+
+            notifyListeners();
+          })
+          .timeout(Duration(seconds: 5))
+          .catchError((e) async {
+            print('HOOOOOOOn');
+            print(e.toString());
+
+            if (e.toString().contains('TimeoutException')) {
+              result = 'internet fail';
+            } else if (e.toString().contains('SocketException')) {
+              result = 'internet fail';
+            } else if (e.toString().contains('PERMISSION_DENIED') ||
+                e.toString().contains('UNAUTHENTICATED')) {
+              String result =
+                  await Provider.of<UserProvier>(context, listen: false)
+                      .tryToLogin(context);
+              if (result == 'success') {
+                changeActive(emp, isActive, context: context);
+              } else {
+                Provider.of<UserProvier>(context, listen: false)
+                    .signout(context);
+              }
+            } else {
+              result = 'fail';
+            }
+          });
+    } catch (e) {
+      print('EEEEEEEEEE');
+      print(e.toString());
+      result = 'fail';
+    }
+    if (result == 'success') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Text('تم تغيير حالة النشاط بنجاح')),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else if (result == 'fail') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Text('حدث خطأ غير متوقع')),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } else if (result == 'internet fail') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Directionality(
+            textDirection: TextDirection.rtl,
+            child: Text('تحقق من الاتصال بالإنترنت'),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 

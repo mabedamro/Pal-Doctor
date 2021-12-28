@@ -101,7 +101,6 @@ class _PatientDatesDialogState extends State<PatientDatesDialog> {
                           ),
                         ),
                       ),
-                      
                     ],
                   ),
                 ),
@@ -128,53 +127,75 @@ class _PatientDatesDialogState extends State<PatientDatesDialog> {
                                 height: 50,
                                 width: 50,
                                 child: CircularProgressIndicator()))
-                        : ListView.builder(
-                            itemCount: datesProvider.patDates.length,
-                            itemBuilder: (_, index) {
-                              return Card(
-                                child: InkWell(
-                                  onTap: () {},
-                                  child: Container(
-                                    height: 50,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            child: Center(
-                                              child: Text(
-                                                datesProvider
-                                                    .patDates[index].patName,
-                                                style: TextStyle(
-                                                    fontFamily: 'Cairo',
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Center(
-                                              child: Text(
-                                                DateTimeProvider.dateAndTime(
+                        : datesProvider.patDates.length == 0
+                            ? Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.search,
+                                      size: 60,
+                                      color: Colors.blue,
+                                    ),
+                                    Text(
+                                      'لا توجد بيانات لعرضها',
+                                      style: TextStyle(
+                                          fontFamily: 'Cairo',
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
+                              )
+                            : ListView.builder(
+                                itemCount: datesProvider.patDates.length,
+                                itemBuilder: (_, index) {
+                                  return Card(
+                                    child: InkWell(
+                                      onTap: () {},
+                                      child: Container(
+                                        height: 50,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: Center(
+                                                  child: Text(
                                                     datesProvider
-                                                        .patDates[index].date),
-                                                style: TextStyle(
-                                                    fontFamily: 'Cairo',
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                                        .patDates[index]
+                                                        .patName,
+                                                    style: TextStyle(
+                                                        fontFamily: 'Cairo',
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
+                                              Expanded(
+                                                child: Center(
+                                                  child: Text(
+                                                    DateTimeProvider
+                                                        .dateAndTime(
+                                                            datesProvider
+                                                                .patDates[index]
+                                                                .date),
+                                                    style: TextStyle(
+                                                        fontFamily: 'Cairo',
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
+                                  );
+                                },
                               );
-                            },
-                          );
                   }),
                 ),
               ),

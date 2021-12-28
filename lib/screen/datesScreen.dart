@@ -60,34 +60,40 @@ class _DatesScreenState extends State<DatesScreen> {
                 child: Column(
                   children: [
                     Expanded(
-                      child: TableCalendar(
-                        selectedDayPredicate: (day) {
-                          return isSameDay(_selectedDay, day);
-                        },
-                        onDaySelected: (selectedDay, focusedDay) async {
-                          setState(() {
-                            isLoading = true;
-                            _selectedDay = selectedDay;
-                            _focusedDay =
-                                focusedDay; // update `_focusedDay` here as well
-                          });
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            TableCalendar(
+                              selectedDayPredicate: (day) {
+                                return isSameDay(_selectedDay, day);
+                              },
+                              onDaySelected: (selectedDay, focusedDay) async {
+                                setState(() {
+                                  isLoading = true;
+                                  _selectedDay = selectedDay;
+                                  _focusedDay =
+                                      focusedDay; // update `_focusedDay` here as well
+                                });
 
-                          await Provider.of<PatDateProvider>(context,
-                                  listen: false)
-                              .getDates(
-                                  Provider.of<UserProvier>(context,
-                                              listen: false)
-                                          .user
-                                          .clincId +
-                                      DateTimeProvider.date(_selectedDay),
-                                  context);
-                          setState(() {
-                            isLoading = false;
-                          });
-                        },
-                        firstDay: DateTime.utc(2010, 10, 16),
-                        lastDay: DateTime.utc(2030, 3, 14),
-                        focusedDay: _selectedDay,
+                                await Provider.of<PatDateProvider>(context,
+                                        listen: false)
+                                    .getDates(
+                                        Provider.of<UserProvier>(context,
+                                                    listen: false)
+                                                .user
+                                                .clincId +
+                                            DateTimeProvider.date(_selectedDay),
+                                        context);
+                                setState(() {
+                                  isLoading = false;
+                                });
+                              },
+                              firstDay: DateTime.utc(2010, 10, 16),
+                              lastDay: DateTime.utc(2030, 3, 14),
+                              focusedDay: _selectedDay,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     Expanded(
@@ -277,8 +283,26 @@ class _DatesScreenState extends State<DatesScreen> {
                               height: 30,
                               child: CircularProgressIndicator(),
                             ),
+                          ):datesProvider.tempDates.length == 0
+                          ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.search,
+                                    size: 60,
+                                    color: Colors.blue,
+                                  ),
+                                  Text(
+                                    'لا توجد بيانات لعرضها',
+                                    style: TextStyle(
+                                        fontFamily: 'Cairo',
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              ),
                           )
-                        : ListView.builder(
+                          : ListView.builder(
                             itemCount: datesProvider.tempDates.length,
                             itemBuilder: (_, index) {
                               return Card(

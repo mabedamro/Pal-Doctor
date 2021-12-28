@@ -136,8 +136,26 @@ class _PatientBondsDialogState extends State<PatientBondsDialog> {
                             child: SizedBox(
                                 height: 50,
                                 width: 50,
-                                child: CircularProgressIndicator()))
-                        : ListView.builder(
+                                child: CircularProgressIndicator())) : bondsProvider.patBonds.length == 0
+                            ? Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.search,
+                                      size: 60,
+                                      color: Colors.blue,
+                                    ),
+                                    Text(
+                                      'لا توجد بيانات لعرضها',
+                                      style: TextStyle(
+                                          fontFamily: 'Cairo',
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
+                              )
+                            : ListView.builder(
                             itemCount: bondsProvider.patBonds.length,
                             itemBuilder: (_, index) {
                               return Card(

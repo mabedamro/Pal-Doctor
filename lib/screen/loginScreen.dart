@@ -67,6 +67,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       focusNode: focus,
                       onSubmitted: (val) {
                         print('enter button');
+                        setState(() {
+                          isLoading = true;
+                        });
                         login();
                       },
                       cursorColor: color,
@@ -139,47 +142,49 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> login() async {
-    String result = await Provider.of<UserProvier>(context, listen: false)
-        .login(email: _emailController.text, pass: _passwordController.text);
-    print(result);
-    if (result == 'success') {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Directionality(
-              textDirection: TextDirection.rtl,
-              child: Text('تم تسجيل الدخول!')),
-          backgroundColor: Colors.green,
-        ),
-      );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
-      );
-    } else if (result == 'fail') {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Directionality(
-              textDirection: TextDirection.rtl,
-              child: Text('البريد الإلكتروني أو كلمة السر غير صحيح')),
-          backgroundColor: Colors.red,
-        ),
-      );
-      setState(() {
-        isLoading = false;
-      });
-    } else if (result == 'internet fail') {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Directionality(
-            textDirection: TextDirection.rtl,
-            child: Text('تحقق من الاتصال بالإنترنت'),
+    if (isLoading == true) {
+      String result = await Provider.of<UserProvier>(context, listen: false)
+          .login(email: _emailController.text, pass: _passwordController.text);
+      print(result);
+      if (result == 'success') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Directionality(
+                textDirection: TextDirection.rtl,
+                child: Text('تم تسجيل الدخول!')),
+            backgroundColor: Colors.green,
           ),
-          backgroundColor: Colors.red,
-        ),
-      );
-      setState(() {
-        isLoading = false;
-      });
+        );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
+      } else if (result == 'fail') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Directionality(
+                textDirection: TextDirection.rtl,
+                child: Text('البريد الإلكتروني أو كلمة السر غير صحيح')),
+            backgroundColor: Colors.red,
+          ),
+        );
+        setState(() {
+          isLoading = false;
+        });
+      } else if (result == 'internet fail') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Text('تحقق من الاتصال بالإنترنت'),
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 }

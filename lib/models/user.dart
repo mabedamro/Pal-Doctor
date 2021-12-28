@@ -1,6 +1,11 @@
+import 'package:flutter/widgets.dart';
+
 class User {
   String name;
   String email;
+  String createdDate;
+  String pass;
+  String phoneNumber;
   String clincId;
   String isActive;
   String id;
@@ -23,12 +28,17 @@ class User {
     this.isActive,
     this.permission,
     this.id,
+    @required this.pass,
+    @required this.createdDate,
   });
 
   User.fromJson(dynamic res) {
     print(res.toString());
     name = res['name'];
     email = res['email'];
+    phoneNumber=res['phoneNumber']??'';
+    pass = res['pass']??'';
+    createdDate = res['createdDate']??'';
     id = res['id'];
     clincId = res['clincId'];
     createdBy = res['createdBy'];

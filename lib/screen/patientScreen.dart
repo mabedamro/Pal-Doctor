@@ -105,7 +105,7 @@ class _PatientScreenState extends State<PatientScreen>
                                     Text(
                                       'بحث',
                                       style: TextStyle(
-                                         fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.bold,
                                           color: Colors.white,
                                           fontFamily: 'Cairo',
                                           fontSize: 15),
@@ -154,7 +154,7 @@ class _PatientScreenState extends State<PatientScreen>
                                       Text(
                                         'تحد يث',
                                         style: TextStyle(
-                                           fontWeight: FontWeight.bold,
+                                            fontWeight: FontWeight.bold,
                                             color: Colors.white,
                                             fontFamily: 'Cairo',
                                             fontSize: 15),
@@ -193,7 +193,7 @@ class _PatientScreenState extends State<PatientScreen>
                                       Text(
                                         'إضافة مريض',
                                         style: TextStyle(
-                                           fontWeight: FontWeight.bold,
+                                            fontWeight: FontWeight.bold,
                                             color: Colors.white,
                                             fontFamily: 'Cairo',
                                             fontSize: 15),
@@ -294,74 +294,97 @@ class _PatientScreenState extends State<PatientScreen>
                               height: 50,
                               width: 50,
                               child: CircularProgressIndicator()))
-                      : ListView.builder(
-                          itemCount: patProvider.searchList.length,
-                          itemBuilder: (_, index) {
-                            return Card(
-                              child: InkWell(
-                                hoverColor: Colors.grey[300],
-                                // // focusColor: Colors.red,
-                                // overlayColor:
-                                //     MaterialStateProperty.all(Colors.red),
-                                // highlightColor: Colors.red,
-                                
-                                onTap: () {
-                                  PatientScreen.selectedPatient =
-                                      patProvider.searchList[index];
+                      : patProvider.searchList.length == 0
+                          ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.search,
+                                    size: 60,
+                                    color: Colors.blue,
+                                  ),
+                                  Text(
+                                    'لا توجد بيانات لعرضها',
+                                    style: TextStyle(
+                                        fontFamily: 'Cairo',
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              ),
+                          )
+                          : ListView.builder(
+                              itemCount: patProvider.searchList.length,
+                              itemBuilder: (_, index) {
+                                return Card(
+                                  child: InkWell(
+                                    hoverColor: Colors.grey[300],
+                                    // // focusColor: Colors.red,
+                                    // overlayColor:
+                                    //     MaterialStateProperty.all(Colors.red),
+                                    // highlightColor: Colors.red,
 
-                                  PatientInfoSideContainer.setStateForAnimation(
-                                      true);
-                                },
-                                child: Container(
-                                  height: 50,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                          child: Center(
-                                            child: Text(
-                                              patProvider
-                                                  .searchList[index].name,
-                                              style: TextStyle(
-                                                  fontFamily: 'Cairo',
-                                                  fontWeight: FontWeight.bold),
+                                    onTap: () {
+                                      PatientScreen.selectedPatient =
+                                          patProvider.searchList[index];
+
+                                      PatientInfoSideContainer
+                                          .setStateForAnimation(true);
+                                    },
+                                    child: Container(
+                                      height: 50,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                              child: Center(
+                                                child: Text(
+                                                  patProvider
+                                                      .searchList[index].name,
+                                                  style: TextStyle(
+                                                      fontFamily: 'Cairo',
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Center(
-                                            child: Text(
-                                              patProvider
-                                                  .searchList[index].IDNumber,
-                                              style: TextStyle(
-                                                  fontFamily: 'Cairo',
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Center(
-                                            child: Text(
-                                              DateFormat('yyyy-MM-dd').format(
+                                            Expanded(
+                                              child: Center(
+                                                child: Text(
                                                   patProvider.searchList[index]
-                                                      .addingDate),
-                                              style: TextStyle(
-                                                  fontFamily: 'Cairo',
-                                                  fontWeight: FontWeight.bold),
+                                                      .IDNumber,
+                                                  style: TextStyle(
+                                                      fontFamily: 'Cairo',
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ),
                                             ),
-                                          ),
+                                            Expanded(
+                                              child: Center(
+                                                child: Text(
+                                                  DateFormat('yyyy-MM-dd')
+                                                      .format(patProvider
+                                                          .searchList[index]
+                                                          .addingDate),
+                                                  style: TextStyle(
+                                                      fontFamily: 'Cairo',
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
+                                );
+                              },
                             );
-                          },
-                        );
                 }),
               )
             ],

@@ -137,65 +137,87 @@ class _EmployeeBondsDialogState extends State<EmployeeBondsDialog> {
                                 height: 50,
                                 width: 50,
                                 child: CircularProgressIndicator()))
-                        : ListView.builder(
-                            itemCount: bondsProvider.empBonds.length,
-                            itemBuilder: (_, index) {
-                              return Card(
-                                child: InkWell(
-                                  child: Container(
-                                    height: 50,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            child: Center(
-                                              child: Text(
-                                                bondsProvider
-                                                    .empBonds[index].amount
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    fontFamily: 'Cairo',
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Center(
-                                              child: Text(
-                                                DateTimeProvider.dateAndTime(
+                        : bondsProvider.empBonds.length == 0
+                            ? Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.search,
+                                      size: 60,
+                                      color: Colors.blue,
+                                    ),
+                                    Text(
+                                      'لا توجد بيانات لعرضها',
+                                      style: TextStyle(
+                                          fontFamily: 'Cairo',
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
+                              )
+                            : ListView.builder(
+                                itemCount: bondsProvider.empBonds.length,
+                                itemBuilder: (_, index) {
+                                  return Card(
+                                    child: InkWell(
+                                      child: Container(
+                                        height: 50,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: Center(
+                                                  child: Text(
                                                     bondsProvider
-                                                        .empBonds[index].date),
-                                                style: TextStyle(
-                                                    fontFamily: 'Cairo',
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                                        .empBonds[index].amount
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                        fontFamily: 'Cairo',
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Center(
-                                              child: Text(
-                                                bondsProvider
-                                                    .empBonds[index].userName,
-                                                style: TextStyle(
-                                                    fontFamily: 'Cairo',
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                              Expanded(
+                                                child: Center(
+                                                  child: Text(
+                                                    DateTimeProvider
+                                                        .dateAndTime(
+                                                            bondsProvider
+                                                                .empBonds[index]
+                                                                .date),
+                                                    style: TextStyle(
+                                                        fontFamily: 'Cairo',
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
+                                              Expanded(
+                                                child: Center(
+                                                  child: Text(
+                                                    bondsProvider
+                                                        .empBonds[index]
+                                                        .userName,
+                                                    style: TextStyle(
+                                                        fontFamily: 'Cairo',
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
+                                  );
+                                },
                               );
-                            },
-                          );
                   }),
                 ),
               ),
