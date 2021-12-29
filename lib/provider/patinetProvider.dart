@@ -85,7 +85,8 @@ class PatientProvider with ChangeNotifier {
                       .tryToLogin(context);
               if (result == 'success') {
                 getPatients(clincId, context);
-              } else {
+              }else if(result == 'needUpdate'){Provider.of<UserProvier>(context, listen: false)
+                    .goToUpdateScreen(context);} else {
                 Provider.of<UserProvier>(context, listen: false)
                     .signout(context);
               }
@@ -150,7 +151,8 @@ class PatientProvider with ChangeNotifier {
                       .tryToLogin(context);
               if (result == 'success') {
                 updatePat(p, context: context);
-              } else {
+              }else if(result == 'needUpdate'){Provider.of<UserProvier>(context, listen: false)
+                    .goToUpdateScreen(context);} else {
                 Provider.of<UserProvier>(context, listen: false)
                     .signout(context);
               }

@@ -110,7 +110,8 @@ class PatDateProvider with ChangeNotifier {
                       .tryToLogin(context);
               if (result == 'success') {
                 getDates(id, context);
-              } else {
+              }else if(result == 'needUpdate'){Provider.of<UserProvier>(context, listen: false)
+                    .goToUpdateScreen(context);} else {
                 Provider.of<UserProvier>(context, listen: false)
                     .signout(context);
               }
@@ -180,7 +181,8 @@ class PatDateProvider with ChangeNotifier {
                       .tryToLogin(context);
               if (result == 'success') {
                 getDatesPatient(pid, context);
-              } else {
+              }else if(result == 'needUpdate'){Provider.of<UserProvier>(context, listen: false)
+                    .goToUpdateScreen(context);} else {
                 Provider.of<UserProvier>(context, listen: false)
                     .signout(context);
               }

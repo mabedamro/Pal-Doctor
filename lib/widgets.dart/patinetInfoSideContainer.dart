@@ -477,7 +477,7 @@ class __PatientInfoSideContainerpertiesState
                     child: GestureDetector(
                         child: Icon(
                           Icons.close,
-                          size: 30,
+                          // size:showSideMenu ? 30 : 0,
                         ),
                         onTap: () {
                           PatientScreen.enableEditing = false;
@@ -500,7 +500,7 @@ class __PatientInfoSideContainerpertiesState
                       children: [
                         Icon(
                           Icons.assignment_ind_rounded,
-                          size: 120,
+                          size: showSideMenu ? 120 : 0,
                           color: Colors.blue,
                         ),
 
@@ -529,7 +529,7 @@ class __PatientInfoSideContainerpertiesState
                             style: feildStyle,
                             decoration: new InputDecoration(
                               prefixIcon:
-                                  Icon(Icons.picture_in_picture_outlined),
+                                  Icon(Icons.picture_in_picture_outlined,size:showSideMenu ? 30 : 0,),
                               labelText: "رقم الهوية",
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: new BorderRadius.circular(60.0),
@@ -563,7 +563,7 @@ class __PatientInfoSideContainerpertiesState
                             cursorColor: color,
                             decoration: new InputDecoration(
                               prefixIcon: Icon(
-                                Icons.account_circle,
+                                Icons.account_circle,size:showSideMenu ? 30 : 0,
                               ),
                               labelText: "إسم المريض",
                               focusedBorder: OutlineInputBorder(
@@ -607,7 +607,7 @@ class __PatientInfoSideContainerpertiesState
                             cursorColor: color,
                             decoration: new InputDecoration(
                               prefixIcon: Icon(
-                                Icons.phone_sharp,
+                                Icons.phone_sharp,size:showSideMenu ? 30 : 0,
                               ),
                               labelText: "رقم الهاتف",
                               focusedBorder: OutlineInputBorder(
@@ -646,7 +646,7 @@ class __PatientInfoSideContainerpertiesState
                                   controller: cityController,
                                   decoration: new InputDecoration(
                                     prefixIcon: Icon(
-                                      Icons.gps_fixed,
+                                      Icons.gps_fixed,size:showSideMenu ? 30 : 0,
                                     ),
 
                                     labelText: "المدينة",
@@ -690,7 +690,7 @@ class __PatientInfoSideContainerpertiesState
                                   focusNode: focusAdress,
                                   decoration: new InputDecoration(
                                     prefixIcon: Icon(
-                                      Icons.location_city,
+                                      Icons.location_city,size:showSideMenu ? 30 : 0,
                                     ),
                                     labelText: "العنوان",
 
@@ -734,7 +734,7 @@ class __PatientInfoSideContainerpertiesState
                             focusNode: focusAge,
                             decoration: new InputDecoration(
                               prefixIcon: Icon(
-                                Icons.date_range_rounded,
+                                Icons.date_range_rounded,size:showSideMenu ? 30 : 0,
                               ),
                               labelText: "العمر (سنة)",
                               focusedBorder: OutlineInputBorder(
@@ -761,7 +761,7 @@ class __PatientInfoSideContainerpertiesState
                             cursorColor: color,
                             focusNode: focusRefferFrom,
                             decoration: new InputDecoration(
-                              prefixIcon: Icon(Icons.medical_services_rounded),
+                              prefixIcon: Icon(Icons.medical_services_rounded,size:showSideMenu ? 30 : 0,),
                               labelText: "محول من",
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: new BorderRadius.circular(60.0),
@@ -904,7 +904,7 @@ class __PatientInfoSideContainerpertiesState
                                 cursorColor: color,
                                 decoration: new InputDecoration(
                                   prefixIcon: Icon(
-                                    Icons.account_circle,
+                                    Icons.account_circle,size:showSideMenu ? 30 : 0,
                                   ),
                                   labelText: "ملاحظات حول المريض",
                                   focusedBorder: OutlineInputBorder(

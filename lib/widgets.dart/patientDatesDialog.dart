@@ -35,7 +35,6 @@ class _PatientDatesDialogState extends State<PatientDatesDialog> {
       isLoading = false;
     });
   }
-
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -47,7 +46,7 @@ class _PatientDatesDialogState extends State<PatientDatesDialog> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(widget.p.name),
+            Text(widget.p.name,style: TextStyle(fontFamily: 'Cairo',fontWeight: FontWeight.bold,fontSize: 25),),
             IconButton(
                 icon: Icon(Icons.close),
                 onPressed: () {

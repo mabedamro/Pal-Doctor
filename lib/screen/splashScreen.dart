@@ -77,13 +77,16 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> tryToLogin(context) async {
-    String result =
-        await Provider.of<UserProvier>(context, listen: false).tryToLogin(context);
+    String result = await Provider.of<UserProvier>(context, listen: false)
+        .tryToLogin(context);
     if (result == 'success') {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomeScreen()),
       );
+    } else if (result == 'needUpdate') {
+      Provider.of<UserProvier>(context, listen: false)
+          .goToUpdateScreen(context);
     } else if (result == 'internet fail') {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -94,10 +97,11 @@ class _SplashScreenState extends State<SplashScreen> {
           backgroundColor: Colors.red,
         ),
       );
-      if(isNoInterNet==false){
-      setState(() {
-        isNoInterNet = true;
-      });}
+      if (isNoInterNet == false) {
+        setState(() {
+          isNoInterNet = true;
+        });
+      }
     } else {
       Navigator.pushReplacement(
         context,

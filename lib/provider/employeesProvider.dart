@@ -142,7 +142,8 @@ class EmployeesProvider with ChangeNotifier {
                       .tryToLogin(context);
               if (result == 'success') {
                 updateEmployee(name, permissions, emp, context: context);
-              } else {
+              }else if(result == 'needUpdate'){Provider.of<UserProvier>(context, listen: false)
+                    .goToUpdateScreen(context);} else {
                 Provider.of<UserProvier>(context, listen: false)
                     .signout(context);
               }
@@ -203,7 +204,8 @@ class EmployeesProvider with ChangeNotifier {
                       .tryToLogin(context);
               if (result == 'success') {
                 changeActive(emp, isActive, context: context);
-              } else {
+              }else if(result == 'needUpdate'){Provider.of<UserProvier>(context, listen: false)
+                    .goToUpdateScreen(context);} else {
                 Provider.of<UserProvier>(context, listen: false)
                     .signout(context);
               }
@@ -285,7 +287,8 @@ class EmployeesProvider with ChangeNotifier {
                       .tryToLogin(context);
               if (result == 'success') {
                 getEmployee(clincId, context);
-              } else {
+              }else if(result == 'needUpdate'){Provider.of<UserProvier>(context, listen: false)
+                    .goToUpdateScreen(context);} else {
                 Provider.of<UserProvier>(context, listen: false)
                     .signout(context);
               }

@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => PatDateProvider()),
         ChangeNotifierProvider(create: (_) => BondsProvider()),
         ChangeNotifierProvider(create: (_) => PatientProvider()),
-        ChangeNotifierProvider(create: (_) => UserProvier()), 
+        ChangeNotifierProvider(create: (_) => UserProvier()),
         ChangeNotifierProvider(create: (_) => EmployeesProvider()),
       ],
       child: MaterialApp(

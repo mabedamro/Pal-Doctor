@@ -296,8 +296,8 @@ class _PatientScreenState extends State<PatientScreen>
                               child: CircularProgressIndicator()))
                       : patProvider.searchList.length == 0
                           ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
                                     Icons.search,
@@ -312,7 +312,7 @@ class _PatientScreenState extends State<PatientScreen>
                                   )
                                 ],
                               ),
-                          )
+                            )
                           : ListView.builder(
                               itemCount: patProvider.searchList.length,
                               itemBuilder: (_, index) {
@@ -386,7 +386,7 @@ class _PatientScreenState extends State<PatientScreen>
                               },
                             );
                 }),
-              )
+              ),
             ],
           ),
         ),

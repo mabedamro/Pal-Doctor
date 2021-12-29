@@ -8,11 +8,13 @@ import 'package:desktop_version/models/user.dart';
 import 'package:desktop_version/screen/homeScreen.dart';
 import 'package:desktop_version/screen/loginScreen.dart';
 import 'package:desktop_version/screen/splashScreen.dart';
+import 'package:desktop_version/screen/updateScreen.dart';
 import 'package:firedart/auth/firebase_auth.dart';
 import 'package:firedart/firestore/firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProvier with ChangeNotifier {
@@ -95,7 +97,6 @@ class UserProvier with ChangeNotifier {
       // Sign in with user credentials
       await auth.signIn(email, pass).then((value) async {
         await getUserData(auth.userId);
-
         if (clincUser.isActive == '0') {
           signout(context);
           result = 'fail';
@@ -111,8 +112,8 @@ class UserProvier with ChangeNotifier {
               if (appVersion != AppConstants.appVersion) {
                 //need Update
                 print('needUpdate');
-                goToUpdateScreen();
-
+                // goToUpdateScreen(context);
+                result = 'needUpdate';
               } else {
                 result = 'success';
               }
@@ -135,9 +136,353 @@ class UserProvier with ChangeNotifier {
       return 'false';
     }
   }
-  void goToUpdateScreen(){
 
+  Future<void> deleteDiag(String d, BuildContext context) async {
+    String result = 'fail';
+    try {
+      var ref = Firestore.instance.collection('users');
+      List<String> diagsCopy = List.from(clincUser.clincDiags);
+      int x = 0;
+      for (var i = 0; i < diagsCopy.length; i++) {
+        if (d == diagsCopy[i]) {
+          x = i;
+          diagsCopy.removeAt(i);
+          break;
+        }
+      }
+      Map<String, dynamic> data = {
+        'clincDiags': diagsCopy,
+      };
+      await ref
+          .document(clincUser.id)
+          .update(data)
+          .then((value) {
+            result = 'success';
+            clincUser.clincDiags.removeAt(x);
+            notifyListeners();
+          })
+          .timeout(Duration(seconds: 5))
+          .catchError((e) async {
+            print('HOOOOOOOn');
+            print(e.toString());
+
+            if (e.toString().contains('TimeoutException')) {
+              result = 'internet fail';
+            } else if (e.toString().contains('SocketException')) {
+              result = 'internet fail';
+            } else if (e.toString().contains('PERMISSION_DENIED') ||
+                e.toString().contains('UNAUTHENTICATED')) {
+              String result =
+                  await Provider.of<UserProvier>(context, listen: false)
+                      .tryToLogin(context);
+              if (result == 'success') {
+                addDiag(d, context);
+              } else if (result == 'needUpdate') {
+                Provider.of<UserProvier>(context, listen: false)
+                    .goToUpdateScreen(context);
+              } else {
+                Provider.of<UserProvier>(context, listen: false)
+                    .signout(context);
+              }
+            } else {
+              result = 'fail';
+            }
+          });
+    } catch (e) {
+      print('EEEEEEEEEE');
+      print(e.toString());
+      result = 'fail';
+      ;
+    }
+    if (result == 'success') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Text('تم حذف التشخيص بنجاح')),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else if (result == 'fail') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Text('حدث خطأ غير متوقع')),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } else if (result == 'internet fail') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Directionality(
+            textDirection: TextDirection.rtl,
+            child: Text('تحقق من الاتصال بالإنترنت'),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
+
+  Future<void> deleteTest(String d, BuildContext context) async {
+    String result = 'fail';
+    try {
+      var ref = Firestore.instance.collection('users');
+      List<String> testsCopy = List.from(clincUser.clincTests);
+      int x = 0;
+      for (var i = 0; i < testsCopy.length; i++) {
+        if (d == testsCopy[i]) {
+          x = i;
+          testsCopy.removeAt(i);
+          break;
+        }
+      }
+      Map<String, dynamic> data = {
+        'clincTests': testsCopy,
+      };
+      await ref
+          .document(clincUser.id)
+          .update(data)
+          .then((value) {
+            result = 'success';
+            clincUser.clincTests.removeAt(x);
+            notifyListeners();
+          })
+          .timeout(Duration(seconds: 5))
+          .catchError((e) async {
+            print('HOOOOOOOn');
+            print(e.toString());
+
+            if (e.toString().contains('TimeoutException')) {
+              result = 'internet fail';
+            } else if (e.toString().contains('SocketException')) {
+              result = 'internet fail';
+            } else if (e.toString().contains('PERMISSION_DENIED') ||
+                e.toString().contains('UNAUTHENTICATED')) {
+              String result =
+                  await Provider.of<UserProvier>(context, listen: false)
+                      .tryToLogin(context);
+              if (result == 'success') {
+                addDiag(d, context);
+              } else if (result == 'needUpdate') {
+                Provider.of<UserProvier>(context, listen: false)
+                    .goToUpdateScreen(context);
+              } else {
+                Provider.of<UserProvier>(context, listen: false)
+                    .signout(context);
+              }
+            } else {
+              result = 'fail';
+            }
+          });
+    } catch (e) {
+      print('EEEEEEEEEE');
+      print(e.toString());
+      result = 'fail';
+      ;
+    }
+    if (result == 'success') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Text('تم حذف التشخيص بنجاح')),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else if (result == 'fail') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Text('حدث خطأ غير متوقع')),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } else if (result == 'internet fail') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Directionality(
+            textDirection: TextDirection.rtl,
+            child: Text('تحقق من الاتصال بالإنترنت'),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Future<void> addDiag(String d, BuildContext context) async {
+    String result = 'fail';
+    try {
+      var ref = Firestore.instance.collection('users');
+      List<String> diagsCopy = List.from(clincUser.clincDiags);
+      diagsCopy.insert(0, d);
+      Map<String, dynamic> data = {
+        'clincDiags': diagsCopy,
+      };
+      await ref
+          .document(clincUser.id)
+          .update(data)
+          .then((value) {
+            result = 'success';
+            clincUser.clincDiags.insert(0, d);
+            notifyListeners();
+          })
+          .timeout(Duration(seconds: 5))
+          .catchError((e) async {
+            print('HOOOOOOOn');
+            print(e.toString());
+
+            if (e.toString().contains('TimeoutException')) {
+              result = 'internet fail';
+            } else if (e.toString().contains('SocketException')) {
+              result = 'internet fail';
+            } else if (e.toString().contains('PERMISSION_DENIED') ||
+                e.toString().contains('UNAUTHENTICATED')) {
+              String result =
+                  await Provider.of<UserProvier>(context, listen: false)
+                      .tryToLogin(context);
+              if (result == 'success') {
+                addDiag(d, context);
+              } else if (result == 'needUpdate') {
+                Provider.of<UserProvier>(context, listen: false)
+                    .goToUpdateScreen(context);
+              } else {
+                Provider.of<UserProvier>(context, listen: false)
+                    .signout(context);
+              }
+            } else {
+              result = 'fail';
+            }
+          });
+    } catch (e) {
+      print('EEEEEEEEEE');
+      print(e.toString());
+      result = 'fail';
+      ;
+    }
+    if (result == 'success') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Text('تمت إضافة التشخيص بنجاح')),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else if (result == 'fail') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Text('حدث خطأ غير متوقع')),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } else if (result == 'internet fail') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Directionality(
+            textDirection: TextDirection.rtl,
+            child: Text('تحقق من الاتصال بالإنترنت'),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Future<void> addTest(String d, BuildContext context) async {
+    String result = 'fail';
+    try {
+      var ref = Firestore.instance.collection('users');
+      List<String> testCopy = List.from(clincUser.clincTests);
+      testCopy.insert(0, d);
+      Map<String, dynamic> data = {
+        'clincTests': testCopy,
+      };
+      await ref
+          .document(clincUser.id)
+          .update(data)
+          .then((value) {
+            result = 'success';
+            clincUser.clincTests.insert(0, d);
+            notifyListeners();
+          })
+          .timeout(Duration(seconds: 5))
+          .catchError((e) async {
+            print('HOOOOOOOn');
+            print(e.toString());
+
+            if (e.toString().contains('TimeoutException')) {
+              result = 'internet fail';
+            } else if (e.toString().contains('SocketException')) {
+              result = 'internet fail';
+            } else if (e.toString().contains('PERMISSION_DENIED') ||
+                e.toString().contains('UNAUTHENTICATED')) {
+              String result =
+                  await Provider.of<UserProvier>(context, listen: false)
+                      .tryToLogin(context);
+              if (result == 'success') {
+                addDiag(d, context);
+              } else if (result == 'needUpdate') {
+                Provider.of<UserProvier>(context, listen: false)
+                    .goToUpdateScreen(context);
+              } else {
+                Provider.of<UserProvier>(context, listen: false)
+                    .signout(context);
+              }
+            } else {
+              result = 'fail';
+            }
+          });
+    } catch (e) {
+      print('EEEEEEEEEE');
+      print(e.toString());
+      result = 'fail';
+      ;
+    }
+    if (result == 'success') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Text('تمت إضافة التشخيص بنجاح')),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else if (result == 'fail') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Text('حدث خطأ غير متوقع')),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } else if (result == 'internet fail') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Directionality(
+            textDirection: TextDirection.rtl,
+            child: Text('تحقق من الاتصال بالإنترنت'),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  void goToUpdateScreen(BuildContext context) {
+    print('UUUUUUUUUUUUUUUUUUUUUUUUUUU');
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => UpdateScreen(updateUrl)),
+    );
+  }
+
   Future<String> login({String email, String pass}) async {
     try {
       String result = 'fail';

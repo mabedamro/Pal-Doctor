@@ -46,7 +46,7 @@ class _PatientBondsDialogState extends State<PatientBondsDialog> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(widget.p.name),
+            Text(widget.p.name,style: TextStyle(fontFamily: 'Cairo',fontWeight: FontWeight.bold,fontSize: 25),),
             IconButton(
                 icon: Icon(Icons.close),
                 onPressed: () {
