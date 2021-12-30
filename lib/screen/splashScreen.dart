@@ -1,10 +1,13 @@
+import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/homeScreen.dart';
 import 'package:desktop_version/screen/loginScreen.dart';
+import 'package:desktop_version/screen/settingsScreen.dart';
 import 'package:firedart/auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -13,10 +16,15 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   bool isNoInterNet = false;
+
   @override
   Widget build(BuildContext context) {
     tryToLogin(context);
     return Scaffold(
+      backgroundColor:
+          Provider.of<DarkModeProvider>(context, listen: false).isDark
+              ? SettingsScreen.darkMode1
+              : Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -24,7 +32,9 @@ class _SplashScreenState extends State<SplashScreen> {
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: SvgPicture.asset(
-                'assets/images/drawing.svg',
+                Provider.of<DarkModeProvider>(context, listen: false).isDark
+                    ? 'assets/images/drawingDark.svg'
+                    : 'assets/images/drawing.svg',
                 width: 300,
               ),
             ),
@@ -77,6 +87,16 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> tryToLogin(context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool('isDark') == null) {
+      await Provider.of<DarkModeProvider>(context, listen: false)
+          .changeDarkTo(false);
+      prefs.setBool('isDark', false);
+    } else {
+      print('isDark exist');
+      await Provider.of<DarkModeProvider>(context, listen: false)
+          .changeDarkTo(prefs.getBool('isDark'));
+    }
     String result = await Provider.of<UserProvier>(context, listen: false)
         .tryToLogin(context);
     if (result == 'success') {

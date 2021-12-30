@@ -1,3 +1,4 @@
+import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/widgets.dart/addDiagsDialog.dart';
 import 'package:desktop_version/widgets.dart/addTestDialog.dart';
@@ -121,6 +122,12 @@ class _TestsUserDialogState extends State<TestsUserDialog> {
                                 Text(
                                   'لا توجد بيانات لعرضها',
                                   style: TextStyle(
+                                      color: Provider.of<DarkModeProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .isDark
+                                          ? Colors.white
+                                          : Colors.black,
                                       fontFamily: 'Cairo',
                                       fontWeight: FontWeight.bold),
                                 )

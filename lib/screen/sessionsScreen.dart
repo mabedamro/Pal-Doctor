@@ -1,8 +1,10 @@
 import 'package:desktop_version/models/case.dart';
+import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/dateTimeProvider.dart';
 import 'package:desktop_version/provider/patinetProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/patientScreen.dart';
+import 'package:desktop_version/screen/settingsScreen.dart';
 import 'package:desktop_version/widgets.dart/caseDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -33,6 +35,8 @@ class _SessionsScreenState extends State<SessionsScreen> {
     return Directionality(
         textDirection: TextDirection.rtl,
         child: Scaffold(
+      backgroundColor:  Provider.of<DarkModeProvider>(context,listen: false).isDark? SettingsScreen.darkMode1:Colors.white,
+
           appBar: AppBar(
             leading: Container(),
             centerTitle: true,
@@ -193,7 +197,8 @@ class _SessionsScreenState extends State<SessionsScreen> {
               child: ListView.builder(
                   itemCount: cases.length,
                   itemBuilder: (context, index) {
-                    return Card(
+                    return Card( color:  Provider.of<DarkModeProvider>(context,listen: false).isDark?SettingsScreen.darkMode2:Colors.grey[100],
+                                 
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
@@ -216,7 +221,12 @@ class _SessionsScreenState extends State<SessionsScreen> {
                                     Text(
                                       cases[index].diagsToString,
                                       style: TextStyle(
-                                          fontFamily: 'Cairo',
+                                          fontFamily: 'Cairo', color: Provider.of<DarkModeProvider>(
+                                                context,
+                                                listen: false)
+                                            .isDark
+                                        ? Colors.white
+                                        : Colors.black,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 15),
                                     ),
@@ -237,7 +247,12 @@ class _SessionsScreenState extends State<SessionsScreen> {
                                       cases[index].testsToString,
                                       style: TextStyle(
                                           fontFamily: 'Cairo',
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.bold, color: Provider.of<DarkModeProvider>(
+                                                context,
+                                                listen: false)
+                                            .isDark
+                                        ? Colors.white
+                                        : Colors.black,
                                           fontSize: 15),
                                     ),
                                   ],
@@ -257,7 +272,12 @@ class _SessionsScreenState extends State<SessionsScreen> {
                                       cases[index].notes,
                                       style: TextStyle(
                                           fontFamily: 'Cairo',
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.bold, color: Provider.of<DarkModeProvider>(
+                                                context,
+                                                listen: false)
+                                            .isDark
+                                        ? Colors.white
+                                        : Colors.black,
                                           fontSize: 15),
                                     ),
                                   ],
@@ -289,7 +309,12 @@ class _SessionsScreenState extends State<SessionsScreen> {
                                           cases[index].date),
                                       style: TextStyle(
                                           fontFamily: 'Cairo',
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.bold, color: Provider.of<DarkModeProvider>(
+                                                context,
+                                                listen: false)
+                                            .isDark
+                                        ? Colors.white
+                                        : Colors.black,
                                           fontSize: 15),
                                     ),
                                   ],

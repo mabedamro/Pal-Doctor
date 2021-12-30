@@ -1,4 +1,6 @@
+import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
+import 'package:desktop_version/screen/settingsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,7 +15,6 @@ class CaseDialog extends StatefulWidget {
 }
 
 class _CaseDialogState extends State<CaseDialog> {
-  
   @override
   void initState() {
     // TODO: implement initState
@@ -40,8 +41,12 @@ class _CaseDialogState extends State<CaseDialog> {
 
   @override
   Widget build(BuildContext context) {
-    var feildStyle =
-        TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.bold);
+    var feildStyle = TextStyle(
+        fontFamily: 'Cairo',
+        fontWeight: FontWeight.bold,
+        color: Provider.of<DarkModeProvider>(context, listen: false).isDark
+            ? Colors.white
+            : Colors.black);
     double width = MediaQuery.of(context).size.width;
 
     double height = MediaQuery.of(context).size.height;
@@ -50,6 +55,10 @@ class _CaseDialogState extends State<CaseDialog> {
         child: Consumer<UserProvier>(
           builder: (_, userProvider, child) {
             return AlertDialog(
+                backgroundColor:
+                    Provider.of<DarkModeProvider>(context, listen: false).isDark
+                        ? SettingsScreen.darkMode2
+                        : Colors.white,
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -61,7 +70,12 @@ class _CaseDialogState extends State<CaseDialog> {
                               "إضافة تشخيص",
                               style: TextStyle(
                                   fontFamily: 'Cairo',
-                                  fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.bold,
+                                  color: Provider.of<DarkModeProvider>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? Colors.white
+                                      : Colors.black),
                             ),
                             SizedBox(
                               width: 10,
@@ -106,7 +120,11 @@ class _CaseDialogState extends State<CaseDialog> {
                       ],
                     ),
                     IconButton(
-                        icon: Icon(Icons.close),
+                        icon: Icon(Icons.close,color: Provider.of<DarkModeProvider>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? Colors.white
+                                      : Colors.black),
                         onPressed: () {
                           Navigator.pop(context);
                         }),
@@ -134,8 +152,15 @@ class _CaseDialogState extends State<CaseDialog> {
                                 Text(
                                   userProvider.clincUser.clincDiags[index],
                                   style: TextStyle(
+                                      fontSize: 18,
                                       fontFamily: 'Cairo',
-                                      fontWeight: FontWeight.bold),
+                                      fontWeight: FontWeight.bold,
+                                      color: Provider.of<DarkModeProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .isDark
+                                          ? Colors.white
+                                          : Colors.black),
                                 ),
                               ],
                             );
@@ -145,7 +170,7 @@ class _CaseDialogState extends State<CaseDialog> {
                             crossAxisCount: 5,
                             crossAxisSpacing: 1.0,
                             mainAxisSpacing: 1.0,
-                            childAspectRatio: 10,
+                            childAspectRatio: 5,
                           ),
                         ),
                       ),
@@ -156,7 +181,12 @@ class _CaseDialogState extends State<CaseDialog> {
                             style: TextStyle(
                                 fontFamily: 'Cairo',
                                 fontSize: 20,
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.bold,
+                                color: Provider.of<DarkModeProvider>(context,
+                                            listen: false)
+                                        .isDark
+                                    ? Colors.white
+                                    : Colors.black),
                           ),
                           SizedBox(
                             width: 10,
@@ -164,7 +194,6 @@ class _CaseDialogState extends State<CaseDialog> {
                           ElevatedButton(
                             onPressed: () {
                               setState(() {
-                                
                                 for (int i = 0;
                                     i < CaseDialog.clincTestsBools.length;
                                     i++) {
@@ -213,12 +242,17 @@ class _CaseDialogState extends State<CaseDialog> {
                                             !CaseDialog.clincTestsBools[index];
                                       });
                                     }),
-                                Text(
-                                  userProvider.clincUser.clincTests[index],
-                                  style: TextStyle(
-                                      fontFamily: 'Cairo',
-                                      fontWeight: FontWeight.bold),
-                                ),
+                                Text(userProvider.clincUser.clincTests[index],
+                                    style: TextStyle(
+                                        fontFamily: 'Cairo',
+                                        fontWeight: FontWeight.bold,
+                                        color: Provider.of<DarkModeProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .isDark
+                                            ? Colors.white
+                                            : Colors.black,
+                                        fontSize: 18)),
                               ],
                             );
                           },
@@ -227,7 +261,7 @@ class _CaseDialogState extends State<CaseDialog> {
                             crossAxisCount: 5,
                             crossAxisSpacing: 1.0,
                             mainAxisSpacing: 1.0,
-                            childAspectRatio: 10,
+                            childAspectRatio: 5,
                           ),
                         ),
                       ),
@@ -241,9 +275,13 @@ class _CaseDialogState extends State<CaseDialog> {
                           style: feildStyle,
                           cursorColor: Colors.blue,
                           decoration: new InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.account_circle,
-                            ),
+                            labelStyle: feildStyle,
+                            prefixIcon: Icon(Icons.account_circle,
+                                color: Provider.of<DarkModeProvider>(context,
+                                            listen: false)
+                                        .isDark
+                                    ? Colors.white
+                                    : Colors.black),
                             labelText: "ملاحظات حول الجلسة",
                             focusedBorder: OutlineInputBorder(
                               borderRadius: new BorderRadius.circular(60.0),
@@ -251,7 +289,12 @@ class _CaseDialogState extends State<CaseDialog> {
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: new BorderRadius.circular(60.0),
-                              // borderSide: BorderSide(color: color),
+                              borderSide: BorderSide(
+                                  color: Provider.of<DarkModeProvider>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? Colors.white
+                                      : Colors.black),
                             ),
                             //fillColor: Colors.green),
                           ),

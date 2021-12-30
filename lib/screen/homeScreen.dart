@@ -18,6 +18,7 @@
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
+
 //       floatingActionButton: FloatingActionButton(
 //         onPressed: () {
 //           int i = Provider.of<ListProvider>(context,listen: false).whichList;
@@ -79,8 +80,10 @@
 //   }
 // }
 
+import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/loginScreen.dart';
+import 'package:desktop_version/screen/settingsScreen.dart';
 import 'package:desktop_version/widgets.dart/tabBarCutome.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -108,13 +111,19 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    
-     return  Scaffold(
-          body: Column(
-        children: [
-          TabBarCustome(),
-        ],
-      ));
-    
+    return Consumer<DarkModeProvider>(
+      builder: (_, darkModeProvider, child) {
+        return Scaffold(
+            backgroundColor:
+                Provider.of<DarkModeProvider>(context, listen: false).isDark
+                    ? SettingsScreen.darkMode1
+                    : Colors.white,
+            body: Column(
+              children: [
+                TabBarCustome(),
+              ],
+            ));
+      },
+    );
   }
 }

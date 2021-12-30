@@ -1,6 +1,8 @@
+import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/homeScreen.dart';
 import 'package:desktop_version/screen/loginScreen.dart';
+import 'package:desktop_version/screen/settingsScreen.dart';
 import 'package:firedart/auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,6 +22,8 @@ class _UpdateScreenState extends State<UpdateScreen> {
 
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor:  Provider.of<DarkModeProvider>(context,listen: false).isDark? SettingsScreen.darkMode1:Colors.white,
+
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

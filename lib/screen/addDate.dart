@@ -1,4 +1,7 @@
+import 'package:desktop_version/provider/darkModeProvider.dart';
+import 'package:desktop_version/screen/settingsScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AddDateScreen extends StatefulWidget {
   @override
@@ -14,6 +17,10 @@ class _AddDateScreenState extends State<AddDateScreen> {
   Widget build(BuildContext context) {
     final color = Colors.blue;
     return Scaffold(
+      backgroundColor:
+          Provider.of<DarkModeProvider>(context, listen: false).isDark
+              ? SettingsScreen.darkMode1
+              : Colors.white,
       appBar: AppBar(
         centerTitle: true,
         title: Text(
@@ -61,11 +68,13 @@ class _AddDateScreenState extends State<AddDateScreen> {
                                       Icon(Icons.picture_in_picture_outlined),
                                   labelText: "ID",
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(25.0),
+                                    borderRadius:
+                                        new BorderRadius.circular(25.0),
                                     borderSide: BorderSide(color: color),
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(25.0),
+                                    borderRadius:
+                                        new BorderRadius.circular(25.0),
                                     // borderSide: BorderSide(color: color),
                                   ),
                                   //fillColor: Colors.green),
@@ -85,11 +94,13 @@ class _AddDateScreenState extends State<AddDateScreen> {
                                   ),
                                   labelText: "Patient Name",
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(25.0),
+                                    borderRadius:
+                                        new BorderRadius.circular(25.0),
                                     borderSide: BorderSide(color: color),
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(25.0),
+                                    borderRadius:
+                                        new BorderRadius.circular(25.0),
                                     // borderSide: BorderSide(color: color),
                                   ),
                                   //fillColor: Colors.green),
@@ -148,11 +159,13 @@ class _AddDateScreenState extends State<AddDateScreen> {
                                   ),
                                   labelText: "Phone",
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(25.0),
+                                    borderRadius:
+                                        new BorderRadius.circular(25.0),
                                     borderSide: BorderSide(color: color),
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(25.0),
+                                    borderRadius:
+                                        new BorderRadius.circular(25.0),
                                     // borderSide: BorderSide(color: color),
                                   ),
                                   //fillColor: Colors.green),
@@ -172,11 +185,13 @@ class _AddDateScreenState extends State<AddDateScreen> {
                                   ),
                                   labelText: "Address",
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(25.0),
+                                    borderRadius:
+                                        new BorderRadius.circular(25.0),
                                     borderSide: BorderSide(color: color),
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(25.0),
+                                    borderRadius:
+                                        new BorderRadius.circular(25.0),
                                     // borderSide: BorderSide(color: color),
                                   ),
                                   //fillColor: Colors.green),
@@ -196,11 +211,13 @@ class _AddDateScreenState extends State<AddDateScreen> {
                                   ),
                                   labelText: "Date Of Birth",
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(25.0),
+                                    borderRadius:
+                                        new BorderRadius.circular(25.0),
                                     borderSide: BorderSide(color: color),
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(25.0),
+                                    borderRadius:
+                                        new BorderRadius.circular(25.0),
                                     // borderSide: BorderSide(color: color),
                                   ),
                                   //fillColor: Colors.green),
@@ -219,11 +236,13 @@ class _AddDateScreenState extends State<AddDateScreen> {
                                       Icon(Icons.medical_services_rounded),
                                   labelText: "Reffered By",
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(25.0),
+                                    borderRadius:
+                                        new BorderRadius.circular(25.0),
                                     borderSide: BorderSide(color: color),
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(25.0),
+                                    borderRadius:
+                                        new BorderRadius.circular(25.0),
                                     // borderSide: BorderSide(color: color),
                                   ),
                                   //fillColor: Colors.green),
@@ -247,7 +266,8 @@ class _AddDateScreenState extends State<AddDateScreen> {
                             },
                             cursorColor: color,
                             decoration: new InputDecoration(
-                              prefixIcon: Icon(Icons.picture_in_picture_outlined),
+                              prefixIcon:
+                                  Icon(Icons.picture_in_picture_outlined),
                               labelText: "ID",
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: new BorderRadius.circular(25.0),
@@ -418,7 +438,6 @@ class _AddDateScreenState extends State<AddDateScreen> {
                             ),
                           ),
                         ),
-                        
                       ],
                     ),
                   )
@@ -427,32 +446,31 @@ class _AddDateScreenState extends State<AddDateScreen> {
               SizedBox(
                 width: 500,
                 child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              child: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Text(
-                                    'Add Patient',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: 'Cairo',
-                                        fontSize: 15),
-                                  ),
-                                ),
-                              ),
-                              style: ButtonStyle(
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50.0),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Text(
+                          'Add Patient',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Cairo',
+                              fontSize: 15),
+                        ),
+                      ),
+                    ),
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               )
             ],
           ),

@@ -2,10 +2,12 @@ import 'package:desktop_version/models/bond.dart';
 import 'package:desktop_version/models/patient.dart';
 import 'package:desktop_version/models/user.dart';
 import 'package:desktop_version/provider/bondsProvider.dart';
+import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/dateTimeProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/employeeScreen.dart';
 import 'package:desktop_version/screen/patientScreen.dart';
+import 'package:desktop_version/screen/settingsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -38,8 +40,13 @@ class _AddBondDialogState extends State<AddBondDialog> {
 
   @override
   Widget build(BuildContext context) {
-    var feildStyle =
-        TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.bold);
+    var feildStyle = TextStyle(
+      fontFamily: 'Cairo',
+      fontWeight: FontWeight.bold,
+      color: Provider.of<DarkModeProvider>(context, listen: false).isDark
+          ? Colors.white
+          : Colors.black,
+    );
     double width = MediaQuery.of(context).size.width;
 
     double height = MediaQuery.of(context).size.height;
@@ -48,6 +55,10 @@ class _AddBondDialogState extends State<AddBondDialog> {
         child: Consumer<UserProvier>(
           builder: (_, userProvider, child) {
             return AlertDialog(
+                backgroundColor:
+                    Provider.of<DarkModeProvider>(context, listen: false).isDark
+                        ? SettingsScreen.darkMode1
+                        : Colors.white,
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -60,6 +71,11 @@ class _AddBondDialogState extends State<AddBondDialog> {
                               style: TextStyle(
                                   fontFamily: 'Cairo',
                                   fontWeight: FontWeight.bold,
+                                  color: Provider.of<DarkModeProvider>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? Colors.white
+                                      : Colors.black,
                                   fontSize: 25),
                             ),
                           ],
@@ -88,6 +104,12 @@ class _AddBondDialogState extends State<AddBondDialog> {
                                 style: TextStyle(
                                     fontFamily: 'Cairo',
                                     fontWeight: FontWeight.bold,
+                                    color: Provider.of<DarkModeProvider>(
+                                                context,
+                                                listen: false)
+                                            .isDark
+                                        ? Colors.white
+                                        : Colors.black,
                                     fontSize: 20),
                               ),
                               Text(
@@ -113,7 +135,7 @@ class _AddBondDialogState extends State<AddBondDialog> {
                                         Icons.account_circle,
                                       ),
                                       labelText: "إسم المريض",
-
+                                      labelStyle: feildStyle,
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius:
                                             new BorderRadius.circular(60.0),
@@ -326,6 +348,7 @@ class _AddBondDialogState extends State<AddBondDialog> {
                                 prefixIcon: Icon(
                                   Icons.account_circle,
                                 ),
+                                labelStyle: feildStyle,
                                 labelText: "المبلغ",
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(60.0),
@@ -333,7 +356,14 @@ class _AddBondDialogState extends State<AddBondDialog> {
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(60.0),
-                                  // borderSide: BorderSide(color: color),
+                                  borderSide: BorderSide(
+                                    color: Provider.of<DarkModeProvider>(
+                                                context,
+                                                listen: false)
+                                            .isDark
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
                                 ),
                                 //fillColor: Colors.green),
                               ),
@@ -349,6 +379,7 @@ class _AddBondDialogState extends State<AddBondDialog> {
                                 prefixIcon: Icon(
                                   Icons.account_circle,
                                 ),
+                                labelStyle: feildStyle,
                                 labelText: "ملاحظات",
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(60.0),
@@ -356,7 +387,14 @@ class _AddBondDialogState extends State<AddBondDialog> {
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(60.0),
-                                  // borderSide: BorderSide(color: color),
+                                  borderSide: BorderSide(
+                                    color: Provider.of<DarkModeProvider>(
+                                                context,
+                                                listen: false)
+                                            .isDark
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
                                 ),
                                 //fillColor: Colors.green),
                               ),
@@ -368,7 +406,12 @@ class _AddBondDialogState extends State<AddBondDialog> {
                               Text(
                                 "توقيع:  ",
                                 style: TextStyle(
-                                    fontFamily: 'Cairo',
+                                    fontFamily: 'Cairo', color: Provider.of<DarkModeProvider>(
+                                                context,
+                                                listen: false)
+                                            .isDark
+                                        ? Colors.white
+                                        : Colors.black,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20),
                               ),

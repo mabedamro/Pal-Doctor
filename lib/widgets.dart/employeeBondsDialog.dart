@@ -2,6 +2,7 @@ import 'package:desktop_version/models/bond.dart';
 import 'package:desktop_version/models/patient.dart';
 import 'package:desktop_version/models/user.dart';
 import 'package:desktop_version/provider/bondsProvider.dart';
+import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/dateTimeProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/employeeScreen.dart';
@@ -150,6 +151,12 @@ class _EmployeeBondsDialogState extends State<EmployeeBondsDialog> {
                                     Text(
                                       'لا توجد بيانات لعرضها',
                                       style: TextStyle(
+                                          color: Provider.of<DarkModeProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .isDark
+                                              ? Colors.white
+                                              : Colors.black,
                                           fontFamily: 'Cairo',
                                           fontWeight: FontWeight.bold),
                                     )

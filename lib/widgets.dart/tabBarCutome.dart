@@ -1,4 +1,5 @@
 import 'package:desktop_version/models/user.dart';
+import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/datesScreen.dart';
 import 'package:desktop_version/screen/employeeScreen.dart';
@@ -17,9 +18,9 @@ class TabBarCustome extends StatefulWidget {
 class _TabBarCustomeState extends State<TabBarCustome>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
-    List<Tab> tabsNames = [];
+  List<Tab> tabsNames = [];
 
-    List<Widget> tabs = [];
+  List<Widget> tabs = [];
   @override
   void initState() {
     print('1');
@@ -43,7 +44,8 @@ class _TabBarCustomeState extends State<TabBarCustome>
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(textDirection: TextDirection.rtl,
+    return Directionality(
+      textDirection: TextDirection.rtl,
       child: Flexible(
         child: Container(
           child: Padding(
@@ -54,7 +56,10 @@ class _TabBarCustomeState extends State<TabBarCustome>
                 Row(
                   children: [
                     SvgPicture.asset(
-                      'assets/images/drawing.svg',
+                      Provider.of<DarkModeProvider>(context, listen: false)
+                              .isDark
+                          ? 'assets/images/drawingDark.svg'
+                          : 'assets/images/drawing.svg',
                       width: 150,
                     ),
                     SizedBox(
@@ -101,45 +106,74 @@ class _TabBarCustomeState extends State<TabBarCustome>
   }
 
   void getTabsNames() {
-    User user = Provider.of<UserProvier>(context,listen: false).user;
-  
+    User user = Provider.of<UserProvier>(context, listen: false).user;
 
     if (user.permission[0] == '1') {
       tabsNames.add(
         Tab(
-          text: 'المرضى',
-          
+          child: Text(
+            'المرضى',
+            style: TextStyle(
+              fontFamily: 'Cairo',
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          // text: 'المرضى',
         ),
       );
     }
     if (user.permission[2] == '1') {
       tabsNames.add(
         Tab(
-          text: 'المواعيد',
+          child: Text(
+            'المواعيد',
+            style: TextStyle(
+              fontFamily: 'Cairo',
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       );
     }
     if (user.permission[1] == '1') {
       tabsNames.add(
         Tab(
-          text: 'الموظفين',
+          child: Text(
+            'الموظفين',
+            style: TextStyle(
+              fontFamily: 'Cairo',
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       );
     }
     if (user.permission[3] == '1') {
       tabsNames.add(
         Tab(
-          text: 'السجل المالي',
+          child: Text(
+            'السجل المالي',
+            style: TextStyle(
+              fontFamily: 'Cairo',
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       );
     }
     tabsNames.add(Tab(
-      text: 'الإعدادات',
+      child: Text(
+        'الإعدادات',
+        style: TextStyle(
+          fontFamily: 'Cairo',
+          fontWeight: FontWeight.bold,
+        ),
+      ),
     ));
   }
 
   void getTabs() {
-    User user = Provider.of<UserProvier>(context,listen: false).user;
+    User user = Provider.of<UserProvier>(context, listen: false).user;
     if (user.permission[0] == '1') {
       tabs.add(
         PatientScreen(),

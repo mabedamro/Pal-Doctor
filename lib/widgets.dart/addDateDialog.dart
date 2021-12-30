@@ -3,11 +3,13 @@ import 'package:desktop_version/models/patDate.dart';
 import 'package:desktop_version/models/patient.dart';
 import 'package:desktop_version/models/user.dart';
 import 'package:desktop_version/provider/bondsProvider.dart';
+import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/dateTimeProvider.dart';
 import 'package:desktop_version/provider/patDatesProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/employeeScreen.dart';
 import 'package:desktop_version/screen/patientScreen.dart';
+import 'package:desktop_version/screen/settingsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -56,8 +58,13 @@ class _AddDateDialogState extends State<AddDateDialog> {
 
   @override
   Widget build(BuildContext context) {
-    var feildStyle =
-        TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.bold);
+    var feildStyle = TextStyle(
+      fontFamily: 'Cairo',
+      fontWeight: FontWeight.bold,
+      color: Provider.of<DarkModeProvider>(context, listen: false).isDark
+          ? Colors.white
+          : Colors.black,
+    );
     double width = MediaQuery.of(context).size.width;
 
     double height = MediaQuery.of(context).size.height;
@@ -66,6 +73,10 @@ class _AddDateDialogState extends State<AddDateDialog> {
         child: Consumer<UserProvier>(
           builder: (_, userProvider, child) {
             return AlertDialog(
+                backgroundColor:
+                    Provider.of<DarkModeProvider>(context, listen: false).isDark
+                        ? SettingsScreen.darkMode2
+                        : Colors.white,
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -77,6 +88,11 @@ class _AddDateDialogState extends State<AddDateDialog> {
                               'إضافة موعد',
                               style: TextStyle(
                                   fontFamily: 'Cairo',
+                                  color: Provider.of<DarkModeProvider>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? Colors.white
+                                      : Colors.black,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 25),
                             ),
@@ -85,7 +101,11 @@ class _AddDateDialogState extends State<AddDateDialog> {
                       ],
                     ),
                     IconButton(
-                        icon: Icon(Icons.close),
+                        icon: Icon(Icons.close,color: Provider.of<DarkModeProvider>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? Colors.white
+                                      : Colors.black,),
                         onPressed: () {
                           Navigator.pop(context);
                         }),
@@ -175,7 +195,13 @@ class _AddDateDialogState extends State<AddDateDialog> {
                             decoration: new InputDecoration(
                               prefixIcon: Icon(
                                 Icons.account_circle,
+                                color: Provider.of<DarkModeProvider>(context,
+                                            listen: false)
+                                        .isDark
+                                    ? Colors.white
+                                    : Colors.black,
                               ),
+                              labelStyle: feildStyle,
                               labelText: "إسم المريض",
 
                               enabledBorder: OutlineInputBorder(
@@ -195,15 +221,26 @@ class _AddDateDialogState extends State<AddDateDialog> {
                             decoration: new InputDecoration(
                               prefixIcon: Icon(
                                 Icons.account_circle,
+                                color: Provider.of<DarkModeProvider>(context,
+                                            listen: false)
+                                        .isDark
+                                    ? Colors.white
+                                    : Colors.black,
                               ),
-                              labelText: "ملاحظات",
+                              labelText: "ملاحظات", labelStyle: feildStyle,
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: new BorderRadius.circular(60.0),
                                 borderSide: BorderSide(color: Colors.blue),
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: new BorderRadius.circular(60.0),
-                                // borderSide: BorderSide(color: color),
+                                borderSide: BorderSide(
+                                  color: Provider.of<DarkModeProvider>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? Colors.white
+                                      : Colors.black,
+                                ),
                               ),
                               //fillColor: Colors.green),
                             ),
@@ -216,6 +253,11 @@ class _AddDateDialogState extends State<AddDateDialog> {
                               "توقيع:  ",
                               style: TextStyle(
                                   fontFamily: 'Cairo',
+                                  color: Provider.of<DarkModeProvider>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? Colors.white
+                                      : Colors.black,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20),
                             ),

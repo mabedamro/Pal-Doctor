@@ -1,8 +1,10 @@
 import 'package:desktop_version/models/case.dart';
 import 'package:desktop_version/models/patient.dart';
+import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/dateTimeProvider.dart';
 import 'package:desktop_version/provider/patinetProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
+import 'package:desktop_version/screen/settingsScreen.dart';
 import 'package:desktop_version/widgets.dart/caseDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -54,11 +56,20 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     final color = Colors.blue;
-    var feildStyle =
-        TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.bold);
+    var feildStyle = TextStyle(
+      fontFamily: 'Cairo',
+      fontWeight: FontWeight.bold,
+      color: Provider.of<DarkModeProvider>(context, listen: false).isDark
+          ? Colors.white
+          : Colors.black,
+    );
     return Directionality(
         textDirection: TextDirection.rtl,
         child: Scaffold(
+          backgroundColor:
+              Provider.of<DarkModeProvider>(context, listen: false).isDark
+                  ? SettingsScreen.darkMode1
+                  : Colors.white,
           appBar: AppBar(
             leading: Container(),
             centerTitle: true,
@@ -118,7 +129,10 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
             child: SingleChildScrollView(
               child: Center(
                 child: Container(
-                  color: Colors.white,
+                  color: Provider.of<DarkModeProvider>(context, listen: false)
+                          .isDark
+                      ? SettingsScreen.darkMode2
+                      : Colors.white,
                   padding: EdgeInsets.all(15),
                   width: width - width / 2,
                   child: Column(
@@ -135,13 +149,17 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                           children: [
                             Text(
                               DateTimeProvider.date(DateTime.now()),
-                              style:
-                                  TextStyle(color: Colors.blue, fontSize: 18),
+                              style: TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: 18,
+                                  fontFamily: 'Cairo'),
                             ),
                             Text(
                               '    ' + DateTimeProvider.time(DateTime.now()),
-                              style:
-                                  TextStyle(color: Colors.blue, fontSize: 18),
+                              style: TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: 18,
+                                  fontFamily: 'Cairo'),
                             ),
                           ],
                         ),
@@ -169,15 +187,29 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                           cursorColor: color,
                           style: feildStyle,
                           decoration: new InputDecoration(
-                            prefixIcon: Icon(Icons.picture_in_picture_outlined),
+                            prefixIcon: Icon(
+                              Icons.picture_in_picture_outlined,
+                              color: Provider.of<DarkModeProvider>(context,
+                                          listen: false)
+                                      .isDark
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
                             labelText: "رقم الهوية",
+                            labelStyle: feildStyle,
                             focusedBorder: OutlineInputBorder(
                               borderRadius: new BorderRadius.circular(60.0),
                               borderSide: BorderSide(color: color),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: new BorderRadius.circular(60.0),
-                              // borderSide: BorderSide(color: color),
+                              borderSide: BorderSide(
+                                color: Provider.of<DarkModeProvider>(context,
+                                            listen: false)
+                                        .isDark
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
                             ),
                             //fillColor: Colors.green),
                           ),
@@ -203,15 +235,27 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                           decoration: new InputDecoration(
                             prefixIcon: Icon(
                               Icons.account_circle,
+                              color: Provider.of<DarkModeProvider>(context,
+                                          listen: false)
+                                      .isDark
+                                  ? Colors.white
+                                  : Colors.black,
                             ),
                             labelText: "إسم المريض",
+                            labelStyle: feildStyle,
                             focusedBorder: OutlineInputBorder(
                               borderRadius: new BorderRadius.circular(60.0),
                               borderSide: BorderSide(color: color),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: new BorderRadius.circular(60.0),
-                              // borderSide: BorderSide(color: color),
+                              borderSide: BorderSide(
+                                color: Provider.of<DarkModeProvider>(context,
+                                            listen: false)
+                                        .isDark
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
                             ),
                             //fillColor: Colors.green),
                           ),
@@ -282,15 +326,26 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                           decoration: new InputDecoration(
                             prefixIcon: Icon(
                               Icons.phone_sharp,
+                              color: Provider.of<DarkModeProvider>(context,
+                                          listen: false)
+                                      .isDark
+                                  ? Colors.white
+                                  : Colors.black,
                             ),
-                            labelText: "رقم الهاتف",
+                            labelText: "رقم الهاتف", labelStyle: feildStyle,
                             focusedBorder: OutlineInputBorder(
                               borderRadius: new BorderRadius.circular(60.0),
                               borderSide: BorderSide(color: color),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: new BorderRadius.circular(60.0),
-                              // borderSide: BorderSide(color: color),
+                              borderSide: BorderSide(
+                                color: Provider.of<DarkModeProvider>(context,
+                                            listen: false)
+                                        .isDark
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
                             ),
                             //fillColor: Colors.green),
                           ),
@@ -320,9 +375,15 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                                 decoration: new InputDecoration(
                                   prefixIcon: Icon(
                                     Icons.gps_fixed,
+                                    color: Provider.of<DarkModeProvider>(
+                                                context,
+                                                listen: false)
+                                            .isDark
+                                        ? Colors.white
+                                        : Colors.black,
                                   ),
 
-                                  labelText: "المدينة",
+                                  labelText: "المدينة", labelStyle: feildStyle,
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius:
                                         new BorderRadius.circular(60.0),
@@ -331,12 +392,22 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius:
                                         new BorderRadius.circular(60.0),
-                                    // borderSide: BorderSide(color: color),
+                                    borderSide: BorderSide(
+                                      color: Provider.of<DarkModeProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .isDark
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
                                   ),
                                   //fillColor: Colors.green),
                                 ),
                               ),
                             ),
+                          ),
+                          SizedBox(
+                            width: 10,
                           ),
                           Expanded(
                             child: Padding(
@@ -359,8 +430,14 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                                 decoration: new InputDecoration(
                                   prefixIcon: Icon(
                                     Icons.location_city,
+                                    color: Provider.of<DarkModeProvider>(
+                                                context,
+                                                listen: false)
+                                            .isDark
+                                        ? Colors.white
+                                        : Colors.black,
                                   ),
-                                  labelText: "العنوان",
+                                  labelText: "العنوان", labelStyle: feildStyle,
 
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius:
@@ -370,7 +447,14 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius:
                                         new BorderRadius.circular(60.0),
-                                    // borderSide: BorderSide(color: color),
+                                    borderSide: BorderSide(
+                                      color: Provider.of<DarkModeProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .isDark
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
                                   ),
                                   //fillColor: Colors.green),
                                 ),
@@ -402,15 +486,26 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                           decoration: new InputDecoration(
                             prefixIcon: Icon(
                               Icons.date_range_rounded,
+                              color: Provider.of<DarkModeProvider>(context,
+                                          listen: false)
+                                      .isDark
+                                  ? Colors.white
+                                  : Colors.black,
                             ),
-                            labelText: "العمر (سنة)",
+                            labelText: "العمر (سنة)", labelStyle: feildStyle,
                             focusedBorder: OutlineInputBorder(
                               borderRadius: new BorderRadius.circular(60.0),
                               borderSide: BorderSide(color: color),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: new BorderRadius.circular(60.0),
-                              // borderSide: BorderSide(color: color),
+                              borderSide: BorderSide(
+                                color: Provider.of<DarkModeProvider>(context,
+                                            listen: false)
+                                        .isDark
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
                             ),
                             //fillColor: Colors.green),
                           ),
@@ -427,15 +522,28 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                           cursorColor: color,
                           focusNode: focusRefferFrom,
                           decoration: new InputDecoration(
-                            prefixIcon: Icon(Icons.medical_services_rounded),
-                            labelText: "محول من",
+                            prefixIcon: Icon(
+                              Icons.medical_services_rounded,
+                              color: Provider.of<DarkModeProvider>(context,
+                                          listen: false)
+                                      .isDark
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
+                            labelText: "محول من", labelStyle: feildStyle,
                             focusedBorder: OutlineInputBorder(
                               borderRadius: new BorderRadius.circular(60.0),
                               borderSide: BorderSide(color: color),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: new BorderRadius.circular(60.0),
-                              // borderSide: BorderSide(color: color),
+                              borderSide: BorderSide(
+                                color: Provider.of<DarkModeProvider>(context,
+                                            listen: false)
+                                        .isDark
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
                             ),
                             //fillColor: Colors.green),
                           ),
@@ -550,8 +658,17 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                                       cursorColor: color,
                                       focusNode: focusDiag,
                                       decoration: new InputDecoration(
-                                        prefixIcon: Icon(Icons.assignment),
+                                        prefixIcon: Icon(
+                                          Icons.assignment,
+                                          color: Provider.of<DarkModeProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .isDark
+                                              ? Colors.white
+                                              : Colors.black,
+                                        ),
                                         labelText: "التشخيص",
+                                        labelStyle: feildStyle,
                                         focusedBorder: OutlineInputBorder(
                                           borderRadius:
                                               new BorderRadius.circular(60.0),
@@ -560,12 +677,28 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                                         disabledBorder: OutlineInputBorder(
                                           borderRadius:
                                               new BorderRadius.circular(60.0),
-                                          // borderSide: BorderSide(color: color),
+                                          borderSide: BorderSide(
+                                            color:
+                                                Provider.of<DarkModeProvider>(
+                                                            context,
+                                                            listen: false)
+                                                        .isDark
+                                                    ? Colors.white
+                                                    : Colors.black,
+                                          ),
                                         ),
                                         enabledBorder: OutlineInputBorder(
                                           borderRadius:
                                               new BorderRadius.circular(60.0),
-                                          // borderSide: BorderSide(color: color),
+                                          borderSide: BorderSide(
+                                            color:
+                                                Provider.of<DarkModeProvider>(
+                                                            context,
+                                                            listen: false)
+                                                        .isDark
+                                                    ? Colors.white
+                                                    : Colors.black,
+                                          ),
                                         ),
                                         //fillColor: Colors.green),
                                       ),
@@ -615,15 +748,28 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                               decoration: new InputDecoration(
                                 prefixIcon: Icon(
                                   Icons.account_circle,
+                                  color: Provider.of<DarkModeProvider>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? Colors.white
+                                      : Colors.black,
                                 ),
                                 labelText: "ملاحظات حول المريض",
+                                labelStyle: feildStyle,
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(60.0),
                                   borderSide: BorderSide(color: color),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(60.0),
-                                  // borderSide: BorderSide(color: color),
+                                  borderSide: BorderSide(
+                                    color: Provider.of<DarkModeProvider>(
+                                                context,
+                                                listen: false)
+                                            .isDark
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
                                 ),
                                 //fillColor: Colors.green),
                               ),

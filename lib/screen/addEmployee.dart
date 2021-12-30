@@ -1,5 +1,7 @@
+import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/employeesProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
+import 'package:desktop_version/screen/settingsScreen.dart';
 import 'package:firedart/auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -35,70 +37,83 @@ class _AddEmployeeState extends State<AddEmployee> {
   TextEditingController passConCon = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    var feildStyle =
-        TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.bold);
-        double width =MediaQuery.of(context).size.width;
+    var feildStyle = TextStyle(
+      fontFamily: 'Cairo',
+      fontWeight: FontWeight.bold,
+      color: Provider.of<DarkModeProvider>(context, listen: false).isDark
+          ? Colors.white
+          : Colors.black,
+    );
+    double width = MediaQuery.of(context).size.width;
     final color = Colors.blue;
     return Directionality(
-        textDirection: TextDirection.rtl,child:Scaffold(
-      appBar: AppBar(
-        leading: Container(),
-        centerTitle: true,
-        // title: Text(
-        //   'إضافة موظف',
-        //   style: TextStyle(color: Colors.blue, fontFamily: 'Cairo',fontWeight: FontWeight.bold,),
-        // ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        actions: [
-              Directionality(
-                textDirection: TextDirection.rtl,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: SizedBox(
-                      width: 200,
-                      child: Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'رجوع',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Cairo',
-                                  fontSize: 15),
-                            ),
-                            Icon(Icons.arrow_forward_ios_outlined)
-                          ],
-                        ),
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        backgroundColor:
+            Provider.of<DarkModeProvider>(context, listen: false).isDark
+                ? SettingsScreen.darkMode1
+                : Colors.white,
+        appBar: AppBar(
+          leading: Container(),
+          centerTitle: true,
+          // title: Text(
+          //   'إضافة موظف',
+          //   style: TextStyle(color: Colors.blue, fontFamily: 'Cairo',fontWeight: FontWeight.bold,),
+          // ),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          actions: [
+            Directionality(
+              textDirection: TextDirection.rtl,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: SizedBox(
+                    width: 200,
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'رجوع',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Cairo',
+                                fontSize: 15),
+                          ),
+                          Icon(Icons.arrow_forward_ios_outlined)
+                        ],
                       ),
                     ),
-                    style: ButtonStyle(
-                      elevation: MaterialStateProperty.all<double>(0),
-                      backgroundColor: MaterialStateProperty.all(Colors.grey),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50.0),
-                        ),
+                  ),
+                  style: ButtonStyle(
+                    elevation: MaterialStateProperty.all<double>(0),
+                    backgroundColor: MaterialStateProperty.all(Colors.grey),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50.0),
                       ),
                     ),
                   ),
                 ),
               ),
-            ],
-      ),
-      body: Form(
-        child: SingleChildScrollView(
-          child: Center(
+            ),
+          ],
+        ),
+        body: Form(
+          child: SingleChildScrollView(
+            child: Center(
               child: Container(
-                color: Colors.white,
-              padding: EdgeInsets.all(15),
-              width: width - width / 2,
+                color:
+                    Provider.of<DarkModeProvider>(context, listen: false).isDark
+                        ? SettingsScreen.darkMode2
+                        : Colors.white,
+                padding: EdgeInsets.all(15),
+                width: width - width / 2,
                 child: Column(
                   children: [
                     Icon(
@@ -142,7 +157,8 @@ class _AddEmployeeState extends State<AddEmployee> {
                                 focusNode: focusName,
                                 style: feildStyle,
                                 onFieldSubmitted: (val) {
-                                  FocusScope.of(context).requestFocus(focusEmail);
+                                  FocusScope.of(context)
+                                      .requestFocus(focusEmail);
                                 },
                                 cursorColor: color,
                                 validator: (val) {
@@ -155,15 +171,31 @@ class _AddEmployeeState extends State<AddEmployee> {
                                 decoration: new InputDecoration(
                                   prefixIcon: Icon(
                                     Icons.account_circle,
+                                    color: Provider.of<DarkModeProvider>(
+                                                context,
+                                                listen: false)
+                                            .isDark
+                                        ? Colors.white
+                                        : Colors.black,
                                   ),
+                                  labelStyle: feildStyle,
                                   labelText: "الاسم",
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(60.0),
+                                    borderRadius:
+                                        new BorderRadius.circular(60.0),
                                     borderSide: BorderSide(color: color),
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(60.0),
-                                    // borderSide: BorderSide(color: color),
+                                    borderRadius:
+                                        new BorderRadius.circular(60.0),
+                                    borderSide: BorderSide(
+                                      color: Provider.of<DarkModeProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .isDark
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
                                   ),
                                   //fillColor: Colors.green),
                                 ),
@@ -197,27 +229,42 @@ class _AddEmployeeState extends State<AddEmployee> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TextFormField(
-
                                 style: feildStyle,
                                 focusNode: focusEmail,
                                 onFieldSubmitted: (val) {
-                                  FocusScope.of(context).requestFocus(focusPass);
+                                  FocusScope.of(context)
+                                      .requestFocus(focusPass);
                                 },
                                 controller: emailCon,
                                 cursorColor: color,
                                 decoration: new InputDecoration(
                                   prefixIcon: Icon(
                                     Icons.email,
+                                    color: Provider.of<DarkModeProvider>(
+                                                context,
+                                                listen: false)
+                                            .isDark
+                                        ? Colors.white
+                                        : Colors.black,
                                   ),
-
+                                  labelStyle: feildStyle,
                                   labelText: "البريد الإلكتروني",
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(60.0),
+                                    borderRadius:
+                                        new BorderRadius.circular(60.0),
                                     borderSide: BorderSide(color: color),
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(60.0),
-                                    // borderSide: BorderSide(color: color),
+                                    borderRadius:
+                                        new BorderRadius.circular(60.0),
+                                    borderSide: BorderSide(
+                                      color: Provider.of<DarkModeProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .isDark
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
                                   ),
                                   //fillColor: Colors.green),
                                 ),
@@ -227,7 +274,6 @@ class _AddEmployeeState extends State<AddEmployee> {
                               padding: const EdgeInsets.all(8.0),
                               child: TextFormField(
                                 focusNode: focusPass,
-
                                 style: feildStyle,
                                 onFieldSubmitted: (val) {
                                   FocusScope.of(context)
@@ -245,16 +291,32 @@ class _AddEmployeeState extends State<AddEmployee> {
                                 controller: passCon,
                                 decoration: new InputDecoration(
                                   prefixIcon: Icon(
-                                    Icons.email,
+                                    Icons.lock,
+                                    color: Provider.of<DarkModeProvider>(
+                                                context,
+                                                listen: false)
+                                            .isDark
+                                        ? Colors.white
+                                        : Colors.black,
                                   ),
+                                  labelStyle: feildStyle,
                                   labelText: "كلمة المرور",
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(60.0),
+                                    borderRadius:
+                                        new BorderRadius.circular(60.0),
                                     borderSide: BorderSide(color: color),
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(60.0),
-                                    // borderSide: BorderSide(color: color),
+                                    borderRadius:
+                                        new BorderRadius.circular(60.0),
+                                    borderSide: BorderSide(
+                                      color: Provider.of<DarkModeProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .isDark
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
                                   ),
                                   //fillColor: Colors.green),
                                 ),
@@ -263,7 +325,6 @@ class _AddEmployeeState extends State<AddEmployee> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TextFormField(
-
                                 style: feildStyle,
                                 controller: passConCon,
                                 focusNode: focusPassConfirm,
@@ -272,7 +333,8 @@ class _AddEmployeeState extends State<AddEmployee> {
                                   // FocusScope.of(context).requestFocus(focus);
                                 },
                                 validator: (val) {
-                                  if (passConCon.text.trim() != passCon.text.trim()) {
+                                  if (passConCon.text.trim() !=
+                                      passCon.text.trim()) {
                                     return 'كلمة المرور غير متطابقة';
                                   }
 
@@ -281,17 +343,32 @@ class _AddEmployeeState extends State<AddEmployee> {
                                 cursorColor: color,
                                 decoration: new InputDecoration(
                                   prefixIcon: Icon(
-                                    Icons.email,
+                                    Icons.lock,
+                                    color: Provider.of<DarkModeProvider>(
+                                                context,
+                                                listen: false)
+                                            .isDark
+                                        ? Colors.white
+                                        : Colors.black,
                                   ),
-
+                                  labelStyle: feildStyle,
                                   labelText: "تأكيد كلمة المرور",
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(60.0),
+                                    borderRadius:
+                                        new BorderRadius.circular(60.0),
                                     borderSide: BorderSide(color: color),
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(60.0),
-                                    // borderSide: BorderSide(color: color),
+                                    borderRadius:
+                                        new BorderRadius.circular(60.0),
+                                    borderSide: BorderSide(
+                                      color: Provider.of<DarkModeProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .isDark
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
                                   ),
                                   //fillColor: Colors.green),
                                 ),
@@ -307,11 +384,18 @@ class _AddEmployeeState extends State<AddEmployee> {
                                     style: TextStyle(
                                         fontFamily: 'Cairo',
                                         fontSize: 15,
+                                        color: Provider.of<DarkModeProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .isDark
+                                            ? Colors.white
+                                            : Colors.black,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                         children: [
@@ -331,6 +415,13 @@ class _AddEmployeeState extends State<AddEmployee> {
                                             'الوصول لسجل المرضى',
                                             style: TextStyle(
                                                 fontFamily: 'Cairo',
+                                                color:
+                                                    Provider.of<DarkModeProvider>(
+                                                                context,
+                                                                listen: false)
+                                                            .isDark
+                                                        ? Colors.white
+                                                        : Colors.black,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         ],
@@ -353,6 +444,13 @@ class _AddEmployeeState extends State<AddEmployee> {
                                             'الوصول الى سجل الموظفين',
                                             style: TextStyle(
                                                 fontFamily: 'Cairo',
+                                                color:
+                                                    Provider.of<DarkModeProvider>(
+                                                                context,
+                                                                listen: false)
+                                                            .isDark
+                                                        ? Colors.white
+                                                        : Colors.black,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                           Text(
@@ -383,6 +481,13 @@ class _AddEmployeeState extends State<AddEmployee> {
                                             'الوصول الى المواعيد',
                                             style: TextStyle(
                                                 fontFamily: 'Cairo',
+                                                color:
+                                                    Provider.of<DarkModeProvider>(
+                                                                context,
+                                                                listen: false)
+                                                            .isDark
+                                                        ? Colors.white
+                                                        : Colors.black,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         ],
@@ -405,6 +510,13 @@ class _AddEmployeeState extends State<AddEmployee> {
                                             'الوصول الى السجل المالي',
                                             style: TextStyle(
                                                 fontFamily: 'Cairo',
+                                                color:
+                                                    Provider.of<DarkModeProvider>(
+                                                                context,
+                                                                listen: false)
+                                                            .isDark
+                                                        ? Colors.white
+                                                        : Colors.black,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                           Text(
@@ -462,21 +574,23 @@ class _AddEmployeeState extends State<AddEmployee> {
                                               email: emailCon.text,
                                               pass: passCon.text,
                                               name: nameCon.text,
-                                              permissions: permission,context: context);
+                                              permissions: permission,
+                                              context: context);
                                   if (result == 'success') {
                                     Navigator.of(context).pop();
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         content: Directionality(
                                             textDirection: TextDirection.rtl,
-                                            child:
-                                                Text('تمت إضافة الموظف بنجاح !')),
+                                            child: Text(
+                                                'تمت إضافة الموظف بنجاح !')),
                                         backgroundColor: Colors.green,
                                       ),
                                     );
                                   } else {
                                     if (result == 'INVALID_EMAIL') {
-                                      ScaffoldMessenger.of(context).showSnackBar(
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
                                         const SnackBar(
                                           content: Directionality(
                                             textDirection: TextDirection.rtl,
@@ -488,7 +602,8 @@ class _AddEmployeeState extends State<AddEmployee> {
                                       );
                                     }
                                     if (result == 'EMAIL_EXISTS') {
-                                      ScaffoldMessenger.of(context).showSnackBar(
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
                                         const SnackBar(
                                           content: Directionality(
                                             textDirection: TextDirection.rtl,
@@ -501,12 +616,13 @@ class _AddEmployeeState extends State<AddEmployee> {
                                     }
 
                                     if (result == 'internet fail') {
-                                      ScaffoldMessenger.of(context).showSnackBar(
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
                                         const SnackBar(
                                           content: Directionality(
                                             textDirection: TextDirection.rtl,
-                                            child:
-                                                Text('!تحقق من الاتصال بالانترنت'),
+                                            child: Text(
+                                                '!تحقق من الاتصال بالانترنت'),
                                           ),
                                           backgroundColor: Colors.red,
                                         ),
@@ -538,9 +654,10 @@ class _AddEmployeeState extends State<AddEmployee> {
                             ),
                           ),
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Colors.green),
-                            shape:
-                                MaterialStateProperty.all<RoundedRectangleBorder>(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.green),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50.0),
                               ),
@@ -556,9 +673,10 @@ class _AddEmployeeState extends State<AddEmployee> {
             ),
           ),
         ),
-      
-    ),);
+      ),
+    );
   }
+
   String trim(String s) {
     s = s.trim();
     if (s == '') {
@@ -585,12 +703,11 @@ class _AddEmployeeState extends State<AddEmployee> {
           break;
         }
       }
-      String result='';
+      String result = '';
       for (var i = temp2.length - 1; i >= 0; i--) {
-        result+=temp2[i];
+        result += temp2[i];
       }
-      
-      
+
       print(result);
       print(temp.length);
 

@@ -1,5 +1,6 @@
 import 'package:desktop_version/models/patient.dart';
 import 'package:desktop_version/provider/bondsProvider.dart';
+import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/dateTimeProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/widgets.dart/addDiagsDialog.dart';
@@ -123,6 +124,12 @@ class _DiagsUserDialogState extends State<DiagsUserDialog> {
                                 Text(
                                   'لا توجد بيانات لعرضها',
                                   style: TextStyle(
+                                      color: Provider.of<DarkModeProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .isDark
+                                          ? Colors.white
+                                          : Colors.black,
                                       fontFamily: 'Cairo',
                                       fontWeight: FontWeight.bold),
                                 )

@@ -1,7 +1,9 @@
 import 'package:desktop_version/models/patDate.dart';
+import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/dateTimeProvider.dart';
 import 'package:desktop_version/provider/patDatesProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
+import 'package:desktop_version/screen/settingsScreen.dart';
 import 'package:desktop_version/widgets.dart/patinetInfoSideContainer.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
@@ -44,8 +46,12 @@ class _DatesScreenState extends State<DatesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var feildStyle =
-        TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.bold);
+    var feildStyle = TextStyle(
+        fontFamily: 'Cairo',
+        fontWeight: FontWeight.bold,
+        color: Provider.of<DarkModeProvider>(context, listen: false).isDark
+            ? Colors.white
+            : Colors.black);
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return SizedBox(
@@ -64,6 +70,7 @@ class _DatesScreenState extends State<DatesScreen> {
                         child: Column(
                           children: [
                             TableCalendar(
+                              // calendarStyle: CalendarStyle(decoration:BoxDecoration(color: Colors.red)),
                               selectedDayPredicate: (day) {
                                 return isSameDay(_selectedDay, day);
                               },
@@ -113,6 +120,13 @@ class _DatesScreenState extends State<DatesScreen> {
                                               ? 'التاريخ:                          '
                                               : 'التاريخ: ${DateTimeProvider.date(selectedDate.date)}      ',
                                           style: TextStyle(
+                                              color:
+                                                  Provider.of<DarkModeProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .isDark
+                                                      ? Colors.white
+                                                      : Colors.black,
                                               fontFamily: 'Cairo',
                                               fontWeight: FontWeight.bold,
                                               fontSize: 25),
@@ -122,6 +136,13 @@ class _DatesScreenState extends State<DatesScreen> {
                                               ? 'الوقت:                 '
                                               : 'الوقت: ${DateTimeProvider.time(selectedDate.date)}',
                                           style: TextStyle(
+                                              color:
+                                                  Provider.of<DarkModeProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .isDark
+                                                      ? Colors.white
+                                                      : Colors.black,
                                               fontFamily: 'Cairo',
                                               fontWeight: FontWeight.bold,
                                               fontSize: 25),
@@ -142,7 +163,7 @@ class _DatesScreenState extends State<DatesScreen> {
                                   Icons.account_circle,
                                 ),
                                 labelText: "إسم المريض",
-
+                                labelStyle: feildStyle,
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(60.0),
                                   // borderSide: BorderSide(color: color),
@@ -164,6 +185,7 @@ class _DatesScreenState extends State<DatesScreen> {
                                   Icons.account_circle,
                                 ),
                                 labelText: "ملاحظات",
+                                labelStyle: feildStyle,
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(60.0),
                                   borderSide: BorderSide(color: Colors.blue),
@@ -182,6 +204,12 @@ class _DatesScreenState extends State<DatesScreen> {
                               Text(
                                 "توقيع:  ",
                                 style: TextStyle(
+                                    color: Provider.of<DarkModeProvider>(
+                                                context,
+                                                listen: false)
+                                            .isDark
+                                        ? Colors.white
+                                        : Colors.black,
                                     fontFamily: 'Cairo',
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20),
@@ -283,79 +311,116 @@ class _DatesScreenState extends State<DatesScreen> {
                               height: 30,
                               child: CircularProgressIndicator(),
                             ),
-                          ):datesProvider.tempDates.length == 0
-                          ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.search,
-                                    size: 60,
-                                    color: Colors.blue,
-                                  ),
-                                  Text(
-                                    'لا توجد بيانات لعرضها',
-                                    style: TextStyle(
-                                        fontFamily: 'Cairo',
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              ),
                           )
-                          : ListView.builder(
-                            itemCount: datesProvider.tempDates.length,
-                            itemBuilder: (_, index) {
-                              return Card(
-                                child: InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      selectedDate =
-                                          datesProvider.tempDates[index];
-                                          patNameController.text = selectedDate.patName;
-                                          noteController.text = selectedDate.note;
-                                    });
-                                  },
-                                  child: Container(
-                                    height: 50,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            child: Center(
-                                              child: Text(
-                                                datesProvider
-                                                    .tempDates[index].patName,
-                                                style: TextStyle(
-                                                    fontFamily: 'Cairo',
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Center(
-                                              child: Text(
-                                                DateTimeProvider.dateAndTime(
+                        : datesProvider.tempDates.length == 0
+                            ? Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.search,
+                                      size: 60,
+                                      color: Colors.blue,
+                                    ),
+                                    Text(
+                                      'لا توجد بيانات لعرضها',
+                                      style: TextStyle(
+                                          fontFamily: 'Cairo',
+                                          fontWeight: FontWeight.bold,color: Provider.of<DarkModeProvider>(context, listen: false).isDark
+            ? Colors.white
+            : Colors.black),
+                                    )
+                                  ],
+                                ),
+                              )
+                            : ListView.builder(
+                                itemCount: datesProvider.tempDates.length,
+                                itemBuilder: (_, index) {
+                                  return Card(
+                                    color: Provider.of<DarkModeProvider>(
+                                                context,
+                                                listen: false)
+                                            .isDark
+                                        ? SettingsScreen.darkMode2
+                                        : Colors.grey[100],
+                                    child: InkWell(
+                                      hoverColor: Provider.of<DarkModeProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .isDark
+                                          ? Colors.grey[700]
+                                          : Colors.grey[300],
+                                      onTap: () {
+                                        setState(() {
+                                          selectedDate =
+                                              datesProvider.tempDates[index];
+                                          patNameController.text =
+                                              selectedDate.patName;
+                                          noteController.text =
+                                              selectedDate.note;
+                                        });
+                                      },
+                                      child: Container(
+                                        height: 50,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: Center(
+                                                  child: Text(
                                                     datesProvider
-                                                        .tempDates[index].date),
-                                                style: TextStyle(
-                                                    fontFamily: 'Cairo',
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                                        .tempDates[index]
+                                                        .patName,
+                                                    style: TextStyle(
+                                                        color: Provider.of<
+                                                                        DarkModeProvider>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .isDark
+                                                            ? Colors.white
+                                                            : Colors.black,
+                                                        fontFamily: 'Cairo',
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
+                                              Expanded(
+                                                child: Center(
+                                                  child: Text(
+                                                    DateTimeProvider
+                                                        .dateAndTime(
+                                                            datesProvider
+                                                                .tempDates[
+                                                                    index]
+                                                                .date),
+                                                    style: TextStyle(
+                                                        color: Provider.of<
+                                                                        DarkModeProvider>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .isDark
+                                                            ? Colors.white
+                                                            : Colors.black,
+                                                        fontFamily: 'Cairo',
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
+                                  );
+                                },
                               );
-                            },
-                          );
                   }),
                 ),
               )

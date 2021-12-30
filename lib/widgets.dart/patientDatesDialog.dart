@@ -2,11 +2,13 @@ import 'package:desktop_version/models/bond.dart';
 import 'package:desktop_version/models/patient.dart';
 import 'package:desktop_version/models/user.dart';
 import 'package:desktop_version/provider/bondsProvider.dart';
+import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/dateTimeProvider.dart';
 import 'package:desktop_version/provider/patDatesProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/employeeScreen.dart';
 import 'package:desktop_version/screen/patientScreen.dart';
+import 'package:desktop_version/screen/settingsScreen.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -35,6 +37,7 @@ class _PatientDatesDialogState extends State<PatientDatesDialog> {
       isLoading = false;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -43,12 +46,33 @@ class _PatientDatesDialogState extends State<PatientDatesDialog> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: AlertDialog(
+        backgroundColor:
+            Provider.of<DarkModeProvider>(context, listen: false).isDark
+                ? SettingsScreen.darkMode1
+                : Colors.white,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(widget.p.name,style: TextStyle(fontFamily: 'Cairo',fontWeight: FontWeight.bold,fontSize: 25),),
+            Text(
+              widget.p.name,
+              style: TextStyle(
+                fontFamily: 'Cairo',
+                fontWeight: FontWeight.bold,
+                fontSize: 25,
+                color:
+                    Provider.of<DarkModeProvider>(context, listen: false).isDark
+                        ? Colors.white
+                        : Colors.black,
+              ),
+            ),
             IconButton(
-                icon: Icon(Icons.close),
+                icon: Icon(
+                  Icons.close,
+                  color: Provider.of<DarkModeProvider>(context, listen: false)
+                          .isDark
+                      ? Colors.white
+                      : Colors.black,
+                ),
                 onPressed: () {
                   Navigator.pop(context);
                 }),
@@ -139,6 +163,12 @@ class _PatientDatesDialogState extends State<PatientDatesDialog> {
                                     Text(
                                       'لا توجد بيانات لعرضها',
                                       style: TextStyle(
+                                          color: Provider.of<DarkModeProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .isDark
+                                              ? Colors.white
+                                              : Colors.black,
                                           fontFamily: 'Cairo',
                                           fontWeight: FontWeight.bold),
                                     )
@@ -149,7 +179,19 @@ class _PatientDatesDialogState extends State<PatientDatesDialog> {
                                 itemCount: datesProvider.patDates.length,
                                 itemBuilder: (_, index) {
                                   return Card(
+                                    color: Provider.of<DarkModeProvider>(
+                                                context,
+                                                listen: false)
+                                            .isDark
+                                        ? SettingsScreen.darkMode2
+                                        : Colors.grey[100],
                                     child: InkWell(
+                                      hoverColor: Provider.of<DarkModeProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .isDark
+                                          ? Colors.grey[700]
+                                          : Colors.grey[300],
                                       onTap: () {},
                                       child: Container(
                                         height: 50,
@@ -166,7 +208,12 @@ class _PatientDatesDialogState extends State<PatientDatesDialog> {
                                                         .patDates[index]
                                                         .patName,
                                                     style: TextStyle(
-                                                        fontFamily: 'Cairo',
+                                                        fontFamily: 'Cairo', color: Provider.of<DarkModeProvider>(
+                                                context,
+                                                listen: false)
+                                            .isDark
+                                        ? Colors.white
+                                        : Colors.black,
                                                         fontWeight:
                                                             FontWeight.bold),
                                                   ),
@@ -181,7 +228,12 @@ class _PatientDatesDialogState extends State<PatientDatesDialog> {
                                                                 .patDates[index]
                                                                 .date),
                                                     style: TextStyle(
-                                                        fontFamily: 'Cairo',
+                                                        fontFamily: 'Cairo', color: Provider.of<DarkModeProvider>(
+                                                context,
+                                                listen: false)
+                                            .isDark
+                                        ? Colors.white
+                                        : Colors.black,
                                                         fontWeight:
                                                             FontWeight.bold),
                                                   ),
