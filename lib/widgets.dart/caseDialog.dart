@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/settingsScreen.dart';
@@ -41,9 +43,11 @@ class _CaseDialogState extends State<CaseDialog> {
 
   @override
   Widget build(BuildContext context) {
+    bool isMobile = Platform.isAndroid || Platform.isIOS;
     var feildStyle = TextStyle(
         fontFamily: 'Cairo',
         fontWeight: FontWeight.bold,
+        fontSize: isMobile ? 12 : 16,
         color: Provider.of<DarkModeProvider>(context, listen: false).isDark
             ? Colors.white
             : Colors.black);
@@ -71,6 +75,7 @@ class _CaseDialogState extends State<CaseDialog> {
                               style: TextStyle(
                                   fontFamily: 'Cairo',
                                   fontWeight: FontWeight.bold,
+                                  fontSize: isMobile ? 13 : 20,
                                   color: Provider.of<DarkModeProvider>(context,
                                               listen: false)
                                           .isDark
@@ -78,7 +83,7 @@ class _CaseDialogState extends State<CaseDialog> {
                                       : Colors.black),
                             ),
                             SizedBox(
-                              width: 10,
+                              width: isMobile ? 5 : 10,
                             ),
                             ElevatedButton(
                               onPressed: () {
@@ -91,7 +96,7 @@ class _CaseDialogState extends State<CaseDialog> {
                                 });
                               },
                               child: SizedBox(
-                                width: 100,
+                                width: isMobile ? 60 : 100,
                                 child: Center(
                                   child: Text(
                                     'مسح الكل',
@@ -99,7 +104,7 @@ class _CaseDialogState extends State<CaseDialog> {
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                         fontFamily: 'Cairo',
-                                        fontSize: 15),
+                                        fontSize: isMobile ? 11 : 15),
                                   ),
                                 ),
                               ),
@@ -120,11 +125,12 @@ class _CaseDialogState extends State<CaseDialog> {
                       ],
                     ),
                     IconButton(
-                        icon: Icon(Icons.close,color: Provider.of<DarkModeProvider>(context,
-                                              listen: false)
-                                          .isDark
-                                      ? Colors.white
-                                      : Colors.black),
+                        icon: Icon(Icons.close,
+                            color: Provider.of<DarkModeProvider>(context,
+                                        listen: false)
+                                    .isDark
+                                ? Colors.white
+                                : Colors.black),
                         onPressed: () {
                           Navigator.pop(context);
                         }),
@@ -152,7 +158,7 @@ class _CaseDialogState extends State<CaseDialog> {
                                 Text(
                                   userProvider.clincUser.clincDiags[index],
                                   style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: isMobile ? 13 : 18,
                                       fontFamily: 'Cairo',
                                       fontWeight: FontWeight.bold,
                                       color: Provider.of<DarkModeProvider>(
@@ -167,10 +173,10 @@ class _CaseDialogState extends State<CaseDialog> {
                           },
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 5,
-                            crossAxisSpacing: 1.0,
-                            mainAxisSpacing: 1.0,
-                            childAspectRatio: 5,
+                            crossAxisCount: isMobile ? 2 : 5,
+                            crossAxisSpacing: isMobile ? 0 : 1.0,
+                            mainAxisSpacing: isMobile ? 4 : 1.0,
+                            childAspectRatio: isMobile ? 4 : 5,
                           ),
                         ),
                       ),
@@ -180,7 +186,7 @@ class _CaseDialogState extends State<CaseDialog> {
                             'فحوصات \ أشعة',
                             style: TextStyle(
                                 fontFamily: 'Cairo',
-                                fontSize: 20,
+                                fontSize: isMobile ? 13 : 20,
                                 fontWeight: FontWeight.bold,
                                 color: Provider.of<DarkModeProvider>(context,
                                             listen: false)
@@ -189,7 +195,7 @@ class _CaseDialogState extends State<CaseDialog> {
                                     : Colors.black),
                           ),
                           SizedBox(
-                            width: 10,
+                            width: isMobile ? 5 : 10,
                           ),
                           ElevatedButton(
                             onPressed: () {
@@ -202,7 +208,7 @@ class _CaseDialogState extends State<CaseDialog> {
                               });
                             },
                             child: SizedBox(
-                              width: 100,
+                              width: isMobile ? 60 : 100,
                               child: Center(
                                 child: Text(
                                   'مسح الكل',
@@ -210,7 +216,7 @@ class _CaseDialogState extends State<CaseDialog> {
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: 'Cairo',
-                                      fontSize: 15),
+                                      fontSize: isMobile ? 11 : 15),
                                 ),
                               ),
                             ),
@@ -252,16 +258,16 @@ class _CaseDialogState extends State<CaseDialog> {
                                                 .isDark
                                             ? Colors.white
                                             : Colors.black,
-                                        fontSize: 18)),
+                                        fontSize: isMobile ? 13 : 18)),
                               ],
                             );
                           },
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 5,
-                            crossAxisSpacing: 1.0,
-                            mainAxisSpacing: 1.0,
-                            childAspectRatio: 5,
+                            crossAxisCount: isMobile ? 2 : 5,
+                            crossAxisSpacing: isMobile ? 0 : 1.0,
+                            mainAxisSpacing: isMobile ? 4 : 1.0,
+                            childAspectRatio: isMobile ? 4 : 5,
                           ),
                         ),
                       ),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/employeesProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
@@ -37,9 +39,11 @@ class _AddEmployeeState extends State<AddEmployee> {
   TextEditingController passConCon = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    bool isMobile = Platform.isAndroid || Platform.isIOS;
     var feildStyle = TextStyle(
       fontFamily: 'Cairo',
       fontWeight: FontWeight.bold,
+      fontSize: isMobile ? 13 : 16,
       color: Provider.of<DarkModeProvider>(context, listen: false).isDark
           ? Colors.white
           : Colors.black,
@@ -56,10 +60,10 @@ class _AddEmployeeState extends State<AddEmployee> {
         appBar: AppBar(
           leading: Container(),
           centerTitle: true,
-          // title: Text(
-          //   'إضافة موظف',
-          //   style: TextStyle(color: Colors.blue, fontFamily: 'Cairo',fontWeight: FontWeight.bold,),
-          // ),
+          title: Text(
+            'إضافة موظف',
+            style: TextStyle(color: Colors.blue, fontFamily: 'Cairo',fontWeight: FontWeight.bold,),
+          ),
           backgroundColor: Colors.transparent,
           elevation: 0,
           actions: [
@@ -72,19 +76,21 @@ class _AddEmployeeState extends State<AddEmployee> {
                     Navigator.of(context).pop();
                   },
                   child: SizedBox(
-                    width: 200,
+                    width: isMobile ? 30 : 200,
                     child: Center(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            'رجوع',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Cairo',
-                                fontSize: 15),
-                          ),
+                          isMobile
+                              ? Container()
+                              : Text(
+                                  'رجوع',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Cairo',
+                                      fontSize: 15),
+                                ),
                           Icon(Icons.arrow_forward_ios_outlined)
                         ],
                       ),
@@ -105,6 +111,7 @@ class _AddEmployeeState extends State<AddEmployee> {
           ],
         ),
         body: Form(
+          key: _formKey,
           child: SingleChildScrollView(
             child: Center(
               child: Container(
@@ -113,16 +120,18 @@ class _AddEmployeeState extends State<AddEmployee> {
                         ? SettingsScreen.darkMode2
                         : Colors.white,
                 padding: EdgeInsets.all(15),
-                width: width - width / 2,
+                width: isMobile ? width : width - width / 2,
                 child: Column(
                   children: [
                     Icon(
                       Icons.person,
-                      size: 100,
+                      size: isMobile ? 80 : 100,
                       color: Colors.blue,
                     ),
                     Container(
-                      width: MediaQuery.of(context).size.width / 2,
+                      width: isMobile
+                          ? width
+                          : MediaQuery.of(context).size.width / 2,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
@@ -374,24 +383,46 @@ class _AddEmployeeState extends State<AddEmployee> {
                                 ),
                               ),
                             ),
-
+                            !isMobile
+                                ? Container()
+                                : Row(
+                                    children: [
+                                      Text(
+                                        'الصلاحيات: ',
+                                        style: TextStyle(
+                                            fontFamily: 'Cairo',
+                                            fontSize: isMobile ? 11 : 15,
+                                            color:
+                                                Provider.of<DarkModeProvider>(
+                                                            context,
+                                                            listen: false)
+                                                        .isDark
+                                                    ? Colors.white
+                                                    : Colors.black,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 children: [
-                                  Text(
-                                    'الصلاحيات: ',
-                                    style: TextStyle(
-                                        fontFamily: 'Cairo',
-                                        fontSize: 15,
-                                        color: Provider.of<DarkModeProvider>(
-                                                    context,
-                                                    listen: false)
-                                                .isDark
-                                            ? Colors.white
-                                            : Colors.black,
-                                        fontWeight: FontWeight.bold),
-                                  ),
+                                  isMobile
+                                      ? Container()
+                                      : Text(
+                                          'الصلاحيات: ',
+                                          style: TextStyle(
+                                              fontFamily: 'Cairo',
+                                              fontSize: isMobile ? 11 : 15,
+                                              color:
+                                                  Provider.of<DarkModeProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .isDark
+                                                      ? Colors.white
+                                                      : Colors.black,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
@@ -422,47 +453,110 @@ class _AddEmployeeState extends State<AddEmployee> {
                                                             .isDark
                                                         ? Colors.white
                                                         : Colors.black,
+                                                fontSize: isMobile ? 11 : 15,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         ],
                                       ),
-                                      Row(
-                                        children: [
-                                          Checkbox(
-                                              value: emp,
-                                              onChanged: (val) {
-                                                setState(() {
-                                                  emp = val;
-                                                  if (emp) {
-                                                    permission[1] = '1';
-                                                  } else {
-                                                    permission[1] = '0';
-                                                  }
-                                                });
-                                              }),
-                                          Text(
-                                            'الوصول الى سجل الموظفين',
-                                            style: TextStyle(
-                                                fontFamily: 'Cairo',
-                                                color:
-                                                    Provider.of<DarkModeProvider>(
-                                                                context,
-                                                                listen: false)
-                                                            .isDark
-                                                        ? Colors.white
-                                                        : Colors.black,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          Text(
-                                            ' تحذير : سيكون الموظف قادر على إضافة وحذف موظفين.',
-                                            style: TextStyle(
-                                                fontFamily: 'Cairo',
-                                                color: Colors.red,
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.bold),
-                                          )
-                                        ],
-                                      ),
+                                      isMobile
+                                          ? Container()
+                                          : Row(
+                                              children: [
+                                                Checkbox(
+                                                    value: emp,
+                                                    onChanged: (val) {
+                                                      setState(() {
+                                                        emp = val;
+                                                        if (emp) {
+                                                          permission[1] = '1';
+                                                        } else {
+                                                          permission[1] = '0';
+                                                        }
+                                                      });
+                                                    }),
+                                                Text(
+                                                  'الوصول الى سجل الموظفين',
+                                                  style: TextStyle(
+                                                      fontFamily: 'Cairo',
+                                                      color:
+                                                          Provider.of<DarkModeProvider>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .isDark
+                                                              ? Colors.white
+                                                              : Colors.black,
+                                                      fontSize:
+                                                          isMobile ? 11 : 15,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Text(
+                                                  ' تحذير : سيكون الموظف قادر على إضافة وحذف موظفين.',
+                                                  style: TextStyle(
+                                                      fontFamily: 'Cairo',
+                                                      color: Colors.red,
+                                                      fontSize:
+                                                          isMobile ? 10 : 13,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )
+                                              ],
+                                            ),
+                                      isMobile
+                                          ? Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Checkbox(
+                                                        value: emp,
+                                                        onChanged: (val) {
+                                                          setState(() {
+                                                            emp = val;
+                                                            if (emp) {
+                                                              permission[1] =
+                                                                  '1';
+                                                            } else {
+                                                              permission[1] =
+                                                                  '0';
+                                                            }
+                                                          });
+                                                        }),
+                                                    Text(
+                                                      'الوصول الى سجل الموظفين',
+                                                      style: TextStyle(
+                                                          fontFamily: 'Cairo',
+                                                          color: Provider.of<
+                                                                          DarkModeProvider>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .isDark
+                                                              ? Colors.white
+                                                              : Colors.black,
+                                                          fontSize: isMobile
+                                                              ? 11
+                                                              : 15,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Text(
+                                                  ' تحذير : سيكون الموظف قادر على إضافة وحذف موظفين.',
+                                                  style: TextStyle(
+                                                      fontFamily: 'Cairo',
+                                                      color: Colors.red,
+                                                      fontSize:
+                                                          isMobile ? 10 : 13,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )
+                                              ],
+                                            )
+                                          : Container(),
                                       Row(
                                         children: [
                                           Checkbox(
@@ -488,47 +582,105 @@ class _AddEmployeeState extends State<AddEmployee> {
                                                             .isDark
                                                         ? Colors.white
                                                         : Colors.black,
+                                                fontSize: isMobile ? 11 : 15,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         ],
                                       ),
-                                      Row(
-                                        children: [
-                                          Checkbox(
-                                              value: fin,
-                                              onChanged: (val) {
-                                                setState(() {
-                                                  fin = val;
-                                                  if (fin) {
-                                                    permission[3] = '1';
-                                                  } else {
-                                                    permission[3] = '0';
-                                                  }
-                                                });
-                                              }),
-                                          Text(
-                                            'الوصول الى السجل المالي',
-                                            style: TextStyle(
-                                                fontFamily: 'Cairo',
-                                                color:
-                                                    Provider.of<DarkModeProvider>(
-                                                                context,
-                                                                listen: false)
-                                                            .isDark
-                                                        ? Colors.white
-                                                        : Colors.black,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          Text(
-                                            ' تحذير : سيكون الموظف قادر على الوصول للسجل المالي',
-                                            style: TextStyle(
-                                                fontFamily: 'Cairo',
-                                                fontSize: 13,
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.bold),
-                                          )
-                                        ],
-                                      ),
+                                      isMobile
+                                          ? Container()
+                                          : Row(
+                                              children: [
+                                                Checkbox(
+                                                    value: fin,
+                                                    onChanged: (val) {
+                                                      setState(() {
+                                                        fin = val;
+                                                        if (fin) {
+                                                          permission[3] = '1';
+                                                        } else {
+                                                          permission[3] = '0';
+                                                        }
+                                                      });
+                                                    }),
+                                                Text(
+                                                  'الوصول الى السجل المالي',
+                                                  style: TextStyle(
+                                                      fontFamily: 'Cairo',
+                                                      color:
+                                                          Provider.of<DarkModeProvider>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .isDark
+                                                              ? Colors.white
+                                                              : Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Text(
+                                                  ' تحذير : سيكون الموظف قادر على الوصول للسجل المالي',
+                                                  style: TextStyle(
+                                                      fontFamily: 'Cairo',
+                                                      fontSize:
+                                                          isMobile ? 10 : 13,
+                                                      color: Colors.red,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )
+                                              ],
+                                            ),
+                                      isMobile
+                                          ? Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Checkbox(
+                                                        value: fin,
+                                                        onChanged: (val) {
+                                                          setState(() {
+                                                            fin = val;
+                                                            if (fin) {
+                                                              permission[3] =
+                                                                  '1';
+                                                            } else {
+                                                              permission[3] =
+                                                                  '0';
+                                                            }
+                                                          });
+                                                        }),
+                                                    Text(
+                                                      'الوصول الى السجل المالي',
+                                                      style: TextStyle(
+                                                          fontFamily: 'Cairo',
+                                                          color: Provider.of<
+                                                                          DarkModeProvider>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .isDark
+                                                              ? Colors.white
+                                                              : Colors.black,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Text(
+                                                  ' تحذير : سيكون الموظف قادر على الوصول للسجل المالي',
+                                                  style: TextStyle(
+                                                      fontFamily: 'Cairo',
+                                                      fontSize:
+                                                          isMobile ? 10 : 13,
+                                                      color: Colors.red,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )
+                                              ],
+                                            )
+                                          : Container(),
                                     ],
                                   ),
                                 ],

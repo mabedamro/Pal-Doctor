@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:desktop_version/models/bond.dart';
 import 'package:desktop_version/models/patient.dart';
 import 'package:desktop_version/models/user.dart';
@@ -38,6 +40,7 @@ class _EmployeeBondsDialogState extends State<EmployeeBondsDialog> {
 
   @override
   Widget build(BuildContext context) {
+    bool isMobile = Platform.isAndroid || Platform.isIOS;
     double width = MediaQuery.of(context).size.width;
 
     double height = MediaQuery.of(context).size.height;
@@ -47,7 +50,13 @@ class _EmployeeBondsDialogState extends State<EmployeeBondsDialog> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(widget.user.name),
+            Text(
+              widget.user.name,
+              style: TextStyle(
+                  fontSize: isMobile ? 15 : 20,
+                  fontFamily: 'Cairo',
+                  fontWeight: FontWeight.bold),
+            ),
             IconButton(
                 icon: Icon(Icons.close),
                 onPressed: () {
@@ -86,6 +95,7 @@ class _EmployeeBondsDialogState extends State<EmployeeBondsDialog> {
                             style: TextStyle(
                                 color: Colors.blue,
                                 fontFamily: 'Cairo',
+                                fontSize: isMobile ? 11 : 16,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -97,6 +107,7 @@ class _EmployeeBondsDialogState extends State<EmployeeBondsDialog> {
                             style: TextStyle(
                                 color: Colors.blue,
                                 fontFamily: 'Cairo',
+                                fontSize: isMobile ? 11 : 16,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -108,6 +119,7 @@ class _EmployeeBondsDialogState extends State<EmployeeBondsDialog> {
                             style: TextStyle(
                                 color: Colors.blue,
                                 fontFamily: 'Cairo',
+                                fontSize: isMobile ? 11 : 16,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -157,6 +169,7 @@ class _EmployeeBondsDialogState extends State<EmployeeBondsDialog> {
                                                   .isDark
                                               ? Colors.white
                                               : Colors.black,
+                                          fontSize: isMobile ? 11 : 16,
                                           fontFamily: 'Cairo',
                                           fontWeight: FontWeight.bold),
                                     )
@@ -184,6 +197,8 @@ class _EmployeeBondsDialogState extends State<EmployeeBondsDialog> {
                                                         .toString(),
                                                     style: TextStyle(
                                                         fontFamily: 'Cairo',
+                                                        fontSize:
+                                                            isMobile ? 11 : 16,
                                                         fontWeight:
                                                             FontWeight.bold),
                                                   ),
@@ -199,6 +214,8 @@ class _EmployeeBondsDialogState extends State<EmployeeBondsDialog> {
                                                                 .date),
                                                     style: TextStyle(
                                                         fontFamily: 'Cairo',
+                                                        fontSize:
+                                                            isMobile ? 11 : 16,
                                                         fontWeight:
                                                             FontWeight.bold),
                                                   ),
@@ -212,6 +229,8 @@ class _EmployeeBondsDialogState extends State<EmployeeBondsDialog> {
                                                         .userName,
                                                     style: TextStyle(
                                                         fontFamily: 'Cairo',
+                                                        fontSize:
+                                                            isMobile ? 11 : 16,
                                                         fontWeight:
                                                             FontWeight.bold),
                                                   ),

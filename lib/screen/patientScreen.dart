@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:desktop_version/models/patient.dart';
 import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/patinetProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/addPatientScreen.dart';
+import 'package:desktop_version/screen/patientInformationScreen.dart';
 import 'package:desktop_version/screen/settingsScreen.dart';
 import 'package:desktop_version/widgets.dart/patinetInfoSideContainer.dart';
 import 'package:dotted_line/dotted_line.dart';
@@ -35,6 +38,8 @@ class _PatientScreenState extends State<PatientScreen>
 
   @override
   Widget build(BuildContext context) {
+    bool isMobile = Platform.isAndroid || Platform.isIOS;
+    double width = MediaQuery.of(context).size.width;
     final tableHeadersStyle =
         TextStyle(color: Colors.blue, fontWeight: FontWeight.bold);
     // return ElevatedButton(onPressed: (){
@@ -59,7 +64,8 @@ class _PatientScreenState extends State<PatientScreen>
                         Row(
                           children: [
                             SizedBox(
-                              width: 400,
+                              width: isMobile ? width - 42 : 400,
+                              height: 50,
                               child: TextField(
                                 style: TextStyle(
                                     fontFamily: 'Cairo',
@@ -125,44 +131,150 @@ class _PatientScreenState extends State<PatientScreen>
                             SizedBox(
                               width: 10,
                             ),
-                            ElevatedButton(
-                              onPressed: () {
-                                Provider.of<PatientProvider>(context,
-                                        listen: false)
-                                    .search(searchController.text);
-                              },
-                              child: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.search),
-                                      Text(
-                                        'بحث',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                            fontFamily: 'Cairo',
-                                            fontSize: 15),
+                            isMobile
+                                ? Container()
+                                : ElevatedButton(
+                                    onPressed: () {
+                                      Provider.of<PatientProvider>(context,
+                                              listen: false)
+                                          .search(searchController.text);
+                                    },
+                                    child: Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(12.0),
+                                        child: Row(
+                                          children: [
+                                            Icon(Icons.search),
+                                            Text(
+                                              'بحث',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                  fontFamily: 'Cairo',
+                                                  fontSize: 15),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              style: ButtonStyle(
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50.0),
-                                  ),
-                                ),
-                              ),
-                            )
+                                    ),
+                                    style: ButtonStyle(
+                                      shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(50.0),
+                                        ),
+                                      ),
+                                    ),
+                                  )
                           ],
                         ),
-                        Row(
-                          children: [
-                            Padding(
+                        isMobile
+                            ? Container()
+                            : Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          PatientScreen.isLoading = true;
+                                        });
+                                        Provider.of<PatientProvider>(context,
+                                                listen: false)
+                                            .getPatients(
+                                                Provider.of<UserProvier>(
+                                                        context,
+                                                        listen: false)
+                                                    .user
+                                                    .clincId,
+                                                context);
+                                        PatientInfoSideContainer
+                                            .setStateForAnimation(false);
+                                      },
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(12.0),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.refresh),
+                                              Text(
+                                                'تحد يث',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                    fontFamily: 'Cairo',
+                                                    fontSize: 15),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Colors.grey),
+                                        shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(50.0),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AddPatientScreen()),
+                                        );
+                                      },
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(12.0),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.add),
+                                              Text(
+                                                'إضافة مريض',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                    fontFamily: 'Cairo',
+                                                    fontSize: 15),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      style: ButtonStyle(
+                                        shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(50.0),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                      ],
+                    ),
+                  ),
+                ),
+                !isMobile
+                    ? Container()
+                    : Row(
+                        children: [
+                          Expanded(
+                            child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ElevatedButton(
                                 onPressed: () {
@@ -184,6 +296,8 @@ class _PatientScreenState extends State<PatientScreen>
                                   child: Padding(
                                     padding: const EdgeInsets.all(12.0),
                                     child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Icon(Icons.refresh),
                                         Text(
@@ -192,7 +306,7 @@ class _PatientScreenState extends State<PatientScreen>
                                               fontWeight: FontWeight.bold,
                                               color: Colors.white,
                                               fontFamily: 'Cairo',
-                                              fontSize: 15),
+                                              fontSize: 13),
                                         ),
                                       ],
                                     ),
@@ -210,7 +324,9 @@ class _PatientScreenState extends State<PatientScreen>
                                 ),
                               ),
                             ),
-                            Padding(
+                          ),
+                          Expanded(
+                            child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ElevatedButton(
                                 onPressed: () {
@@ -226,13 +342,15 @@ class _PatientScreenState extends State<PatientScreen>
                                     child: Row(
                                       children: [
                                         Icon(Icons.add),
-                                        Text(
-                                          'إضافة مريض',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                              fontFamily: 'Cairo',
-                                              fontSize: 15),
+                                        Flexible(
+                                          child: Text(
+                                            'إضافة مريض',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                                fontFamily: 'Cairo',
+                                                fontSize: 13),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -248,12 +366,9 @@ class _PatientScreenState extends State<PatientScreen>
                                 ),
                               ),
                             ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                ),
+                          ),
+                        ],
+                      ),
                 DottedLine(
                   direction: Axis.horizontal,
                   lineLength: double.infinity,
@@ -278,6 +393,7 @@ class _PatientScreenState extends State<PatientScreen>
                             child: Text(
                               'الإسم',
                               style: TextStyle(
+                                  fontSize: isMobile ? 12 : 14,
                                   color: Colors.blue,
                                   fontFamily: 'Cairo',
                                   fontWeight: FontWeight.bold),
@@ -289,6 +405,7 @@ class _PatientScreenState extends State<PatientScreen>
                             child: Text(
                               'رقم الهوية',
                               style: TextStyle(
+                                  fontSize: isMobile ? 12 : 14,
                                   color: Colors.blue,
                                   fontFamily: 'Cairo',
                                   fontWeight: FontWeight.bold),
@@ -300,6 +417,7 @@ class _PatientScreenState extends State<PatientScreen>
                             child: Text(
                               'تاريخ الإضافة',
                               style: TextStyle(
+                                  fontSize: isMobile ? 12 : 14,
                                   color: Colors.blue,
                                   fontFamily: 'Cairo',
                                   fontWeight: FontWeight.bold),
@@ -380,9 +498,16 @@ class _PatientScreenState extends State<PatientScreen>
                                       onTap: () {
                                         PatientScreen.selectedPatient =
                                             patProvider.searchList[index];
-
-                                        PatientInfoSideContainer
-                                            .setStateForAnimation(true);
+                                        if (isMobile) {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    PatientInfoScreen()),
+                                          );
+                                        } else {
+                                          PatientInfoSideContainer
+                                              .setStateForAnimation(true);
+                                        }
                                       },
                                       child: Container(
                                         height: 50,
@@ -407,6 +532,8 @@ class _PatientScreenState extends State<PatientScreen>
                                                             ? Colors.white
                                                             : Colors.black,
                                                         fontFamily: 'Cairo',
+                                                        fontSize:
+                                                            isMobile ? 12 : 14,
                                                         fontWeight:
                                                             FontWeight.bold),
                                                   ),
@@ -427,6 +554,8 @@ class _PatientScreenState extends State<PatientScreen>
                                                                 .isDark
                                                             ? Colors.white
                                                             : Colors.black,
+                                                        fontSize:
+                                                            isMobile ? 12 : 14,
                                                         fontFamily: 'Cairo',
                                                         fontWeight:
                                                             FontWeight.bold),
@@ -449,6 +578,8 @@ class _PatientScreenState extends State<PatientScreen>
                                                                 .isDark
                                                             ? Colors.white
                                                             : Colors.black,
+                                                        fontSize:
+                                                            isMobile ? 12 : 14,
                                                         fontFamily: 'Cairo',
                                                         fontWeight:
                                                             FontWeight.bold),

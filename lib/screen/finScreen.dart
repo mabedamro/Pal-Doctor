@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:desktop_version/models/bond.dart';
 import 'package:desktop_version/provider/bondsProvider.dart';
 import 'package:desktop_version/provider/darkModeProvider.dart';
@@ -8,6 +10,7 @@ import 'package:desktop_version/widgets.dart/addBondDialog.dart';
 import 'package:desktop_version/widgets.dart/bondsInfo.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 
 class FinScreen extends StatefulWidget {
@@ -43,6 +46,8 @@ class _FinScreenState extends State<FinScreen>
 
   @override
   Widget build(BuildContext context) {
+    bool isMobile = Platform.isAndroid || Platform.isIOS;
+    double width = MediaQuery.of(context).size.width;
     return Consumer<DarkModeProvider>(builder: (_, darkModeProvider, child) {
       return Consumer<BondsProvider>(builder: (context, bondsPrvider, child) {
         return Column(
@@ -55,785 +60,926 @@ class _FinScreenState extends State<FinScreen>
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                FinScreen.isLoading = true;
-                                all = true;
-                                AllIncrease = false;
-                                decrease = false;
-                                AllDecraese = false;
-                                decreaseEmp = false;
-                                today = true;
-                                calculateWithDate = false;
-                                yesterday = false;
-                                thisMonth = false;
-                                lastMonth = false;
-                                thisYear = false;
+                    SizedBox(
+                      width: isMobile ? width - 40 : width - 200,
+                      child: Row(
+                        children: [
+                          isMobile
+                              ? Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          FinScreen.isLoading = true;
+                                          all = true;
+                                          AllIncrease = false;
+                                          decrease = false;
+                                          AllDecraese = false;
+                                          decreaseEmp = false;
+                                          today = true;
+                                          calculateWithDate = false;
+                                          yesterday = false;
+                                          thisMonth = false;
+                                          lastMonth = false;
+                                          thisYear = false;
 
-                                Provider.of<BondsProvider>(context,
-                                        listen: false)
-                                    .getBonds(
-                                  Provider.of<UserProvier>(context,
-                                          listen: false)
-                                      .user
-                                      .clincId,
-                                  context,
-                                );
-                              });
-                            },
-                            child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.refresh),
-                                    Text(
-                                      'تحد يث',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                          fontFamily: 'Cairo',
-                                          fontSize: 15),
+                                          Provider.of<BondsProvider>(context,
+                                                  listen: false)
+                                              .getBonds(
+                                            Provider.of<UserProvier>(context,
+                                                    listen: false)
+                                                .user
+                                                .clincId,
+                                            context,
+                                          );
+                                        });
+                                      },
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(12.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(Icons.refresh),
+                                              Text(
+                                                'تحد يث',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                    fontFamily: 'Cairo',
+                                                    fontSize:
+                                                        isMobile ? 11 : 15),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Colors.grey),
+                                        shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(50.0),
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.grey),
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50.0),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (_) {
-                                  return AddBondDialog('decrease');
-                                },
-                              );
-                            },
-                            child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.add),
-                                    Text(
-                                      'إضافة فاتورة ',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                          fontFamily: 'Cairo',
-                                          fontSize: 15),
+                                  ),
+                                )
+                              : Container(),
+                          isMobile
+                              ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (_) {
+                                          return AddBondDialog('decrease');
+                                        },
+                                      );
+                                    },
+                                    child: Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(12.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.add),
+                                            Text(
+                                              'إضافة فاتورة ',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                  fontFamily: 'Cairo',
+                                                  fontSize: isMobile ? 11 : 15),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ),
-                                  ],
+                                    style: ButtonStyle(
+                                      shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(50.0),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Container(),
+                          isMobile
+                              ? Container()
+                              : Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        FinScreen.isLoading = true;
+                                        all = true;
+                                        AllIncrease = false;
+                                        decrease = false;
+                                        AllDecraese = false;
+                                        decreaseEmp = false;
+                                        today = true;
+                                        calculateWithDate = false;
+                                        yesterday = false;
+                                        thisMonth = false;
+                                        lastMonth = false;
+                                        thisYear = false;
+
+                                        Provider.of<BondsProvider>(context,
+                                                listen: false)
+                                            .getBonds(
+                                          Provider.of<UserProvier>(context,
+                                                  listen: false)
+                                              .user
+                                              .clincId,
+                                          context,
+                                        );
+                                      });
+                                    },
+                                    child: Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(12.0),
+                                        child: Row(
+                                          children: [
+                                            Icon(Icons.refresh),
+                                            Text(
+                                              'تحد يث',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                  fontFamily: 'Cairo',
+                                                  fontSize: isMobile ? 11 : 15),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.grey),
+                                      shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(50.0),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                            style: ButtonStyle(
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50.0),
+                          isMobile
+                              ? Container()
+                              : Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (_) {
+                                          return AddBondDialog('decrease');
+                                        },
+                                      );
+                                    },
+                                    child: Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(12.0),
+                                        child: Row(
+                                          children: [
+                                            Icon(Icons.add),
+                                            Text(
+                                              'إضافة فاتورة ',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                  fontFamily: 'Cairo',
+                                                  fontSize: isMobile ? 11 : 15),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    style: ButtonStyle(
+                                      shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(50.0),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Text(
-                          '${bondsPrvider.bondsSum} ₪',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: bondsPrvider.bondsSum >= 0
-                                  ? Colors.green
-                                  : Colors.red,
-                              fontFamily: 'Cairo',
-                              fontSize: 25),
-                        ),
-                      ],
+                          isMobile
+                              ? Container()
+                              : Text(
+                                  '${bondsPrvider.bondsSum} ₪',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: bondsPrvider.bondsSum >= 0
+                                          ? Colors.green
+                                          : Colors.red,
+                                      fontFamily: 'Cairo',
+                                      fontSize: 25),
+                                ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
             ),
+            !isMobile
+                ? Container()
+                : Text(
+                    '${bondsPrvider.bondsSum} ₪',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: bondsPrvider.bondsSum >= 0
+                            ? Colors.green
+                            : Colors.red,
+                        fontFamily: 'Cairo',
+                        fontSize: 25),
+                  ),
             Container(
-              height: 70,
+              height:isMobile? 100: 70,
               child: Column(
                 // mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Row(
-                    children: [
-                      Text(
-                        'عرض حسب السند : ',
-                        style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Cairo',
-                            fontSize: 15),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Row(
-                        children: [
-                          Checkbox(
-                              value: all,
-                              onChanged: (val) {
-                                if (val == true) {
-                                  setState(() {
-                                    all = val;
-                                    AllIncrease = false;
-                                    decrease = false;
-                                    AllDecraese = false;
-                                    decreaseEmp = false;
-                                    Provider.of<BondsProvider>(context,
-                                            listen: false)
-                                        .getSelectedBonds(
-                                      all: all,
-                                      AllIncrease: AllIncrease,
-                                      AllDecraese: AllDecraese,
-                                      today: today,
-                                      yesterday: yesterday,
-                                      decrease: decrease,
-                                      decreaseEmp: decreaseEmp,
-                                      toDate: toDate,
-                                      fromDate: fromDate,
-                                      thisYear: thisYear,
-                                      thisMonth: thisMonth,
-                                      lastMonth: lastMonth,
-                                      calculateWithDate: calculateWithDate,
-                                    );
-                                  });
-                                }
-                              }),
-                          Text(
-                            'عرض الكل,',
-                            style: TextStyle(
-                                fontFamily: 'Cairo',
-                                fontWeight: FontWeight.bold,
-                                color: Provider.of<DarkModeProvider>(context,
-                                            listen: false)
-                                        .isDark
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontSize: 15),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Row(
-                        children: [
-                          Checkbox(
-                              value: AllIncrease,
-                              onChanged: (val) {
-                                if (val == true) {
-                                  setState(() {
-                                    AllIncrease = val;
-                                    all = false;
-                                    decrease = false;
-                                    AllDecraese = false;
-                                    decreaseEmp = false;
-                                    Provider.of<BondsProvider>(context,
-                                            listen: false)
-                                        .getSelectedBonds(
-                                      all: all,
-                                      AllIncrease: AllIncrease,
-                                      AllDecraese: AllDecraese,
-                                      today: today,
-                                      yesterday: yesterday,
-                                      decrease: decrease,
-                                      decreaseEmp: decreaseEmp,
-                                      toDate: toDate,
-                                      fromDate: fromDate,
-                                      thisYear: thisYear,
-                                      thisMonth: thisMonth,
-                                      lastMonth: lastMonth,
-                                      calculateWithDate: calculateWithDate,
-                                    );
-                                  });
-                                }
-                              }),
-                          Text(
-                            'عرض سندات القبض,',
-                            style: TextStyle(
-                                fontFamily: 'Cairo',
-                                fontWeight: FontWeight.bold,
-                                color: Provider.of<DarkModeProvider>(context,
-                                            listen: false)
-                                        .isDark
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontSize: 15),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Row(
-                        children: [
-                          Checkbox(
-                              value: AllDecraese,
-                              onChanged: (val) {
-                                if (val == true) {
-                                  setState(() {
-                                    AllDecraese = val;
-                                    all = false;
-                                    decrease = false;
-                                    AllIncrease = false;
-                                    decreaseEmp = false;
-                                    Provider.of<BondsProvider>(context,
-                                            listen: false)
-                                        .getSelectedBonds(
-                                      all: all,
-                                      AllIncrease: AllIncrease,
-                                      AllDecraese: AllDecraese,
-                                      today: today,
-                                      yesterday: yesterday,
-                                      decrease: decrease,
-                                      decreaseEmp: decreaseEmp,
-                                      toDate: toDate,
-                                      fromDate: fromDate,
-                                      thisYear: thisYear,
-                                      thisMonth: thisMonth,
-                                      lastMonth: lastMonth,
-                                      calculateWithDate: calculateWithDate,
-                                    );
-                                  });
-                                }
-                              }),
-                          Text(
-                            'عرض سندات الصرف,',
-                            style: TextStyle(
-                                fontFamily: 'Cairo',
-                                fontWeight: FontWeight.bold,
-                                color: Provider.of<DarkModeProvider>(context,
-                                            listen: false)
-                                        .isDark
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontSize: 15),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Row(
-                        children: [
-                          Checkbox(
-                              value: decreaseEmp,
-                              onChanged: (val) {
-                                if (val == true) {
-                                  setState(() {
-                                    decreaseEmp = val;
-                                    all = false;
-                                    decrease = false;
-                                    AllDecraese = false;
-                                    AllIncrease = false;
-                                    Provider.of<BondsProvider>(context,
-                                            listen: false)
-                                        .getSelectedBonds(
-                                      all: all,
-                                      AllIncrease: AllIncrease,
-                                      AllDecraese: AllDecraese,
-                                      today: today,
-                                      yesterday: yesterday,
-                                      decrease: decrease,
-                                      decreaseEmp: decreaseEmp,
-                                      toDate: toDate,
-                                      fromDate: fromDate,
-                                      thisYear: thisYear,
-                                      thisMonth: thisMonth,
-                                      lastMonth: lastMonth,
-                                      calculateWithDate: calculateWithDate,
-                                    );
-                                  });
-                                }
-                              }),
-                          Text(
-                            'عرض مسحوبات الموظفين,',
-                            style: TextStyle(
-                                fontFamily: 'Cairo',
-                                fontWeight: FontWeight.bold,
-                                color: Provider.of<DarkModeProvider>(context,
-                                            listen: false)
-                                        .isDark
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontSize: 15),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Row(
-                        children: [
-                          Checkbox(
-                              value: decrease,
-                              onChanged: (val) {
-                                if (val == true) {
-                                  setState(() {
-                                    decrease = val;
-                                    all = false;
-                                    AllIncrease = false;
-                                    AllDecraese = false;
-                                    decreaseEmp = false;
-                                    Provider.of<BondsProvider>(context,
-                                            listen: false)
-                                        .getSelectedBonds(
-                                      all: all,
-                                      AllIncrease: AllIncrease,
-                                      AllDecraese: AllDecraese,
-                                      today: today,
-                                      yesterday: yesterday,
-                                      decrease: decrease,
-                                      decreaseEmp: decreaseEmp,
-                                      toDate: toDate,
-                                      fromDate: fromDate,
-                                      thisYear: thisYear,
-                                      thisMonth: thisMonth,
-                                      lastMonth: lastMonth,
-                                      calculateWithDate: calculateWithDate,
-                                    );
-                                  });
-                                }
-                              }),
-                          Text(
-                            'عرض فواتير,',
-                            style: TextStyle(
-                                fontFamily: 'Cairo',
-                                fontWeight: FontWeight.bold,
-                                color: Provider.of<DarkModeProvider>(context,
-                                            listen: false)
-                                        .isDark
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontSize: 15),
-                          ),
-                        ],
-                      ),
-                    ],
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        Text(
+                          'عرض حسب السند : ',
+                          style: TextStyle(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Cairo',
+                              fontSize: 15),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Row(
+                          children: [
+                            Checkbox(
+                                value: all,
+                                onChanged: (val) {
+                                  if (val == true) {
+                                    setState(() {
+                                      all = val;
+                                      AllIncrease = false;
+                                      decrease = false;
+                                      AllDecraese = false;
+                                      decreaseEmp = false;
+                                      Provider.of<BondsProvider>(context,
+                                              listen: false)
+                                          .getSelectedBonds(
+                                        all: all,
+                                        AllIncrease: AllIncrease,
+                                        AllDecraese: AllDecraese,
+                                        today: today,
+                                        yesterday: yesterday,
+                                        decrease: decrease,
+                                        decreaseEmp: decreaseEmp,
+                                        toDate: toDate,
+                                        fromDate: fromDate,
+                                        thisYear: thisYear,
+                                        thisMonth: thisMonth,
+                                        lastMonth: lastMonth,
+                                        calculateWithDate: calculateWithDate,
+                                      );
+                                    });
+                                  }
+                                }),
+                            Text(
+                              'عرض الكل,',
+                              style: TextStyle(
+                                  fontFamily: 'Cairo',
+                                  fontWeight: FontWeight.bold,
+                                  color: Provider.of<DarkModeProvider>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 15),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Row(
+                          children: [
+                            Checkbox(
+                                value: AllIncrease,
+                                onChanged: (val) {
+                                  if (val == true) {
+                                    setState(() {
+                                      AllIncrease = val;
+                                      all = false;
+                                      decrease = false;
+                                      AllDecraese = false;
+                                      decreaseEmp = false;
+                                      Provider.of<BondsProvider>(context,
+                                              listen: false)
+                                          .getSelectedBonds(
+                                        all: all,
+                                        AllIncrease: AllIncrease,
+                                        AllDecraese: AllDecraese,
+                                        today: today,
+                                        yesterday: yesterday,
+                                        decrease: decrease,
+                                        decreaseEmp: decreaseEmp,
+                                        toDate: toDate,
+                                        fromDate: fromDate,
+                                        thisYear: thisYear,
+                                        thisMonth: thisMonth,
+                                        lastMonth: lastMonth,
+                                        calculateWithDate: calculateWithDate,
+                                      );
+                                    });
+                                  }
+                                }),
+                            Text(
+                              'عرض سندات القبض,',
+                              style: TextStyle(
+                                  fontFamily: 'Cairo',
+                                  fontWeight: FontWeight.bold,
+                                  color: Provider.of<DarkModeProvider>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 15),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Row(
+                          children: [
+                            Checkbox(
+                                value: AllDecraese,
+                                onChanged: (val) {
+                                  if (val == true) {
+                                    setState(() {
+                                      AllDecraese = val;
+                                      all = false;
+                                      decrease = false;
+                                      AllIncrease = false;
+                                      decreaseEmp = false;
+                                      Provider.of<BondsProvider>(context,
+                                              listen: false)
+                                          .getSelectedBonds(
+                                        all: all,
+                                        AllIncrease: AllIncrease,
+                                        AllDecraese: AllDecraese,
+                                        today: today,
+                                        yesterday: yesterday,
+                                        decrease: decrease,
+                                        decreaseEmp: decreaseEmp,
+                                        toDate: toDate,
+                                        fromDate: fromDate,
+                                        thisYear: thisYear,
+                                        thisMonth: thisMonth,
+                                        lastMonth: lastMonth,
+                                        calculateWithDate: calculateWithDate,
+                                      );
+                                    });
+                                  }
+                                }),
+                            Text(
+                              'عرض سندات الصرف,',
+                              style: TextStyle(
+                                  fontFamily: 'Cairo',
+                                  fontWeight: FontWeight.bold,
+                                  color: Provider.of<DarkModeProvider>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 15),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Row(
+                          children: [
+                            Checkbox(
+                                value: decreaseEmp,
+                                onChanged: (val) {
+                                  if (val == true) {
+                                    setState(() {
+                                      decreaseEmp = val;
+                                      all = false;
+                                      decrease = false;
+                                      AllDecraese = false;
+                                      AllIncrease = false;
+                                      Provider.of<BondsProvider>(context,
+                                              listen: false)
+                                          .getSelectedBonds(
+                                        all: all,
+                                        AllIncrease: AllIncrease,
+                                        AllDecraese: AllDecraese,
+                                        today: today,
+                                        yesterday: yesterday,
+                                        decrease: decrease,
+                                        decreaseEmp: decreaseEmp,
+                                        toDate: toDate,
+                                        fromDate: fromDate,
+                                        thisYear: thisYear,
+                                        thisMonth: thisMonth,
+                                        lastMonth: lastMonth,
+                                        calculateWithDate: calculateWithDate,
+                                      );
+                                    });
+                                  }
+                                }),
+                            Text(
+                              'عرض مسحوبات الموظفين,',
+                              style: TextStyle(
+                                  fontFamily: 'Cairo',
+                                  fontWeight: FontWeight.bold,
+                                  color: Provider.of<DarkModeProvider>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 15),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Row(
+                          children: [
+                            Checkbox(
+                                value: decrease,
+                                onChanged: (val) {
+                                  if (val == true) {
+                                    setState(() {
+                                      decrease = val;
+                                      all = false;
+                                      AllIncrease = false;
+                                      AllDecraese = false;
+                                      decreaseEmp = false;
+                                      Provider.of<BondsProvider>(context,
+                                              listen: false)
+                                          .getSelectedBonds(
+                                        all: all,
+                                        AllIncrease: AllIncrease,
+                                        AllDecraese: AllDecraese,
+                                        today: today,
+                                        yesterday: yesterday,
+                                        decrease: decrease,
+                                        decreaseEmp: decreaseEmp,
+                                        toDate: toDate,
+                                        fromDate: fromDate,
+                                        thisYear: thisYear,
+                                        thisMonth: thisMonth,
+                                        lastMonth: lastMonth,
+                                        calculateWithDate: calculateWithDate,
+                                      );
+                                    });
+                                  }
+                                }),
+                            Text(
+                              'عرض فواتير,',
+                              style: TextStyle(
+                                  fontFamily: 'Cairo',
+                                  fontWeight: FontWeight.bold,
+                                  color: Provider.of<DarkModeProvider>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 15),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                  Row(
-                    // mainAxisAlignment: MainAxisAlignment.s,
-                    children: [
-                      Text(
-                        'عرض حسب المدة : ',
-                        style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Cairo',
-                            fontSize: 15),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Row(
-                        children: [
-                          Checkbox(
-                              value: today,
-                              onChanged: (val) {
-                                if (val == true) {
-                                  setState(() {
-                                    fromDate = null;
-                                    toDate = null;
-                                    today = val;
-                                    yesterday = false;
-                                    calculateWithDate = false;
-                                    thisMonth = false;
-                                    lastMonth = false;
-                                    thisYear = false;
-                                    Provider.of<BondsProvider>(context,
-                                            listen: false)
-                                        .getSelectedBonds(
-                                      all: all,
-                                      AllIncrease: AllIncrease,
-                                      AllDecraese: AllDecraese,
-                                      today: today,
-                                      yesterday: yesterday,
-                                      decrease: decrease,
-                                      decreaseEmp: decreaseEmp,
-                                      toDate: toDate,
-                                      fromDate: fromDate,
-                                      thisYear: thisYear,
-                                      thisMonth: thisMonth,
-                                      lastMonth: lastMonth,
-                                      calculateWithDate: calculateWithDate,
-                                    );
-                                  });
-                                }
-                              }),
-                          Text(
-                            'هذا اليوم,',
-                            style: TextStyle(
-                                fontFamily: 'Cairo',
-                                fontWeight: FontWeight.bold,
-                                color: Provider.of<DarkModeProvider>(context,
-                                            listen: false)
-                                        .isDark
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontSize: 15),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Row(
-                        children: [
-                          Checkbox(
-                              value: yesterday,
-                              onChanged: (val) {
-                                if (val == true) {
-                                  setState(() {
-                                    fromDate = null;
-                                    calculateWithDate = false;
-                                    toDate = null;
-                                    yesterday = val;
-                                    today = false;
-                                    thisMonth = false;
-                                    lastMonth = false;
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      // mainAxisAlignment: MainAxisAlignment.s,
+                      children: [
+                        Text(
+                          'عرض حسب المدة : ',
+                          style: TextStyle(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Cairo',
+                              fontSize: 15),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Row(
+                          children: [
+                            Checkbox(
+                                value: today,
+                                onChanged: (val) {
+                                  if (val == true) {
+                                    setState(() {
+                                      fromDate = null;
+                                      toDate = null;
+                                      today = val;
+                                      yesterday = false;
+                                      calculateWithDate = false;
+                                      thisMonth = false;
+                                      lastMonth = false;
+                                      thisYear = false;
+                                      Provider.of<BondsProvider>(context,
+                                              listen: false)
+                                          .getSelectedBonds(
+                                        all: all,
+                                        AllIncrease: AllIncrease,
+                                        AllDecraese: AllDecraese,
+                                        today: today,
+                                        yesterday: yesterday,
+                                        decrease: decrease,
+                                        decreaseEmp: decreaseEmp,
+                                        toDate: toDate,
+                                        fromDate: fromDate,
+                                        thisYear: thisYear,
+                                        thisMonth: thisMonth,
+                                        lastMonth: lastMonth,
+                                        calculateWithDate: calculateWithDate,
+                                      );
+                                    });
+                                  }
+                                }),
+                            Text(
+                              'هذا اليوم,',
+                              style: TextStyle(
+                                  fontFamily: 'Cairo',
+                                  fontWeight: FontWeight.bold,
+                                  color: Provider.of<DarkModeProvider>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 15),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Row(
+                          children: [
+                            Checkbox(
+                                value: yesterday,
+                                onChanged: (val) {
+                                  if (val == true) {
+                                    setState(() {
+                                      fromDate = null;
+                                      calculateWithDate = false;
+                                      toDate = null;
+                                      yesterday = val;
+                                      today = false;
+                                      thisMonth = false;
+                                      lastMonth = false;
 
-                                    thisYear = false;
-                                    Provider.of<BondsProvider>(context,
-                                            listen: false)
-                                        .getSelectedBonds(
-                                      all: all,
-                                      AllIncrease: AllIncrease,
-                                      AllDecraese: AllDecraese,
-                                      today: today,
-                                      yesterday: yesterday,
-                                      decrease: decrease,
-                                      decreaseEmp: decreaseEmp,
-                                      toDate: toDate,
-                                      fromDate: fromDate,
-                                      thisYear: thisYear,
-                                      thisMonth: thisMonth,
-                                      lastMonth: lastMonth,
-                                      calculateWithDate: calculateWithDate,
-                                    );
-                                  });
-                                }
-                              }),
-                          Text(
-                            'اليوم السابق,',
-                            style: TextStyle(
-                                fontFamily: 'Cairo',
-                                fontWeight: FontWeight.bold,
-                                color: Provider.of<DarkModeProvider>(context,
-                                            listen: false)
-                                        .isDark
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontSize: 15),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Row(
-                        children: [
-                          Checkbox(
-                              value: thisMonth,
-                              onChanged: (val) {
-                                if (val == true) {
-                                  setState(() {
-                                    fromDate = null;
-                                    toDate = null;
-                                    thisMonth = val;
-                                    yesterday = false;
-                                    today = false;
-                                    calculateWithDate = false;
-                                    lastMonth = false;
-                                    thisYear = false;
-                                    Provider.of<BondsProvider>(context,
-                                            listen: false)
-                                        .getSelectedBonds(
-                                      all: all,
-                                      AllIncrease: AllIncrease,
-                                      AllDecraese: AllDecraese,
-                                      today: today,
-                                      yesterday: yesterday,
-                                      decrease: decrease,
-                                      decreaseEmp: decreaseEmp,
-                                      toDate: toDate,
-                                      fromDate: fromDate,
-                                      thisYear: thisYear,
-                                      thisMonth: thisMonth,
-                                      lastMonth: lastMonth,
-                                      calculateWithDate: calculateWithDate,
-                                    );
-                                  });
-                                }
-                              }),
-                          Text(
-                            'هذا الشهر,',
-                            style: TextStyle(
-                                fontFamily: 'Cairo',
-                                fontWeight: FontWeight.bold,
-                                color: Provider.of<DarkModeProvider>(context,
-                                            listen: false)
-                                        .isDark
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontSize: 15),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Row(
-                        children: [
-                          Checkbox(
-                              value: lastMonth,
-                              onChanged: (val) {
-                                if (val == true) {
-                                  setState(() {
-                                    fromDate = null;
-                                    toDate = null;
-                                    lastMonth = val;
-                                    yesterday = false;
-                                    thisMonth = false;
-                                    today = false;
-                                    thisYear = false;
-                                    calculateWithDate = false;
-                                    Provider.of<BondsProvider>(context,
-                                            listen: false)
-                                        .getSelectedBonds(
-                                      all: all,
-                                      AllIncrease: AllIncrease,
-                                      AllDecraese: AllDecraese,
-                                      today: today,
-                                      yesterday: yesterday,
-                                      decrease: decrease,
-                                      decreaseEmp: decreaseEmp,
-                                      toDate: toDate,
-                                      fromDate: fromDate,
-                                      thisYear: thisYear,
-                                      thisMonth: thisMonth,
-                                      lastMonth: lastMonth,
-                                      calculateWithDate: calculateWithDate,
-                                    );
-                                  });
-                                }
-                              }),
-                          Text(
-                            'الشهر السابق,',
-                            style: TextStyle(
-                                fontFamily: 'Cairo',
-                                fontWeight: FontWeight.bold,
-                                color: Provider.of<DarkModeProvider>(context,
-                                            listen: false)
-                                        .isDark
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontSize: 15),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Row(
-                        children: [
-                          Checkbox(
-                              value: thisYear,
-                              onChanged: (val) {
-                                if (val == true) {
-                                  setState(() {
-                                    fromDate = null;
-                                    calculateWithDate = false;
-                                    toDate = null;
-                                    thisYear = val;
-                                    yesterday = false;
-                                    thisMonth = false;
-                                    lastMonth = false;
-                                    today = false;
-                                    Provider.of<BondsProvider>(context,
-                                            listen: false)
-                                        .getSelectedBonds(
-                                      all: all,
-                                      AllIncrease: AllIncrease,
-                                      AllDecraese: AllDecraese,
-                                      today: today,
-                                      yesterday: yesterday,
-                                      decrease: decrease,
-                                      decreaseEmp: decreaseEmp,
-                                      toDate: toDate,
-                                      fromDate: fromDate,
-                                      thisYear: thisYear,
-                                      thisMonth: thisMonth,
-                                      lastMonth: lastMonth,
-                                      calculateWithDate: calculateWithDate,
-                                    );
-                                  });
-                                }
-                              }),
-                          Text(
-                            'هذا العام,',
-                            style: TextStyle(
-                                fontFamily: 'Cairo',
-                                fontWeight: FontWeight.bold,
-                                color: Provider.of<DarkModeProvider>(context,
-                                            listen: false)
-                                        .isDark
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontSize: 15),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        'تحد يد تاريخ:  ',
-                        style: TextStyle(
-                            fontFamily: 'Cairo',
-                            fontWeight: FontWeight.bold,
-                            color: Provider.of<DarkModeProvider>(context,
-                                        listen: false)
-                                    .isDark
-                                ? Colors.white
-                                : Colors.black,
-                            fontSize: 15),
-                      ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          fromDate = await _selectDate(context);
-                          setState(() {});
-                        },
-                        child: Center(
-                          child: Text(
-                            fromDate == null
-                                ? 'من'
-                                : DateTimeProvider.date(fromDate),
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontFamily: 'Cairo',
-                                fontSize: 15),
-                          ),
+                                      thisYear = false;
+                                      Provider.of<BondsProvider>(context,
+                                              listen: false)
+                                          .getSelectedBonds(
+                                        all: all,
+                                        AllIncrease: AllIncrease,
+                                        AllDecraese: AllDecraese,
+                                        today: today,
+                                        yesterday: yesterday,
+                                        decrease: decrease,
+                                        decreaseEmp: decreaseEmp,
+                                        toDate: toDate,
+                                        fromDate: fromDate,
+                                        thisYear: thisYear,
+                                        thisMonth: thisMonth,
+                                        lastMonth: lastMonth,
+                                        calculateWithDate: calculateWithDate,
+                                      );
+                                    });
+                                  }
+                                }),
+                            Text(
+                              'اليوم السابق,',
+                              style: TextStyle(
+                                  fontFamily: 'Cairo',
+                                  fontWeight: FontWeight.bold,
+                                  color: Provider.of<DarkModeProvider>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 15),
+                            ),
+                          ],
                         ),
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.grey),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50.0),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Row(
+                          children: [
+                            Checkbox(
+                                value: thisMonth,
+                                onChanged: (val) {
+                                  if (val == true) {
+                                    setState(() {
+                                      fromDate = null;
+                                      toDate = null;
+                                      thisMonth = val;
+                                      yesterday = false;
+                                      today = false;
+                                      calculateWithDate = false;
+                                      lastMonth = false;
+                                      thisYear = false;
+                                      Provider.of<BondsProvider>(context,
+                                              listen: false)
+                                          .getSelectedBonds(
+                                        all: all,
+                                        AllIncrease: AllIncrease,
+                                        AllDecraese: AllDecraese,
+                                        today: today,
+                                        yesterday: yesterday,
+                                        decrease: decrease,
+                                        decreaseEmp: decreaseEmp,
+                                        toDate: toDate,
+                                        fromDate: fromDate,
+                                        thisYear: thisYear,
+                                        thisMonth: thisMonth,
+                                        lastMonth: lastMonth,
+                                        calculateWithDate: calculateWithDate,
+                                      );
+                                    });
+                                  }
+                                }),
+                            Text(
+                              'هذا الشهر,',
+                              style: TextStyle(
+                                  fontFamily: 'Cairo',
+                                  fontWeight: FontWeight.bold,
+                                  color: Provider.of<DarkModeProvider>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 15),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Row(
+                          children: [
+                            Checkbox(
+                                value: lastMonth,
+                                onChanged: (val) {
+                                  if (val == true) {
+                                    setState(() {
+                                      fromDate = null;
+                                      toDate = null;
+                                      lastMonth = val;
+                                      yesterday = false;
+                                      thisMonth = false;
+                                      today = false;
+                                      thisYear = false;
+                                      calculateWithDate = false;
+                                      Provider.of<BondsProvider>(context,
+                                              listen: false)
+                                          .getSelectedBonds(
+                                        all: all,
+                                        AllIncrease: AllIncrease,
+                                        AllDecraese: AllDecraese,
+                                        today: today,
+                                        yesterday: yesterday,
+                                        decrease: decrease,
+                                        decreaseEmp: decreaseEmp,
+                                        toDate: toDate,
+                                        fromDate: fromDate,
+                                        thisYear: thisYear,
+                                        thisMonth: thisMonth,
+                                        lastMonth: lastMonth,
+                                        calculateWithDate: calculateWithDate,
+                                      );
+                                    });
+                                  }
+                                }),
+                            Text(
+                              'الشهر السابق,',
+                              style: TextStyle(
+                                  fontFamily: 'Cairo',
+                                  fontWeight: FontWeight.bold,
+                                  color: Provider.of<DarkModeProvider>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 15),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Row(
+                          children: [
+                            Checkbox(
+                                value: thisYear,
+                                onChanged: (val) {
+                                  if (val == true) {
+                                    setState(() {
+                                      fromDate = null;
+                                      calculateWithDate = false;
+                                      toDate = null;
+                                      thisYear = val;
+                                      yesterday = false;
+                                      thisMonth = false;
+                                      lastMonth = false;
+                                      today = false;
+                                      Provider.of<BondsProvider>(context,
+                                              listen: false)
+                                          .getSelectedBonds(
+                                        all: all,
+                                        AllIncrease: AllIncrease,
+                                        AllDecraese: AllDecraese,
+                                        today: today,
+                                        yesterday: yesterday,
+                                        decrease: decrease,
+                                        decreaseEmp: decreaseEmp,
+                                        toDate: toDate,
+                                        fromDate: fromDate,
+                                        thisYear: thisYear,
+                                        thisMonth: thisMonth,
+                                        lastMonth: lastMonth,
+                                        calculateWithDate: calculateWithDate,
+                                      );
+                                    });
+                                  }
+                                }),
+                            Text(
+                              'هذا العام,',
+                              style: TextStyle(
+                                  fontFamily: 'Cairo',
+                                  fontWeight: FontWeight.bold,
+                                  color: Provider.of<DarkModeProvider>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 15),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'تحد يد تاريخ:  ',
+                          style: TextStyle(
+                              fontFamily: 'Cairo',
+                              fontWeight: FontWeight.bold,
+                              color: Provider.of<DarkModeProvider>(context,
+                                          listen: false)
+                                      .isDark
+                                  ? Colors.white
+                                  : Colors.black,
+                              fontSize: 15),
+                        ),
+                        ElevatedButton(
+                          onPressed: () async {
+                            fromDate = await _selectDate(context);
+                            setState(() {});
+                          },
+                          child: Center(
+                            child: Text(
+                              fromDate == null
+                                  ? 'من'
+                                  : DateTimeProvider.date(fromDate),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontFamily: 'Cairo',
+                                  fontSize: 15),
+                            ),
+                          ),
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.grey),
+                            shape:
+                                MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50.0),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          toDate = await _selectDate(context);
-                          setState(() {});
-                        },
-                        child: Center(
-                          child: Text(
-                            toDate == null
-                                ? 'إلى'
-                                : DateTimeProvider.date(toDate),
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontFamily: 'Cairo',
-                                fontSize: 15),
-                          ),
+                        SizedBox(
+                          width: 5,
                         ),
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.grey),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50.0),
+                        ElevatedButton(
+                          onPressed: () async {
+                            toDate = await _selectDate(context);
+                            setState(() {});
+                          },
+                          child: Center(
+                            child: Text(
+                              toDate == null
+                                  ? 'إلى'
+                                  : DateTimeProvider.date(toDate),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontFamily: 'Cairo',
+                                  fontSize: 15),
+                            ),
+                          ),
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.grey),
+                            shape:
+                                MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50.0),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            thisMonth = false;
-                            yesterday = false;
-                            today = false;
-                            lastMonth = false;
-                            thisYear = false;
-                            calculateWithDate = true;
-                            Provider.of<BondsProvider>(context, listen: false)
-                                .getSelectedBonds(
-                              all: all,
-                              AllIncrease: AllIncrease,
-                              AllDecraese: AllDecraese,
-                              today: today,
-                              yesterday: yesterday,
-                              decrease: decrease,
-                              decreaseEmp: decreaseEmp,
-                              toDate: toDate,
-                              fromDate: fromDate,
-                              thisYear: thisYear,
-                              thisMonth: thisMonth,
-                              lastMonth: lastMonth,
-                              calculateWithDate: calculateWithDate,
-                            );
-                          });
-                        },
-                        child: Center(
-                          child: Text(
-                            'حساب',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontFamily: 'Cairo',
-                                fontSize: 15),
-                          ),
+                        SizedBox(
+                          width: 5,
                         ),
-                        style: ButtonStyle(
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50.0),
+                        ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              thisMonth = false;
+                              yesterday = false;
+                              today = false;
+                              lastMonth = false;
+                              thisYear = false;
+                              calculateWithDate = true;
+                              Provider.of<BondsProvider>(context, listen: false)
+                                  .getSelectedBonds(
+                                all: all,
+                                AllIncrease: AllIncrease,
+                                AllDecraese: AllDecraese,
+                                today: today,
+                                yesterday: yesterday,
+                                decrease: decrease,
+                                decreaseEmp: decreaseEmp,
+                                toDate: toDate,
+                                fromDate: fromDate,
+                                thisYear: thisYear,
+                                thisMonth: thisMonth,
+                                lastMonth: lastMonth,
+                                calculateWithDate: calculateWithDate,
+                              );
+                            });
+                          },
+                          child: Center(
+                            child: Text(
+                              'حساب',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontFamily: 'Cairo',
+                                  fontSize: 15),
+                            ),
+                          ),
+                          style: ButtonStyle(
+                            shape:
+                                MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50.0),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
-
             // FinWidget(),
             DottedLine(
               direction: Axis.horizontal,
@@ -861,6 +1007,7 @@ class _FinScreenState extends State<FinScreen>
                           style: TextStyle(
                               color: Colors.blue,
                               fontFamily: 'Cairo',
+                              fontSize: isMobile? 12:14,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -872,6 +1019,7 @@ class _FinScreenState extends State<FinScreen>
                           style: TextStyle(
                               color: Colors.blue,
                               fontFamily: 'Cairo',
+                              fontSize: isMobile? 12:14,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -883,6 +1031,7 @@ class _FinScreenState extends State<FinScreen>
                           style: TextStyle(
                               color: Colors.blue,
                               fontFamily: 'Cairo',
+                              fontSize: isMobile? 12:14,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -894,6 +1043,7 @@ class _FinScreenState extends State<FinScreen>
                           style: TextStyle(
                               color: Colors.blue,
                               fontFamily: 'Cairo',
+                              fontSize: isMobile? 12:14,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -975,7 +1125,7 @@ class _FinScreenState extends State<FinScreen>
                                       );
                                     },
                                     child: Container(
-                                      height: 50,
+                                      height: isMobile?90 : 50,
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Row(
@@ -988,6 +1138,7 @@ class _FinScreenState extends State<FinScreen>
                                                   getDescription(bondsPrvider
                                                       .tempBonds[index]),
                                                   style: TextStyle(
+                              fontSize: isMobile? 12:14,
                                                       fontFamily: 'Cairo',
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -1008,6 +1159,7 @@ class _FinScreenState extends State<FinScreen>
                                                   getAmount(bondsPrvider
                                                       .tempBonds[index]),
                                                   style: TextStyle(
+                              fontSize: isMobile? 12:14,
                                                       fontFamily: 'Cairo',
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -1028,6 +1180,7 @@ class _FinScreenState extends State<FinScreen>
                                                   getDate(bondsPrvider
                                                       .tempBonds[index]),
                                                   style: TextStyle(
+                              fontSize: isMobile? 12:14,
                                                       fontFamily: 'Cairo',
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -1048,6 +1201,7 @@ class _FinScreenState extends State<FinScreen>
                                                   getUserName(bondsPrvider
                                                       .tempBonds[index]),
                                                   style: TextStyle(
+                              fontSize: isMobile? 12:14,
                                                       fontFamily: 'Cairo',
                                                       fontWeight:
                                                           FontWeight.bold,

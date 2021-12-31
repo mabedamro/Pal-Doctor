@@ -1,10 +1,15 @@
+import 'dart:io';
+
+import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
+import 'package:desktop_version/screen/settingsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class LogoutConfirmDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    bool isMobile = Platform.isAndroid || Platform.isIOS;
     var feildStyle =
         TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.bold);
     double width = MediaQuery.of(context).size.width;
@@ -13,23 +18,32 @@ class LogoutConfirmDialog extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: AlertDialog(
+        backgroundColor:
+            Provider.of<DarkModeProvider>(context, listen: false).isDark
+                ? SettingsScreen.darkMode2
+                : Colors.white,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             new Text(
               'هل تريد تسجيل الخروج؟',
               style: TextStyle(
+                  color: Provider.of<DarkModeProvider>(context, listen: false)
+                          .isDark
+                      ? Colors.white
+                      : Colors.black,
                   fontFamily: 'Cairo',
                   fontWeight: FontWeight.bold,
-                  fontSize: 25),
+                  fontSize: isMobile ? 15 : 25),
             ),
           ],
         ),
         content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
               height: 50,
-              width: 200,
+              width: isMobile ? 100 : 200,
               child: ElevatedButton(
                 onPressed: () {
                   Provider.of<UserProvier>(context, listen: false)
@@ -37,14 +51,14 @@ class LogoutConfirmDialog extends StatelessWidget {
                 },
                 child: Center(
                   child: Padding(
-                    padding: const EdgeInsets.all(12.0),
+                    padding: isMobile?const EdgeInsets.all(5.0): const EdgeInsets.all(12.0),
                     child: Text(
-                      'تسجيل الخروج',
+                      'خروج',
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Cairo',
-                          fontSize: 15),
+                          fontSize: isMobile ? 12 : 15),
                     ),
                   ),
                 ),
@@ -57,24 +71,26 @@ class LogoutConfirmDialog extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(width: 10,),
+            SizedBox(
+              width:isMobile? 3: 10,
+            ),
             SizedBox(
               height: 50,
-              width: 200,
+              width: isMobile ? 100 : 200,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
                 child: Center(
                   child: Padding(
-                    padding: const EdgeInsets.all(12.0),
+                    padding:isMobile?const EdgeInsets.all(5.0): const EdgeInsets.all(12.0),
                     child: Text(
                       'إلغاء',
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Cairo',
-                          fontSize: 15),
+                          fontSize: isMobile ? 12 : 15),
                     ),
                   ),
                 ),

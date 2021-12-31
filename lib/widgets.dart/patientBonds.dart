@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:desktop_version/models/bond.dart';
 import 'package:desktop_version/models/patient.dart';
 import 'package:desktop_version/models/user.dart';
@@ -38,6 +40,7 @@ class _PatientBondsDialogState extends State<PatientBondsDialog> {
 
   @override
   Widget build(BuildContext context) {
+    bool isMobile = Platform.isAndroid || Platform.isIOS;
     double width = MediaQuery.of(context).size.width;
 
     double height = MediaQuery.of(context).size.height;
@@ -47,7 +50,13 @@ class _PatientBondsDialogState extends State<PatientBondsDialog> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(widget.p.name,style: TextStyle(fontFamily: 'Cairo',fontWeight: FontWeight.bold,fontSize: 25),),
+            Text(
+              widget.p.name,
+              style: TextStyle(
+                  fontFamily: 'Cairo',
+                  fontWeight: FontWeight.bold,
+                  fontSize: isMobile ? 20 : 25),
+            ),
             IconButton(
                 icon: Icon(Icons.close),
                 onPressed: () {
@@ -86,6 +95,7 @@ class _PatientBondsDialogState extends State<PatientBondsDialog> {
                             style: TextStyle(
                                 color: Colors.blue,
                                 fontFamily: 'Cairo',
+                                fontSize: isMobile ? 11 : 14,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -97,6 +107,7 @@ class _PatientBondsDialogState extends State<PatientBondsDialog> {
                             style: TextStyle(
                                 color: Colors.blue,
                                 fontFamily: 'Cairo',
+                                fontSize: isMobile ? 11 : 14,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -108,6 +119,7 @@ class _PatientBondsDialogState extends State<PatientBondsDialog> {
                             style: TextStyle(
                                 color: Colors.blue,
                                 fontFamily: 'Cairo',
+                                fontSize: isMobile ? 11 : 14,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -135,9 +147,10 @@ class _PatientBondsDialogState extends State<PatientBondsDialog> {
                     return isLoading
                         ? Center(
                             child: SizedBox(
-                                height: 50,
-                                width: 50,
-                                child: CircularProgressIndicator())) : bondsProvider.patBonds.length == 0
+                                height: isMobile ? 30 : 50,
+                                width: isMobile ? 30 : 50,
+                                child: CircularProgressIndicator()))
+                        : bondsProvider.patBonds.length == 0
                             ? Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -150,73 +163,85 @@ class _PatientBondsDialogState extends State<PatientBondsDialog> {
                                     Text(
                                       'لا توجد بيانات لعرضها',
                                       style: TextStyle(
-                                          fontFamily: 'Cairo',color: Provider.of<DarkModeProvider>(context, listen: false).isDark
-            ? Colors.white
-            : Colors.black,
+                                          fontFamily: 'Cairo',
+                                          color: Provider.of<DarkModeProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .isDark
+                                              ? Colors.white
+                                              : Colors.black,
                                           fontWeight: FontWeight.bold),
                                     )
                                   ],
                                 ),
                               )
                             : ListView.builder(
-                            itemCount: bondsProvider.patBonds.length,
-                            itemBuilder: (_, index) {
-                              return Card(
-                                child: InkWell(
-                                  child: Container(
-                                    height: 50,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            child: Center(
-                                              child: Text(
-                                                bondsProvider
-                                                    .patBonds[index].amount
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    fontFamily: 'Cairo',
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Center(
-                                              child: Text(
-                                                DateTimeProvider.dateAndTime(
+                                itemCount: bondsProvider.patBonds.length,
+                                itemBuilder: (_, index) {
+                                  return Card(
+                                    child: InkWell(
+                                      child: Container(
+                                        height: 50,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: Center(
+                                                  child: Text(
                                                     bondsProvider
-                                                        .patBonds[index].date),
-                                                style: TextStyle(
-                                                    fontFamily: 'Cairo',
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                                        .patBonds[index].amount
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                        fontFamily: 'Cairo',
+                                                        fontSize:
+                                                            isMobile ? 11 : 14,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Center(
-                                              child: Text(
-                                                bondsProvider
-                                                    .patBonds[index].userName,
-                                                style: TextStyle(
-                                                    fontFamily: 'Cairo',
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                              Expanded(
+                                                child: Center(
+                                                  child: Text(
+                                                    DateTimeProvider.date(
+                                                        bondsProvider
+                                                            .patBonds[index]
+                                                            .date),
+                                                    style: TextStyle(
+                                                        fontFamily: 'Cairo',
+                                                        fontSize:
+                                                            isMobile ? 11 : 14,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
+                                              Expanded(
+                                                child: Center(
+                                                  child: Text(
+                                                    bondsProvider
+                                                        .patBonds[index]
+                                                        .userName,
+                                                    style: TextStyle(
+                                                        fontFamily: 'Cairo',
+                                                        fontSize:
+                                                            isMobile ? 11 : 14,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
+                                  );
+                                },
                               );
-                            },
-                          );
                   }),
                 ),
               ),

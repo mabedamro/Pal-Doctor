@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:desktop_version/models/bond.dart';
 import 'package:desktop_version/models/patDate.dart';
 import 'package:desktop_version/models/patient.dart';
@@ -58,6 +60,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
 
   @override
   Widget build(BuildContext context) {
+    bool isMobile = Platform.isAndroid || Platform.isIOS;
     var feildStyle = TextStyle(
       fontFamily: 'Cairo',
       fontWeight: FontWeight.bold,
@@ -94,30 +97,36 @@ class _AddDateDialogState extends State<AddDateDialog> {
                                       ? Colors.white
                                       : Colors.black,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 25),
+                                  fontSize: isMobile ? 20 : 25),
                             ),
                           ],
                         ),
                       ],
                     ),
                     IconButton(
-                        icon: Icon(Icons.close,color: Provider.of<DarkModeProvider>(context,
-                                              listen: false)
-                                          .isDark
-                                      ? Colors.white
-                                      : Colors.black,),
+                        icon: Icon(
+                          Icons.close,
+                          color: Provider.of<DarkModeProvider>(context,
+                                      listen: false)
+                                  .isDark
+                              ? Colors.white
+                              : Colors.black,
+                        ),
                         onPressed: () {
                           Navigator.pop(context);
                         }),
                   ],
                 ),
                 content: SizedBox(
-                  width: width / 2,
-                  height: 400,
+                  width: isMobile ? width : width / 2,
+                  height: isMobile ? height / 2 : 400,
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
                         Row(
+                          mainAxisAlignment: isMobile
+                              ? MainAxisAlignment.center
+                              : MainAxisAlignment.start,
                           children: [
                             ElevatedButton(
                               onPressed: () async {
@@ -151,7 +160,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
                               ),
                             ),
                             SizedBox(
-                              width: 10,
+                              width: 5,
                             ),
                             ElevatedButton(
                               onPressed: () async {
@@ -212,37 +221,41 @@ class _AddDateDialogState extends State<AddDateDialog> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 15.0),
-                          child: TextFormField(
-                            controller: noteController,
-                            style: feildStyle,
-                            cursorColor: Colors.blue,
-                            decoration: new InputDecoration(
-                              prefixIcon: Icon(
-                                Icons.account_circle,
-                                color: Provider.of<DarkModeProvider>(context,
-                                            listen: false)
-                                        .isDark
-                                    ? Colors.white
-                                    : Colors.black,
-                              ),
-                              labelText: "ملاحظات", labelStyle: feildStyle,
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: new BorderRadius.circular(60.0),
-                                borderSide: BorderSide(color: Colors.blue),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: new BorderRadius.circular(60.0),
-                                borderSide: BorderSide(
+                        SizedBox(
+                          height: isMobile ? 80 : 90,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 15.0),
+                            child: TextFormField(
+                              controller: noteController,
+                              style: feildStyle,
+                              cursorColor: Colors.blue,
+                              decoration: new InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.account_circle,
                                   color: Provider.of<DarkModeProvider>(context,
                                               listen: false)
                                           .isDark
                                       ? Colors.white
                                       : Colors.black,
                                 ),
+                                labelText: "ملاحظات", labelStyle: feildStyle,
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: new BorderRadius.circular(60.0),
+                                  borderSide: BorderSide(color: Colors.blue),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: new BorderRadius.circular(60.0),
+                                  borderSide: BorderSide(
+                                    color: Provider.of<DarkModeProvider>(
+                                                context,
+                                                listen: false)
+                                            .isDark
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
+                                ),
+                                //fillColor: Colors.green),
                               ),
-                              //fillColor: Colors.green),
                             ),
                           ),
                         ),
@@ -259,7 +272,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
                                       ? Colors.white
                                       : Colors.black,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 20),
+                                  fontSize: isMobile ? 15 : 20),
                             ),
                             Text(
                               Provider.of<UserProvier>(context, listen: false)
@@ -269,12 +282,12 @@ class _AddDateDialogState extends State<AddDateDialog> {
                                   fontFamily: 'Cairo',
                                   fontWeight: FontWeight.bold,
                                   color: Colors.blue,
-                                  fontSize: 20),
+                                  fontSize: isMobile ? 15 : 20),
                             ),
                           ],
                         ),
                         SizedBox(
-                          height: 80,
+                          height: isMobile ? 60 : 80,
                           width: 300,
                           child: Padding(
                             padding: const EdgeInsets.only(top: 8.0),

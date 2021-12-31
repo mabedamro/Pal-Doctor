@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:desktop_version/models/case.dart';
 import 'package:desktop_version/models/patient.dart';
 import 'package:desktop_version/provider/darkModeProvider.dart';
@@ -54,6 +56,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
   final focusNotes = FocusNode();
   @override
   Widget build(BuildContext context) {
+    bool isMobile = Platform.isAndroid || Platform.isIOS;
     double width = MediaQuery.of(context).size.width;
     final color = Colors.blue;
     var feildStyle = TextStyle(
@@ -62,6 +65,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
       color: Provider.of<DarkModeProvider>(context, listen: false).isDark
           ? Colors.white
           : Colors.black,
+          fontSize: isMobile?13:16,
     );
     return Directionality(
         textDirection: TextDirection.rtl,
@@ -92,19 +96,21 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                       Navigator.of(context).pop();
                     },
                     child: SizedBox(
-                      width: 200,
+                      width: isMobile ? 30 : 200,
                       child: Center(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              'رجوع',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Cairo',
-                                  fontSize: 15),
-                            ),
+                            isMobile
+                                ? Container()
+                                : Text(
+                                    'رجوع',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Cairo',
+                                        fontSize: 15),
+                                  ),
                             Icon(Icons.arrow_forward_ios_outlined)
                           ],
                         ),
@@ -134,13 +140,13 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                       ? SettingsScreen.darkMode2
                       : Colors.white,
                   padding: EdgeInsets.all(15),
-                  width: width - width / 2,
+                  width: isMobile? width: width - width / 2,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
                         Icons.assignment_ind_rounded,
-                        size: 120,
+                        size: isMobile?80 :120,
                         color: Colors.blue,
                       ),
                       Padding(
@@ -553,7 +559,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           SizedBox(
-                            width: width / 2,
+                            width: isMobile?width : width / 2,
                             child: Row(
                               children: [
                                 Expanded(

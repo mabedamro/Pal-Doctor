@@ -1,3 +1,6 @@
+
+import 'dart:io';
+
 import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/homeScreen.dart';
@@ -19,6 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool isMobile = Platform.isAndroid || Platform.isIOS;
     tryToLogin(context);
     return Scaffold(
       backgroundColor:
@@ -35,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 Provider.of<DarkModeProvider>(context, listen: false).isDark
                     ? 'assets/images/drawingDark.svg'
                     : 'assets/images/drawing.svg',
-                width: 300,
+                width: isMobile? 160: 300,
               ),
             ),
             isNoInterNet
@@ -79,7 +83,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     ),
                   )
                 : SizedBox(
-                    width: 30, height: 30, child: CircularProgressIndicator())
+                    width: isMobile?20:30, height: isMobile?20:30, child: CircularProgressIndicator())
           ],
         ),
       ),

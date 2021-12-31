@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:desktop_version/models/user.dart';
 import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/employeesProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/addEmployee.dart';
+import 'package:desktop_version/screen/employeeInformationScreen.dart';
 import 'package:desktop_version/screen/settingsScreen.dart';
 import 'package:desktop_version/widgets.dart/patinetInfoSideContainer.dart';
 import 'package:dotted_line/dotted_line.dart';
@@ -40,6 +43,8 @@ class _EmployeeScreenState extends State<EmployeeScreen>
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    bool isMobile = Platform.isAndroid || Platform.isIOS;
     TextEditingController searchController = TextEditingController();
     final tableHeadersStyle =
         TextStyle(color: Colors.blue, fontWeight: FontWeight.bold);
@@ -60,7 +65,8 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                         Row(
                           children: [
                             SizedBox(
-                              width: 400,
+                              width: isMobile ? width - 42 : 400,
+                              height: 50,
                               child: TextField(
                                 controller: searchController,
                                 onSubmitted: (val) {
@@ -122,44 +128,154 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                             SizedBox(
                               width: 10,
                             ),
-                            ElevatedButton(
-                              onPressed: () {
-                                Provider.of<EmployeesProvider>(context,
-                                        listen: false)
-                                    .search(searchController.text);
-                              },
-                              child: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.search),
-                                      Text(
-                                        'بحث',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                            fontFamily: 'Cairo',
-                                            fontSize: 15),
+                            isMobile
+                                ? Container()
+                                : ElevatedButton(
+                                    onPressed: () {
+                                      Provider.of<EmployeesProvider>(context,
+                                              listen: false)
+                                          .search(searchController.text);
+                                    },
+                                    child: Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(12.0),
+                                        child: Row(
+                                          children: [
+                                            Icon(Icons.search),
+                                            Text(
+                                              'بحث',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                  fontFamily: 'Cairo',
+                                                  fontSize: 15),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              style: ButtonStyle(
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50.0),
-                                  ),
-                                ),
-                              ),
-                            )
+                                    ),
+                                    style: ButtonStyle(
+                                      shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(50.0),
+                                        ),
+                                      ),
+                                    ),
+                                  )
                           ],
                         ),
-                        Row(
-                          children: [
-                            Padding(
+                        isMobile
+                            ? Container()
+                            : Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ElevatedButton(
+                                      onPressed: () async {
+                                        setState(() {
+                                          isLoading = true;
+                                        });
+                                        EmployeeInfoSideContainer
+                                            .setStateForAnimation(false);
+                                        await Provider.of<EmployeesProvider>(
+                                                context,
+                                                listen: false)
+                                            .getEmployee(
+                                                Provider.of<UserProvier>(
+                                                        context,
+                                                        listen: false)
+                                                    .user
+                                                    .clincId,
+                                                context);
+                                        setState(() {
+                                          isLoading = false;
+                                        });
+                                      },
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(12.0),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.refresh),
+                                              Text(
+                                                'تحد يث',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                    fontFamily: 'Cairo',
+                                                    fontSize: 15),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Colors.grey),
+                                        shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(50.0),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AddEmployee()),
+                                        );
+                                      },
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(12.0),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.add),
+                                              Text(
+                                                'إضافة موظف',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                    fontFamily: 'Cairo',
+                                                    fontSize: 15),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      style: ButtonStyle(
+                                        shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(50.0),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                      ],
+                    ),
+                  ),
+                ),
+                !isMobile
+                    ? Container()
+                    : Row(
+                        children: [
+                          Expanded(
+                            child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ElevatedButton(
                                 onPressed: () async {
@@ -184,6 +300,8 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                                   child: Padding(
                                     padding: const EdgeInsets.all(12.0),
                                     child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Icon(Icons.refresh),
                                         Text(
@@ -192,7 +310,7 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                                               fontWeight: FontWeight.bold,
                                               color: Colors.white,
                                               fontFamily: 'Cairo',
-                                              fontSize: 15),
+                                              fontSize: 12),
                                         ),
                                       ],
                                     ),
@@ -210,7 +328,9 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                                 ),
                               ),
                             ),
-                            Padding(
+                          ),
+                          Expanded(
+                            child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ElevatedButton(
                                 onPressed: () {
@@ -231,7 +351,7 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                                               fontWeight: FontWeight.bold,
                                               color: Colors.white,
                                               fontFamily: 'Cairo',
-                                              fontSize: 15),
+                                              fontSize: 12),
                                         ),
                                       ],
                                     ),
@@ -247,12 +367,9 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                          ),
+                        ],
+                      ),
                 DottedLine(
                   direction: Axis.horizontal,
                   lineLength: double.infinity,
@@ -279,6 +396,7 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                               style: TextStyle(
                                   color: Colors.blue,
                                   fontFamily: 'Cairo',
+                                  fontSize: isMobile ? 12 : 14,
                                   fontWeight: FontWeight.bold),
                             ),
                           ),
@@ -290,6 +408,7 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                               style: TextStyle(
                                   color: Colors.blue,
                                   fontFamily: 'Cairo',
+                                  fontSize: isMobile ? 12 : 14,
                                   fontWeight: FontWeight.bold),
                             ),
                           ),
@@ -301,6 +420,7 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                               style: TextStyle(
                                   color: Colors.blue,
                                   fontFamily: 'Cairo',
+                                  fontSize: isMobile ? 12 : 14,
                                   fontWeight: FontWeight.bold),
                             ),
                           ),
@@ -376,17 +496,35 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                                                 ? Colors.grey[700]
                                                 : Colors.grey[300],
                                         onTap: () {
-                                          EmployeeScreen.enableEditing = false;
-                                          EmployeeScreen.selectedEmployee =
-                                              empProvider.searchList[index];
-                                          EmployeeInfoSideContainer.permission =
-                                              EmployeeScreen
-                                                  .selectedEmployee.permission;
-                                          EmployeeInfoSideContainer
-                                              .setStateForAnimation(true);
+                                          if (isMobile) {
+                                            EmployeeScreen.enableEditing =
+                                                false;
+                                            EmployeeScreen.selectedEmployee =
+                                                empProvider.searchList[index];
+                                            EmployeeInformationScreen
+                                                    .permission =
+                                                EmployeeScreen.selectedEmployee
+                                                    .permission;
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      EmployeeInformationScreen()),
+                                            );
+                                          } else {
+                                            EmployeeScreen.enableEditing =
+                                                false;
+                                            EmployeeScreen.selectedEmployee =
+                                                empProvider.searchList[index];
+                                            EmployeeInfoSideContainer
+                                                    .permission =
+                                                EmployeeScreen.selectedEmployee
+                                                    .permission;
+                                            EmployeeInfoSideContainer
+                                                .setStateForAnimation(true);
+                                          }
                                         },
                                         child: Container(
-                                          height: 50,
+                                          height: isMobile ? 80 : 50,
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Row(
@@ -402,6 +540,9 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                                                           .name,
                                                       style: TextStyle(
                                                           fontFamily: 'Cairo',
+                                                          fontSize: isMobile
+                                                              ? 12
+                                                              : 14,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           color: Provider.of<
@@ -423,6 +564,9 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                                                           .email,
                                                       style: TextStyle(
                                                           fontFamily: 'Cairo',
+                                                          fontSize: isMobile
+                                                              ? 12
+                                                              : 14,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           color: Provider.of<
@@ -444,6 +588,9 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                                                           .permissionString,
                                                       style: TextStyle(
                                                           fontFamily: 'Cairo',
+                                                          fontSize: isMobile
+                                                              ? 12
+                                                              : 14,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           color: Provider.of<

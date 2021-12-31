@@ -1,5 +1,7 @@
+import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/screen/patientScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CheckBoxForSideContainer extends StatefulWidget {
   static bool female;
@@ -15,7 +17,9 @@ class _CheckBoxForSideContainerState extends State<CheckBoxForSideContainer> {
   @override
   Widget build(BuildContext context) {
     var feildStyle =
-        TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.bold);
+        TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.bold, color: Provider.of<DarkModeProvider>(context, listen: false).isDark
+          ? Colors.white
+          : Colors.black,);
     return Row(
       children: [
         Row(

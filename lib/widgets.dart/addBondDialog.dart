@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:desktop_version/models/bond.dart';
 import 'package:desktop_version/models/patient.dart';
 import 'package:desktop_version/models/user.dart';
@@ -40,9 +42,11 @@ class _AddBondDialogState extends State<AddBondDialog> {
 
   @override
   Widget build(BuildContext context) {
+    bool isMobile = Platform.isAndroid || Platform.isIOS;
     var feildStyle = TextStyle(
       fontFamily: 'Cairo',
       fontWeight: FontWeight.bold,
+      fontSize: isMobile ? 12 : 16,
       color: Provider.of<DarkModeProvider>(context, listen: false).isDark
           ? Colors.white
           : Colors.black,
@@ -76,7 +80,7 @@ class _AddBondDialogState extends State<AddBondDialog> {
                                           .isDark
                                       ? Colors.white
                                       : Colors.black,
-                                  fontSize: 25),
+                                  fontSize: isMobile ? 20 : 25),
                             ),
                           ],
                         ),
@@ -90,8 +94,8 @@ class _AddBondDialogState extends State<AddBondDialog> {
                   ],
                 ),
                 content: SizedBox(
-                  width: width / 2,
-                  height: 400,
+                  width: isMobile ? width : width / 2,
+                  height: isMobile ? height - 300 : 400,
                   child: SingleChildScrollView(
                     child: Form(
                       key: _formKey,
@@ -110,7 +114,7 @@ class _AddBondDialogState extends State<AddBondDialog> {
                                             .isDark
                                         ? Colors.white
                                         : Colors.black,
-                                    fontSize: 20),
+                                    fontSize: isMobile ? 15 : 20),
                               ),
                               Text(
                                 DateTimeProvider.dateAndTime(DateTime.now()),
@@ -118,7 +122,7 @@ class _AddBondDialogState extends State<AddBondDialog> {
                                     fontFamily: 'Cairo',
                                     fontWeight: FontWeight.bold,
                                     color: Colors.blue,
-                                    fontSize: 20),
+                                    fontSize: isMobile ? 15 : 20),
                               ),
                             ],
                           ),
@@ -343,6 +347,7 @@ class _AddBondDialogState extends State<AddBondDialog> {
                                   return 'الإدخال اللذي قمت به غير صالح';
                                 }
                               },
+                              keyboardType: TextInputType.number,
                               cursorColor: Colors.blue,
                               decoration: new InputDecoration(
                                 prefixIcon: Icon(
@@ -350,6 +355,7 @@ class _AddBondDialogState extends State<AddBondDialog> {
                                 ),
                                 labelStyle: feildStyle,
                                 labelText: "المبلغ",
+
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(60.0),
                                   borderSide: BorderSide(color: Colors.blue),
@@ -406,14 +412,15 @@ class _AddBondDialogState extends State<AddBondDialog> {
                               Text(
                                 "توقيع:  ",
                                 style: TextStyle(
-                                    fontFamily: 'Cairo', color: Provider.of<DarkModeProvider>(
+                                    fontFamily: 'Cairo',
+                                    color: Provider.of<DarkModeProvider>(
                                                 context,
                                                 listen: false)
                                             .isDark
                                         ? Colors.white
                                         : Colors.black,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 20),
+                                    fontSize: isMobile ? 15 : 20),
                               ),
                               Text(
                                 Provider.of<UserProvier>(context, listen: false)
@@ -423,12 +430,12 @@ class _AddBondDialogState extends State<AddBondDialog> {
                                     fontFamily: 'Cairo',
                                     fontWeight: FontWeight.bold,
                                     color: Colors.blue,
-                                    fontSize: 20),
+                                    fontSize: isMobile ? 15 : 20),
                               ),
                             ],
                           ),
                           SizedBox(
-                            height: 80,
+                            height: isMobile ? 60 : 80,
                             width: 300,
                             child: Padding(
                               padding: const EdgeInsets.only(top: 8.0),
@@ -546,11 +553,13 @@ class _AddBondDialogState extends State<AddBondDialog> {
                                 },
                                 child: Center(
                                   child: Padding(
-                                    padding: const EdgeInsets.all(16.0),
+                                    padding: isMobile
+                                        ? const EdgeInsets.all(8.0)
+                                        : const EdgeInsets.all(16.0),
                                     child: isLoading
                                         ? SizedBox(
-                                            width: 30,
-                                            height: 30,
+                                            width: isMobile ? 20 : 30,
+                                            height: isMobile ? 20 : 30,
                                             child: CircularProgressIndicator(
                                               backgroundColor: Colors.white,
                                             ),

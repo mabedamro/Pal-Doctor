@@ -23,6 +23,8 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     Color color = Colors.blue;
+     bool isMobile = Platform.isAndroid || Platform.isIOS;
+     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor:
           Provider.of<DarkModeProvider>(context, listen: false).isDark
@@ -30,12 +32,11 @@ class _LoginScreenState extends State<LoginScreen> {
               : Colors.white,
 
       // backgroundColor: Colors.blue,
-      body: !Platform.isAndroid && !Platform.isIOS
-          ? Directionality(
+      body:  Directionality(
               textDirection: TextDirection.rtl,
               child: Center(
                 child: Container(
-                  width: 400,
+                  width: isMobile? width -30:400,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -46,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   .isDark
                               ? 'assets/images/drawingDark.svg'
                               : 'assets/images/drawing.svg',
-                          width: 300,
+                          width:isMobile? 160: 300,
                         ),
                       ),
                       TextField(
@@ -108,6 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           });
                           login();
                         },
+                        obscureText: true,
                         cursorColor: color,
                         style: TextStyle(
                             fontFamily: 'Cairo',
@@ -237,16 +239,52 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             )
-          : Container(
-              child: Text('its android'),
-            ),
+          
     );
+  }
+
+  String trim(String s) {
+    s = s.trim();
+    if (s == '') {
+      return s;
+    } else {
+      String temp = '';
+      for (var i = 0; i < s.length; i++) {
+        if (s[i].codeUnitAt(0) != 32 && s[i].codeUnitAt(0) != 8207) {
+          temp += s[i];
+          for (var j = i + 1; j < s.length; j++) {
+            temp += s[j];
+          }
+          break;
+        }
+      }
+      print(temp);
+      String temp2 = '';
+      for (var i = temp.length - 1; i >= 0; i--) {
+        if (temp[i].codeUnitAt(0) != 32 && temp[i].codeUnitAt(0) != 8207) {
+          temp2 += temp[i];
+          for (var j = i - 1; j >= 0; j--) {
+            temp2 += temp[j];
+          }
+          break;
+        }
+      }
+      String result = '';
+      for (var i = temp2.length - 1; i >= 0; i--) {
+        result += temp2[i];
+      }
+
+      print(result);
+      print(temp.length);
+
+      return result;
+    }
   }
 
   Future<void> login() async {
     if (isLoading == true) {
       String result = await Provider.of<UserProvier>(context, listen: false)
-          .login(email: _emailController.text, pass: _passwordController.text);
+          .login(email: trim(_emailController.text), pass: _passwordController.text);
       print(result);
       if (result == 'success') {
         ScaffoldMessenger.of(context).showSnackBar(

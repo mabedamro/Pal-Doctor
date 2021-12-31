@@ -529,11 +529,7 @@ class __PatientInfoSideContainerpertiesState
                 child: SingleChildScrollView(
                   child: Center(
                     child: Container(
-                      color:
-                          Provider.of<DarkModeProvider>(context, listen: false)
-                                  .isDark
-                              ? SettingsScreen.darkMode2
-                              : Colors.white,
+                      
                       padding: EdgeInsets.all(15),
                       width: width - width / 2,
                       child: Column(
@@ -568,11 +564,15 @@ class __PatientInfoSideContainerpertiesState
                               },
                               cursorColor: color,
                               style: feildStyle,
-                              
                               decoration: new InputDecoration(
                                 labelStyle: feildStyle,
                                 prefixIcon: Icon(
                                   Icons.picture_in_picture_outlined,
+                                  color: Provider.of<DarkModeProvider>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? Colors.white
+                                      : Colors.black,
                                   size: showSideMenu ? 30 : 0,
                                 ),
                                 labelText: "رقم الهوية",
@@ -582,9 +582,14 @@ class __PatientInfoSideContainerpertiesState
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(60.0),
-                                  borderSide: BorderSide(color:  Provider.of<DarkModeProvider>(context, listen: false).isDark
-          ? Colors.white
-          : Colors.black,),
+                                  borderSide: BorderSide(
+                                    color: Provider.of<DarkModeProvider>(
+                                                context,
+                                                listen: false)
+                                            .isDark
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
                                 ),
                                 //fillColor: Colors.green),
                               ),
@@ -608,9 +613,15 @@ class __PatientInfoSideContainerpertiesState
                                 }
                               },
                               cursorColor: color,
-                              decoration: new InputDecoration(labelStyle: feildStyle,
+                              decoration: new InputDecoration(
+                                labelStyle: feildStyle,
                                 prefixIcon: Icon(
                                   Icons.account_circle,
+                                  color: Provider.of<DarkModeProvider>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? Colors.white
+                                      : Colors.black,
                                   size: showSideMenu ? 30 : 0,
                                 ),
                                 labelText: "إسم المريض",
@@ -620,7 +631,14 @@ class __PatientInfoSideContainerpertiesState
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(60.0),
-                                  // borderSide: BorderSide(color: color),
+                                  borderSide: BorderSide(
+                                    color: Provider.of<DarkModeProvider>(
+                                                context,
+                                                listen: false)
+                                            .isDark
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
                                 ),
                                 //fillColor: Colors.green),
                               ),
@@ -653,9 +671,15 @@ class __PatientInfoSideContainerpertiesState
                               style: feildStyle,
                               focusNode: focusPhone,
                               cursorColor: color,
-                              decoration: new InputDecoration(labelStyle: feildStyle,
+                              decoration: new InputDecoration(
+                                labelStyle: feildStyle,
                                 prefixIcon: Icon(
                                   Icons.phone_sharp,
+                                  color: Provider.of<DarkModeProvider>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? Colors.white
+                                      : Colors.black,
                                   size: showSideMenu ? 30 : 0,
                                 ),
                                 labelText: "رقم الهاتف",
@@ -665,7 +689,14 @@ class __PatientInfoSideContainerpertiesState
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(60.0),
-                                  // borderSide: BorderSide(color: color),
+                                  borderSide: BorderSide(
+                                    color: Provider.of<DarkModeProvider>(
+                                                context,
+                                                listen: false)
+                                            .isDark
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
                                 ),
                                 //fillColor: Colors.green),
                               ),
@@ -693,9 +724,16 @@ class __PatientInfoSideContainerpertiesState
                                       }
                                     },
                                     controller: cityController,
-                                    decoration: new InputDecoration(labelStyle: feildStyle,
+                                    decoration: new InputDecoration(
+                                      labelStyle: feildStyle,
                                       prefixIcon: Icon(
                                         Icons.gps_fixed,
+                                        color: Provider.of<DarkModeProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .isDark
+                                            ? Colors.white
+                                            : Colors.black,
                                         size: showSideMenu ? 30 : 0,
                                       ),
 
@@ -708,7 +746,14 @@ class __PatientInfoSideContainerpertiesState
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius:
                                             new BorderRadius.circular(60.0),
-                                        // borderSide: BorderSide(color: color),
+                                        borderSide: BorderSide(
+                                          color: Provider.of<DarkModeProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .isDark
+                                              ? Colors.white
+                                              : Colors.black,
+                                        ),
                                       ),
                                       //fillColor: Colors.green),
                                     ),
@@ -738,9 +783,16 @@ class __PatientInfoSideContainerpertiesState
                                     style: feildStyle,
                                     cursorColor: color,
                                     focusNode: focusAdress,
-                                    decoration: new InputDecoration(labelStyle: feildStyle,
+                                    decoration: new InputDecoration(
+                                      labelStyle: feildStyle,
                                       prefixIcon: Icon(
                                         Icons.location_city,
+                                        color: Provider.of<DarkModeProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .isDark
+                                            ? Colors.white
+                                            : Colors.black,
                                         size: showSideMenu ? 30 : 0,
                                       ),
                                       labelText: "العنوان",
@@ -753,7 +805,14 @@ class __PatientInfoSideContainerpertiesState
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius:
                                             new BorderRadius.circular(60.0),
-                                        // borderSide: BorderSide(color: color),
+                                        borderSide: BorderSide(
+                                          color: Provider.of<DarkModeProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .isDark
+                                              ? Colors.white
+                                              : Colors.black,
+                                        ),
                                       ),
                                       //fillColor: Colors.green),
                                     ),
@@ -783,9 +842,15 @@ class __PatientInfoSideContainerpertiesState
                               style: feildStyle,
                               cursorColor: color,
                               focusNode: focusAge,
-                              decoration: new InputDecoration(labelStyle: feildStyle,
+                              decoration: new InputDecoration(
+                                labelStyle: feildStyle,
                                 prefixIcon: Icon(
                                   Icons.date_range_rounded,
+                                  color: Provider.of<DarkModeProvider>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? Colors.white
+                                      : Colors.black,
                                   size: showSideMenu ? 30 : 0,
                                 ),
                                 labelText: "العمر (سنة)",
@@ -795,7 +860,14 @@ class __PatientInfoSideContainerpertiesState
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(60.0),
-                                  // borderSide: BorderSide(color: color),
+                                  borderSide: BorderSide(
+                                    color: Provider.of<DarkModeProvider>(
+                                                context,
+                                                listen: false)
+                                            .isDark
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
                                 ),
                                 //fillColor: Colors.green),
                               ),
@@ -815,16 +887,28 @@ class __PatientInfoSideContainerpertiesState
                               decoration: new InputDecoration(
                                 prefixIcon: Icon(
                                   Icons.medical_services_rounded,
+                                  color: Provider.of<DarkModeProvider>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? Colors.white
+                                      : Colors.black,
                                   size: showSideMenu ? 30 : 0,
                                 ),
-                                labelText: "محول من",labelStyle: feildStyle,
+                                labelText: "محول من", labelStyle: feildStyle,
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(60.0),
                                   borderSide: BorderSide(color: color),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(60.0),
-                                  // borderSide: BorderSide(color: color),
+                                  borderSide: BorderSide(
+                                    color: Provider.of<DarkModeProvider>(
+                                                context,
+                                                listen: false)
+                                            .isDark
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
                                 ),
                                 //fillColor: Colors.green),
                               ),
@@ -957,9 +1041,16 @@ class __PatientInfoSideContainerpertiesState
                                   style: feildStyle,
                                   focusNode: focusNotes,
                                   cursorColor: color,
-                                  decoration: new InputDecoration(labelStyle: feildStyle,
+                                  decoration: new InputDecoration(
+                                    labelStyle: feildStyle,
                                     prefixIcon: Icon(
                                       Icons.account_circle,
+                                      color: Provider.of<DarkModeProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .isDark
+                                          ? Colors.white
+                                          : Colors.black,
                                       size: showSideMenu ? 30 : 0,
                                     ),
                                     labelText: "ملاحظات حول المريض",
@@ -971,7 +1062,14 @@ class __PatientInfoSideContainerpertiesState
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius:
                                           new BorderRadius.circular(60.0),
-                                      // borderSide: BorderSide(color: color),
+                                      borderSide: BorderSide(
+                                        color: Provider.of<DarkModeProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .isDark
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
                                     ),
                                     //fillColor: Colors.green),
                                   ),
@@ -1240,7 +1338,9 @@ class __EmployeeInfoSideContainerState
       width: showSideMenu ? MediaQuery.of(context).size.width / 3 : _width,
       height: _height,
       decoration: BoxDecoration(
-        color: _color,
+        color: Provider.of<DarkModeProvider>(context, listen: false).isDark
+            ? SettingsScreen.darkMode2
+            : Colors.grey[100],
         borderRadius: _borderRadius,
       ),
       // Define how long the animation should take.
@@ -1422,12 +1522,25 @@ class __EmployeeInfoSideContainerState
                           child: Container(
                             child: Row(
                               children: [
-                                Icon(Icons.keyboard_arrow_down_sharp),
+                                Icon(
+                                  Icons.keyboard_arrow_down_sharp,
+                                  color: Provider.of<DarkModeProvider>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? Colors.white
+                                      : Colors.black,
+                                ),
                                 Text(
                                   'المزيد',
                                   style: TextStyle(
                                       fontFamily: 'Cairo',
                                       fontSize: 15,
+                                      color: Provider.of<DarkModeProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .isDark
+                                          ? Colors.white
+                                          : Colors.black,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ],
@@ -1512,6 +1625,11 @@ class __EmployeeInfoSideContainerState
                   child: GestureDetector(
                       child: Icon(
                         Icons.close,
+                        color: Provider.of<DarkModeProvider>(context,
+                                    listen: false)
+                                .isDark
+                            ? Colors.white
+                            : Colors.black,
                         size: 30,
                       ),
                       onTap: () {
@@ -1535,20 +1653,45 @@ class __EmployeeInfoSideContainerState
               onFieldSubmitted: (val) {
                 // FocusScope.of(context).requestFocus(focus);
               },
+              style: TextStyle(
+                color:
+                    Provider.of<DarkModeProvider>(context, listen: false).isDark
+                        ? Colors.white
+                        : Colors.black,
+                fontFamily: 'Cairo',
+                fontWeight: FontWeight.bold,
+              ),
               cursorColor: color,
               decoration: new InputDecoration(
                 prefixIcon: Icon(
                   Icons.person,
+                  color: Provider.of<DarkModeProvider>(context, listen: false)
+                          .isDark
+                      ? Colors.white
+                      : Colors.black,
                   size: showSideMenu ? 20 : 0,
                 ),
                 labelText: "الإسم",
+                labelStyle: TextStyle(
+                  color: Provider.of<DarkModeProvider>(context, listen: false)
+                          .isDark
+                      ? Colors.white
+                      : Colors.black,
+                  fontFamily: 'Cairo',
+                  fontWeight: FontWeight.bold,
+                ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: new BorderRadius.circular(25.0),
+                  borderRadius: new BorderRadius.circular(50.0),
                   borderSide: BorderSide(color: color),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: new BorderRadius.circular(25.0),
-                  // borderSide: BorderSide(color: color),
+                  borderRadius: new BorderRadius.circular(50.0),
+                  borderSide: BorderSide(
+                    color: Provider.of<DarkModeProvider>(context, listen: false)
+                            .isDark
+                        ? Colors.white
+                        : Colors.black,
+                  ),
                 ),
                 //fillColor: Colors.green),
               ),
@@ -1562,11 +1705,31 @@ class __EmployeeInfoSideContainerState
               onFieldSubmitted: (val) {
                 // FocusScope.of(context).requestFocus(focus);
               },
+              style: TextStyle(
+                color:
+                    Provider.of<DarkModeProvider>(context, listen: false).isDark
+                        ? Colors.white
+                        : Colors.black,
+                fontFamily: 'Cairo',
+                fontWeight: FontWeight.bold,
+              ),
               cursorColor: color,
               decoration: new InputDecoration(
                 prefixIcon: Icon(
                   Icons.email,
+                  color: Provider.of<DarkModeProvider>(context, listen: false)
+                          .isDark
+                      ? Colors.white
+                      : Colors.black,
                   size: showSideMenu ? 20 : 0,
+                ),
+                labelStyle: TextStyle(
+                  color: Provider.of<DarkModeProvider>(context, listen: false)
+                          .isDark
+                      ? Colors.white
+                      : Colors.black,
+                  fontFamily: 'Cairo',
+                  fontWeight: FontWeight.bold,
                 ),
                 labelText: "البريد الألكتروني",
                 focusedBorder: OutlineInputBorder(
@@ -1590,6 +1753,11 @@ class __EmployeeInfoSideContainerState
                   style: TextStyle(
                       fontFamily: 'Cairo',
                       fontSize: 15,
+                      color:
+                          Provider.of<DarkModeProvider>(context, listen: false)
+                                  .isDark
+                              ? Colors.white
+                              : Colors.black,
                       fontWeight: FontWeight.bold),
                 ),
                 Column(
@@ -1617,7 +1785,13 @@ class __EmployeeInfoSideContainerState
                         Text(
                           'الوصول لسجل المرضى',
                           style: TextStyle(
-                              fontFamily: 'Cairo', fontWeight: FontWeight.bold),
+                              color: Provider.of<DarkModeProvider>(context,
+                                          listen: false)
+                                      .isDark
+                                  ? Colors.white
+                                  : Colors.black,
+                              fontFamily: 'Cairo',
+                              fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -1641,7 +1815,13 @@ class __EmployeeInfoSideContainerState
                         Text(
                           'الوصول الى سجل الموظفين',
                           style: TextStyle(
-                              fontFamily: 'Cairo', fontWeight: FontWeight.bold),
+                              color: Provider.of<DarkModeProvider>(context,
+                                          listen: false)
+                                      .isDark
+                                  ? Colors.white
+                                  : Colors.black,
+                              fontFamily: 'Cairo',
+                              fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -1666,7 +1846,13 @@ class __EmployeeInfoSideContainerState
                         Text(
                           'الوصول الى المواعيد',
                           style: TextStyle(
-                              fontFamily: 'Cairo', fontWeight: FontWeight.bold),
+                              color: Provider.of<DarkModeProvider>(context,
+                                          listen: false)
+                                      .isDark
+                                  ? Colors.white
+                                  : Colors.black,
+                              fontFamily: 'Cairo',
+                              fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -1691,7 +1877,13 @@ class __EmployeeInfoSideContainerState
                         Text(
                           'الوصول الى السجل المالي',
                           style: TextStyle(
-                              fontFamily: 'Cairo', fontWeight: FontWeight.bold),
+                              color: Provider.of<DarkModeProvider>(context,
+                                          listen: false)
+                                      .isDark
+                                  ? Colors.white
+                                  : Colors.black,
+                              fontFamily: 'Cairo',
+                              fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
