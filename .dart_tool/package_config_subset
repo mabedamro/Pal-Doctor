@@ -6,6 +6,10 @@ archive
 2.12
 file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/archive-3.1.6/
 file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/archive-3.1.6/lib/
+args
+2.12
+file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/args-2.3.0/
+file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/args-2.3.0/lib/
 async
 2.12
 file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/async-2.5.0/
@@ -62,6 +66,10 @@ fixnum
 2.12
 file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/fixnum-1.0.0/
 file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/fixnum-1.0.0/lib/
+flutter_launcher_icons
+2.12
+file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_launcher_icons-0.9.2/
+file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_launcher_icons-0.9.2/lib/
 flutter_svg
 2.12
 file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_svg-0.21.0/
@@ -86,6 +94,10 @@ http_parser
 2.12
 file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/http_parser-4.0.0/
 file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/http_parser-4.0.0/lib/
+image
+2.12
+file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/image-3.1.0/
+file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/image-3.1.0/lib/
 intl
 2.12
 file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/intl-0.17.0/
@@ -234,6 +246,10 @@ xml
 2.12
 file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/xml-5.1.2/
 file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/xml-5.1.2/lib/
+yaml
+2.12
+file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/yaml-3.1.0/
+file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/.pub-cache/hosted/pub.dartlang.org/yaml-3.1.0/lib/
 sky_engine
 2.12
 file:///home/mohammad/Documents/flutter%20for%20desktop/flutter/bin/cache/pkg/sky_engine/

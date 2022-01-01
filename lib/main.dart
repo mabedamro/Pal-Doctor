@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:desktop_version/api/authApi.dart';
 import 'package:desktop_version/provider/bondsProvider.dart';
 import 'package:desktop_version/provider/darkModeProvider.dart';
@@ -22,12 +24,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-    //   // DesktopWindow.setWindowSize(Size(700, 200));
-    //   DesktopWindow.setMaxWindowSize(Size(700, 200));
-
-    //   DesktopWindow.setMinWindowSize(Size(700, 200));
-    // }
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => PatDateProvider()),

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.desktop_version">
+    package="com.example.PalDoctor">
    <application
-        android:label="desktop_version"
+        android:label="Pal Doctor"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
