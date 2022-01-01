@@ -26,19 +26,23 @@ class UserProvier with ChangeNotifier {
   Future<void> getClincData() async {
     try {
       if (user.clincId == user.id) {
+        clincUser = user;
         return;
       }
       var ref = Firestore.instance.collection('users').document(user.clincId);
       var data = await ref.get().then((value) {
+        print(value.toString());
         clincUser = User.fromJson(value);
 
-        print('Data Are Here');
+        print('clicn data got!!');
         notifyListeners();
       }).catchError((e) {
         print('Here Error Man !');
         print(e.toString());
       });
     } catch (e) {
+
+        print('error  !!');
       print(e.toString());
     }
   }
@@ -97,6 +101,7 @@ class UserProvier with ChangeNotifier {
       // Sign in with user credentials
       await auth.signIn(email, pass).then((value) async {
         await getUserData(auth.userId);
+        print('object');
         if (clincUser.isActive == '0') {
           signout(context);
           result = 'fail';

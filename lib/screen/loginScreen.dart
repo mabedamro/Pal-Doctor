@@ -23,224 +23,222 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     Color color = Colors.blue;
-     bool isMobile = Platform.isAndroid || Platform.isIOS;
-     double width = MediaQuery.of(context).size.width;
+    bool isMobile = Platform.isAndroid || Platform.isIOS;
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor:
-          Provider.of<DarkModeProvider>(context, listen: false).isDark
-              ? SettingsScreen.darkMode1
-              : Colors.white,
+        backgroundColor:
+            Provider.of<DarkModeProvider>(context, listen: false).isDark
+                ? SettingsScreen.darkMode1
+                : Colors.white,
 
-      // backgroundColor: Colors.blue,
-      body:  Directionality(
-              textDirection: TextDirection.rtl,
-              child: Center(
-                child: Container(
-                  width: isMobile? width -30:400,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: SvgPicture.asset(
-                          Provider.of<DarkModeProvider>(context, listen: false)
-                                  .isDark
-                              ? 'assets/images/drawingDark.svg'
-                              : 'assets/images/drawing.svg',
-                          width:isMobile? 160: 300,
-                        ),
-                      ),
-                      TextField(
-                        controller: _emailController,
-                        onSubmitted: (val) {
-                          FocusScope.of(context).requestFocus(focus);
-                        },
-                        cursorColor: color,
-                        style: TextStyle(
-                            fontFamily: 'Cairo',
-                            color: Provider.of<DarkModeProvider>(context,
-                                        listen: false)
-                                    .isDark
-                                ? Colors.white
-                                : Colors.black),
-                        decoration: new InputDecoration(
-                          prefixIcon: Icon(Icons.email_rounded,
-                              color: Provider.of<DarkModeProvider>(context,
-                                          listen: false)
-                                      .isDark
-                                  ? Colors.white
-                                  : Colors.black),
-
-                          labelText: "البريد الإلكتروني",
-
-                          labelStyle: TextStyle(
-                              color: Provider.of<DarkModeProvider>(context,
-                                          listen: false)
-                                      .isDark
-                                  ? Colors.white
-                                  : Colors.black),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(100.0),
-                            borderSide: BorderSide(color: color),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(100.0),
-                            borderSide: BorderSide(
-                                color: Provider.of<DarkModeProvider>(context,
-                                            listen: false)
-                                        .isDark
-                                    ? Colors.white
-                                    : color),
-                            // borderSide: BorderSide(color: color),
-                          ),
-                          //fillColor: Colors.green),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      TextField(
-                        focusNode: focus,
-                        controller: _passwordController,
-                        onSubmitted: (val) {
-                          print('enter button');
-                          setState(() {
-                            isLoading = true;
-                          });
-                          login();
-                        },
-                        obscureText: true,
-                        cursorColor: color,
-                        style: TextStyle(
-                            fontFamily: 'Cairo',
-                            color: Provider.of<DarkModeProvider>(context,
-                                        listen: false)
-                                    .isDark
-                                ? Colors.white
-                                : Colors.black),
-                        decoration: new InputDecoration(
-                          prefixIcon: Icon(Icons.lock,
-                              color: Provider.of<DarkModeProvider>(context,
-                                          listen: false)
-                                      .isDark
-                                  ? Colors.white
-                                  : Colors.black),
-                          labelStyle: TextStyle(
-                              fontFamily: 'Cairo',
-                              color: Provider.of<DarkModeProvider>(context,
-                                          listen: false)
-                                      .isDark
-                                  ? Colors.white
-                                  : Colors.black),
-                          labelText: "كلمة المرور",
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(100.0),
-                            borderSide: BorderSide(color: color),
-                          ),
-
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Provider.of<DarkModeProvider>(context,
-                                            listen: false)
-                                        .isDark
-                                    ? Colors.white
-                                    : color),
-                            borderRadius: new BorderRadius.circular(100.0),
-                            // borderSide: BorderSide(color: color),
-                          ),
-                          //fillColor: Colors.green),
-                        ),
-                      ),
-                      // TextField(
-                      //   controller: _passwordController,
-                      //   // focusNode: focus,
-                      //   style: TextStyle(
-                      //       color:  Provider.of<DarkModeProvider>(context,listen: false).isDark
-                      //           ? Colors.white
-                      //           : Colors.black),
-                      //   onSubmitted: (val) {
-                      //     print('enter button');
-                      //     setState(() {
-                      //       isLoading = true;
-                      //     });
-                      //     login();
-                      //   },
-                      //   cursorColor: color,
-                      //   obscureText: true,
-                      //   decoration: new InputDecoration(
-                      //     prefixIcon: Icon(Icons.lock,
-                      //         color:  Provider.of<DarkModeProvider>(context,listen: false).isDark
-                      //             ? Colors.white
-                      //             : Colors.black),
-                      //     labelStyle: TextStyle(
-                      //       fontFamily: 'Cairo',
-                      //         color:  Provider.of<DarkModeProvider>(context,listen: false).isDark
-                      //             ? Colors.white
-                      //             : Colors.black),
-                      //     labelText: "كلمة المرور",
-                      //     focusedBorder: OutlineInputBorder(
-                      //       borderRadius: new BorderRadius.circular(100.0),
-                      //       borderSide: BorderSide(color: color),
-                      //     ),
-
-                      //     enabledBorder: OutlineInputBorder(
-                      //       borderSide: BorderSide(
-                      //           color:  Provider.of<DarkModeProvider>(context,listen: false).isDark
-                      //               ? Colors.white
-                      //               : color),
-                      //       borderRadius: new BorderRadius.circular(100.0),
-                      //       // borderSide: BorderSide(color: color),
-                      //     ),
-                      //     //fillColor: Colors.green),
-                      //   ),
-                      // ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          if (isLoading == false) {
-                            setState(() {
-                              isLoading = true;
-                            });
-                            login();
-                          }
-                        },
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Text(
-                              'تسجيل الدخول',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Cairo',
-                                  fontSize: 15),
-                            ),
-                          ),
-                        ),
-                        style: ButtonStyle(
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50.0),
-                            ),
-                          ),
-                        ),
-                      ),
-                      isLoading
-                          ? Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: CircularProgressIndicator(),
-                            )
-                          : Container(),
-                    ],
+        // backgroundColor: Colors.blue,
+        body: Center(
+          child: Container(
+            width: isMobile ? width - 30 : 400,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: SvgPicture.asset(
+                    Provider.of<DarkModeProvider>(context, listen: false).isDark
+                        ? 'assets/images/drawingDark.svg'
+                        : 'assets/images/drawing.svg',
+                    width: isMobile ? 160 : 300,
                   ),
                 ),
-              ),
-            )
-          
-    );
+                TextField(
+                  controller: _emailController,
+                  onSubmitted: (val) {
+                    FocusScope.of(context).requestFocus(focus);
+                  },
+                  cursorColor: color,
+                  style: TextStyle(
+                      fontFamily: 'Cairo',
+                      fontSize: isMobile ? 12 : 16,
+                      color:
+                          Provider.of<DarkModeProvider>(context, listen: false)
+                                  .isDark
+                              ? Colors.white
+                              : Colors.black),
+                  decoration: new InputDecoration(
+                    prefixIcon: Icon(Icons.email_rounded,
+                        color: Provider.of<DarkModeProvider>(context,
+                                    listen: false)
+                                .isDark
+                            ? Colors.white
+                            : Colors.black),
+
+                    labelText: "البريد الإلكتروني",
+
+                    labelStyle: TextStyle(
+                        fontSize: isMobile ? 12 : 16,
+                        fontFamily: 'Cairo',
+                        color: Provider.of<DarkModeProvider>(context,
+                                    listen: false)
+                                .isDark
+                            ? Colors.white
+                            : Colors.black),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: new BorderRadius.circular(100.0),
+                      borderSide: BorderSide(color: color),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: new BorderRadius.circular(100.0),
+                      borderSide: BorderSide(
+                          color: Provider.of<DarkModeProvider>(context,
+                                      listen: false)
+                                  .isDark
+                              ? Colors.white
+                              : color),
+                      // borderSide: BorderSide(color: color),
+                    ),
+                    //fillColor: Colors.green),
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                TextField(
+                  focusNode: focus,
+                  controller: _passwordController,
+                  onSubmitted: (val) {
+                    print('enter button');
+                    setState(() {
+                      isLoading = true;
+                    });
+                    login();
+                  },
+                  obscureText: true,
+                  cursorColor: color,
+                  style: TextStyle(
+                      fontFamily: 'Cairo',
+                      fontSize: isMobile ? 12 : 16,
+                      color:
+                          Provider.of<DarkModeProvider>(context, listen: false)
+                                  .isDark
+                              ? Colors.white
+                              : Colors.black),
+                  decoration: new InputDecoration(
+                    prefixIcon: Icon(Icons.lock,
+                        color: Provider.of<DarkModeProvider>(context,
+                                    listen: false)
+                                .isDark
+                            ? Colors.white
+                            : Colors.black),
+                    labelStyle: TextStyle(
+                        fontFamily: 'Cairo',
+                        fontSize: isMobile ? 12 : 16,
+                        color: Provider.of<DarkModeProvider>(context,
+                                    listen: false)
+                                .isDark
+                            ? Colors.white
+                            : Colors.black),
+                    labelText: "كلمة المرور",
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: new BorderRadius.circular(100.0),
+                      borderSide: BorderSide(color: color),
+                    ),
+
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Provider.of<DarkModeProvider>(context,
+                                      listen: false)
+                                  .isDark
+                              ? Colors.white
+                              : color),
+                      borderRadius: new BorderRadius.circular(100.0),
+                      // borderSide: BorderSide(color: color),
+                    ),
+                    //fillColor: Colors.green),
+                  ),
+                ),
+                // TextField(
+                //   controller: _passwordController,
+                //   // focusNode: focus,
+                //   style: TextStyle(
+                //       color:  Provider.of<DarkModeProvider>(context,listen: false).isDark
+                //           ? Colors.white
+                //           : Colors.black),
+                //   onSubmitted: (val) {
+                //     print('enter button');
+                //     setState(() {
+                //       isLoading = true;
+                //     });
+                //     login();
+                //   },
+                //   cursorColor: color,
+                //   obscureText: true,
+                //   decoration: new InputDecoration(
+                //     prefixIcon: Icon(Icons.lock,
+                //         color:  Provider.of<DarkModeProvider>(context,listen: false).isDark
+                //             ? Colors.white
+                //             : Colors.black),
+                //     labelStyle: TextStyle(
+                //       fontFamily: 'Cairo',
+                //         color:  Provider.of<DarkModeProvider>(context,listen: false).isDark
+                //             ? Colors.white
+                //             : Colors.black),
+                //     labelText: "كلمة المرور",
+                //     focusedBorder: OutlineInputBorder(
+                //       borderRadius: new BorderRadius.circular(100.0),
+                //       borderSide: BorderSide(color: color),
+                //     ),
+
+                //     enabledBorder: OutlineInputBorder(
+                //       borderSide: BorderSide(
+                //           color:  Provider.of<DarkModeProvider>(context,listen: false).isDark
+                //               ? Colors.white
+                //               : color),
+                //       borderRadius: new BorderRadius.circular(100.0),
+                //       // borderSide: BorderSide(color: color),
+                //     ),
+                //     //fillColor: Colors.green),
+                //   ),
+                // ),
+                SizedBox(
+                  height: 30,
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    if (isLoading == false) {
+                      setState(() {
+                        isLoading = true;
+                      });
+                      login();
+                    }
+                  },
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Text(
+                        'تسجيل الدخول',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Cairo',
+                            fontSize: isMobile ? 12 : 15),
+                      ),
+                    ),
+                  ),
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50.0),
+                      ),
+                    ),
+                  ),
+                ),
+                isLoading
+                    ? Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: CircularProgressIndicator(),
+                      )
+                    : Container(),
+              ],
+            ),
+          ),
+        ));
   }
 
   String trim(String s) {
@@ -275,16 +273,25 @@ class _LoginScreenState extends State<LoginScreen> {
       }
 
       print(result);
+      String finalValue = '';
       print(temp.length);
-
-      return result;
+      for (var i = 0; i < result.length; i++) {
+        if (result[i].codeUnitAt(0) != 32 && result[i].codeUnitAt(0) != 8207) {
+          finalValue += result[i];
+        }
+      }
+      print(finalValue.length);
+      return finalValue;
     }
   }
 
   Future<void> login() async {
+    String email = trim(_emailController.text);
+    print('.' + email + '.');
+    print(_passwordController.text.length);
     if (isLoading == true) {
       String result = await Provider.of<UserProvier>(context, listen: false)
-          .login(email: trim(_emailController.text), pass: _passwordController.text);
+          .login(email: email, pass: _passwordController.text);
       print(result);
       if (result == 'success') {
         ScaffoldMessenger.of(context).showSnackBar(

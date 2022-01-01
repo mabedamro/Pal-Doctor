@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:desktop_version/models/patient.dart';
 import 'package:desktop_version/provider/bondsProvider.dart';
 import 'package:desktop_version/provider/darkModeProvider.dart';
@@ -27,7 +29,7 @@ class _DiagsUserDialogState extends State<DiagsUserDialog> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-
+  bool isMobile = Platform.isAndroid || Platform.isIOS;
     double height = MediaQuery.of(context).size.height;
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -42,7 +44,7 @@ class _DiagsUserDialogState extends State<DiagsUserDialog> {
                   style: TextStyle(
                       fontFamily: 'Cairo',
                       fontWeight: FontWeight.bold,
-                      fontSize: 25),
+                      fontSize:isMobile? 15 : 25),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -57,7 +59,7 @@ class _DiagsUserDialogState extends State<DiagsUserDialog> {
                     },
                     child: Center(
                       child: Padding(
-                        padding: const EdgeInsets.all(12.0),
+                        padding:isMobile?const EdgeInsets.all(0.0) : const EdgeInsets.all(12.0),
                         child: Row(
                           children: [
                             Icon(Icons.add),
@@ -67,7 +69,7 @@ class _DiagsUserDialogState extends State<DiagsUserDialog> {
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
                                   fontFamily: 'Cairo',
-                                  fontSize: 15),
+                                  fontSize:isMobile?11 : 15),
                             ),
                           ],
                         ),
@@ -84,7 +86,7 @@ class _DiagsUserDialogState extends State<DiagsUserDialog> {
                 ),
               ],
             ),
-            IconButton(
+           isMobile?Container() : IconButton(
                 icon: Icon(Icons.close),
                 onPressed: () {
                   Navigator.pop(context);
