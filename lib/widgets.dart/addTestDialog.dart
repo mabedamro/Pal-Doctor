@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
+import 'package:desktop_version/screen/settingsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,9 +16,12 @@ class _AddTestDialogState extends State<AddTestDialog> {
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
+    bool isMobile = Platform.isAndroid || Platform.isIOS;
+    bool isDark = Provider.of<DarkModeProvider>(context, listen: false).isDark;
     return Directionality(
       textDirection: TextDirection.rtl,
       child: AlertDialog(
+        backgroundColor: isDark ? SettingsScreen.darkMode1 : Colors.white,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -24,13 +31,17 @@ class _AddTestDialogState extends State<AddTestDialog> {
                   'أدخل فحص / أشعة الجديد',
                   style: TextStyle(
                       fontFamily: 'Cairo',
+                      color: isDark ? Colors.white : Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 25),
                 ),
               ],
             ),
             IconButton(
-                icon: Icon(Icons.close),
+                icon: Icon(
+                  Icons.close,
+                  color: isDark ? Colors.white : Colors.black,
+                ),
                 onPressed: () {
                   Navigator.pop(context);
                 }),
@@ -50,20 +61,28 @@ class _AddTestDialogState extends State<AddTestDialog> {
                   onChanged: (val) {},
                   controller: inputController,
                   cursorColor: Colors.blue,
+                  style: TextStyle(
+                      color: isDark ? Colors.white : Colors.black,
+                      fontFamily: 'Cairo'),
                   decoration: new InputDecoration(
                     prefixIcon: Icon(
                       Icons.assignment,
+                      color: isDark ? Colors.white : Colors.black,
                     ),
                     labelText: "فحص / أشعة...",
-
+                    labelStyle: TextStyle(
+                        color: isDark ? Colors.white : Colors.black,
+                        fontFamily: 'Cairo'),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(25.0),
+                      borderRadius: new BorderRadius.circular(50.0),
                       borderSide: BorderSide(color: Colors.blue),
                     ),
 
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(25.0),
-                      // borderSide: BorderSide(color: color),
+                      borderRadius: new BorderRadius.circular(500.0),
+                      borderSide: BorderSide(
+                        color: isDark ? Colors.white : Colors.black,
+                      ),
                     ),
                     //fillColor: Colors.green),
                   ),
@@ -91,8 +110,7 @@ class _AddTestDialogState extends State<AddTestDialog> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                           isLoading
-                                ? Container(): Icon(Icons.add),
+                            isLoading ? Container() : Icon(Icons.add),
                             isLoading
                                 ? SizedBox(
                                     width: 30,

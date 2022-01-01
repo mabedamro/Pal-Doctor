@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:desktop_version/models/bond.dart';
 import 'package:desktop_version/provider/bondsProvider.dart';
+import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/dateTimeProvider.dart';
+import 'package:desktop_version/screen/settingsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,14 +27,20 @@ class _BondInfoState extends State<BondInfo> {
 
   @override
   Widget build(BuildContext context) {
-    var feildStyle =
-        TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.bold);
+    bool isDark = Provider.of<DarkModeProvider>(context, listen: false).isDark;
+    bool isMobile=Platform.isIOS||Platform.isAndroid;
+    var feildStyle = TextStyle(
+      fontFamily: 'Cairo',
+      fontWeight: FontWeight.bold,
+      color: isDark ? Colors.white : Colors.black,
+    );
     double width = MediaQuery.of(context).size.width;
 
     double height = MediaQuery.of(context).size.height;
     return Directionality(
       textDirection: TextDirection.rtl,
       child: AlertDialog(
+        backgroundColor: isDark ? SettingsScreen.darkMode1 : Colors.white,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -42,15 +52,17 @@ class _BondInfoState extends State<BondInfo> {
                       widget.b.type == 'increase' ? "سند قبض" : 'سند صرف',
                       style: TextStyle(
                           fontFamily: 'Cairo',
+                          color: isDark ? Colors.white : Colors.black,
                           fontWeight: FontWeight.bold,
-                          fontSize: 25),
+                          fontSize:isMobile? 20: 25),
                     ),
                   ],
                 ),
               ],
             ),
             IconButton(
-                icon: Icon(Icons.close),
+                icon: Icon(Icons.close,
+                          color: isDark?Colors.white:Colors.black,),
                 onPressed: () {
                   Navigator.pop(context);
                 }),
@@ -70,8 +82,9 @@ class _BondInfoState extends State<BondInfo> {
                         "التاريخ:  ",
                         style: TextStyle(
                             fontFamily: 'Cairo',
+                            color: isDark ? Colors.white : Colors.black,
                             fontWeight: FontWeight.bold,
-                            fontSize: 20),
+                            fontSize: isMobile? 15:20),
                       ),
                       Text(
                         DateTimeProvider.dateAndTime(widget.b.date),
@@ -79,7 +92,7 @@ class _BondInfoState extends State<BondInfo> {
                             fontFamily: 'Cairo',
                             fontWeight: FontWeight.bold,
                             color: Colors.blue,
-                            fontSize: 20),
+                            fontSize:isMobile? 15: 20),
                       ),
                     ],
                   ),
@@ -95,7 +108,10 @@ class _BondInfoState extends State<BondInfo> {
                                 Icons.account_circle,
                               ),
                               labelText: "إسم المريض",
-
+                              labelStyle: TextStyle(
+                                color: isDark ? Colors.white : Colors.black,
+                                fontSize: isMobile? 12:14,  
+                              ),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: new BorderRadius.circular(60.0),
                                 // borderSide: BorderSide(color: color),
@@ -116,6 +132,10 @@ class _BondInfoState extends State<BondInfo> {
                                     Icons.account_circle,
                                   ),
                                   labelText: "إسم الموظف",
+                                  labelStyle: TextStyle(
+                                fontSize: isMobile? 12:14,  
+                                    color: isDark ? Colors.white : Colors.black,
+                                  ),
 
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius:
@@ -135,7 +155,7 @@ class _BondInfoState extends State<BondInfo> {
                                     'نوع الصرف',
                                     style: TextStyle(
                                         fontFamily: 'Cairo',
-                                        fontSize: 15,
+                                        fontSize: isMobile? 12:15,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
@@ -144,7 +164,7 @@ class _BondInfoState extends State<BondInfo> {
                                   style: TextStyle(
                                       fontFamily: 'Cairo',
                                       color: Colors.red,
-                                      fontSize: 15,
+                                      fontSize:isMobile?12 : 15,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ],
@@ -161,6 +181,9 @@ class _BondInfoState extends State<BondInfo> {
                           Icons.account_circle,
                         ),
                         labelText: "المبلغ",
+                        labelStyle: TextStyle( fontSize:isMobile?12 : 15,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: new BorderRadius.circular(60.0),
                           borderSide: BorderSide(color: Colors.blue),
@@ -185,6 +208,9 @@ class _BondInfoState extends State<BondInfo> {
                           Icons.account_circle,
                         ),
                         labelText: "ملاحظات",
+                        labelStyle: TextStyle( fontSize:isMobile?12 : 15,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: new BorderRadius.circular(60.0),
                           borderSide: BorderSide(color: Colors.blue),
@@ -204,8 +230,9 @@ class _BondInfoState extends State<BondInfo> {
                         "توقيع:  ",
                         style: TextStyle(
                             fontFamily: 'Cairo',
+                          color: isDark?Colors.white:Colors.black,
                             fontWeight: FontWeight.bold,
-                            fontSize: 20),
+                            fontSize:isMobile?15: 20),
                       ),
                       Text(
                         widget.b.userName,
@@ -213,7 +240,7 @@ class _BondInfoState extends State<BondInfo> {
                             fontFamily: 'Cairo',
                             fontWeight: FontWeight.bold,
                             color: Colors.blue,
-                            fontSize: 20),
+                            fontSize:isMobile? 15: 20),
                       ),
                     ],
                   ),

@@ -118,8 +118,7 @@ class BondsProvider with ChangeNotifier {
                       .tryToLogin(context);
               if (result == 'success') {
                 getBonds(clincId, context);
-              }else if(result == 'needUpdate'){
-
+              } else if (result == 'needUpdate') {
               } else {
                 Provider.of<UserProvier>(context, listen: false)
                     .signout(context);
@@ -191,8 +190,10 @@ class BondsProvider with ChangeNotifier {
                       .tryToLogin(context);
               if (result == 'success') {
                 getBondsForEmp(emp, context);
-              }else if(result == 'needUpdate'){Provider.of<UserProvier>(context, listen: false)
-                    .goToUpdateScreen(context);} else {
+              } else if (result == 'needUpdate') {
+                Provider.of<UserProvier>(context, listen: false)
+                    .goToUpdateScreen(context);
+              } else {
                 Provider.of<UserProvier>(context, listen: false)
                     .signout(context);
               }
@@ -260,8 +261,10 @@ class BondsProvider with ChangeNotifier {
                       .tryToLogin(context);
               if (result == 'success') {
                 getBondsForPatients(p, context);
-              }else if(result == 'needUpdate'){Provider.of<UserProvier>(context, listen: false)
-                    .goToUpdateScreen(context);} else {
+              } else if (result == 'needUpdate') {
+                Provider.of<UserProvier>(context, listen: false)
+                    .goToUpdateScreen(context);
+              } else {
                 Provider.of<UserProvier>(context, listen: false)
                     .signout(context);
               }
@@ -366,7 +369,9 @@ class BondsProvider with ChangeNotifier {
         }
       }
     } else if (lastMonth) {
+      print('last month');
       for (var i = 0; i < typeBonds.length; i++) {
+        print(typeBonds[i].date.month);
         if (isInLastMonth(typeBonds[i].date)) {
           tempBonds.add(typeBonds[i]);
         }
@@ -404,12 +409,13 @@ class BondsProvider with ChangeNotifier {
   }
 
   bool isInLastMonth(DateTime date) {
-    if (date.month == 1) {
+    if (DateTime.now().month == 1) {
       int year = DateTime.now().year;
       int month = DateTime.now().month;
 
-      month -= 1;
+      month = 12;
       year -= 1;
+      print(date.month);
       if (date.year == year && date.month == month) {
         return true;
       } else {

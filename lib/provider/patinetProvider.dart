@@ -85,8 +85,10 @@ class PatientProvider with ChangeNotifier {
                       .tryToLogin(context);
               if (result == 'success') {
                 getPatients(clincId, context);
-              }else if(result == 'needUpdate'){Provider.of<UserProvier>(context, listen: false)
-                    .goToUpdateScreen(context);} else {
+              } else if (result == 'needUpdate') {
+                Provider.of<UserProvier>(context, listen: false)
+                    .goToUpdateScreen(context);
+              } else {
                 Provider.of<UserProvier>(context, listen: false)
                     .signout(context);
               }
@@ -151,8 +153,10 @@ class PatientProvider with ChangeNotifier {
                       .tryToLogin(context);
               if (result == 'success') {
                 updatePat(p, context: context);
-              }else if(result == 'needUpdate'){Provider.of<UserProvier>(context, listen: false)
-                    .goToUpdateScreen(context);} else {
+              } else if (result == 'needUpdate') {
+                Provider.of<UserProvier>(context, listen: false)
+                    .goToUpdateScreen(context);
+              } else {
                 Provider.of<UserProvier>(context, listen: false)
                     .signout(context);
               }
@@ -164,6 +168,8 @@ class PatientProvider with ChangeNotifier {
       print(e.toString());
       result = 'fail';
     }
+
+    CaseDialog.isLoading = false;
     if (result == 'success') {
       CaseDialog.noteController.text = '';
       for (int i = 0; i < CaseDialog.clincDiagsBools.length; i++) {

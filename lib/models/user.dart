@@ -8,6 +8,7 @@ class User {
   String phoneNumber;
   String clincId;
   String isActive;
+  String mobileSupport;
   String id;
   List<String> permission = [
     '0',
@@ -36,9 +37,9 @@ class User {
     print(res.toString());
     name = res['name'];
     email = res['email'];
-    phoneNumber=res['phoneNumber']??'';
-    pass = res['pass']??'';
-    createdDate = res['createdDate']??'';
+    phoneNumber = res['phoneNumber'] ?? '';
+    pass = res['pass'] ?? '';
+    createdDate = res['createdDate'] ?? '';
     id = res['id'];
     clincId = res['clincId'];
     createdBy = res['createdBy'];
@@ -57,6 +58,9 @@ class User {
       for (int i = 0; i < res['clincTests'].length; i++) {
         clincTests.add(res['clincTests'][i]);
       }
+    }
+    if (res['mobileSupport'] != null) {
+      mobileSupport = res['mobileSupport'];
     }
   }
   get permissionString {

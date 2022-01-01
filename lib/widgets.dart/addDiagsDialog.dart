@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
+import 'package:desktop_version/screen/settingsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,9 +16,13 @@ class _AddDiagDialogState extends State<AddDiagDialog> {
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
+    bool isMobile = Platform.isAndroid || Platform.isIOS;
+    bool isDark = Provider.of<DarkModeProvider>(context, listen: false).isDark;
     return Directionality(
       textDirection: TextDirection.rtl,
       child: AlertDialog(
+        backgroundColor: 
+                       isDark?SettingsScreen.darkMode1:Colors.white,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -24,13 +32,16 @@ class _AddDiagDialogState extends State<AddDiagDialog> {
                   'أدخل التشخيص الجديد',
                   style: TextStyle(
                       fontFamily: 'Cairo',
+                      color: isDark?Colors.white:Colors.black,
                       fontWeight: FontWeight.bold,
-                      fontSize: 25),
+                      fontSize:isMobile?15: 25),
                 ),
               ],
             ),
             IconButton(
-                icon: Icon(Icons.close),
+                icon: Icon(Icons.close,
+                size: isMobile?20:24,
+                      color: isDark?Colors.white:Colors.black,),
                 onPressed: () {
                   Navigator.pop(context);
                 }),
@@ -48,22 +59,28 @@ class _AddDiagDialogState extends State<AddDiagDialog> {
                     print('enter button');
                   },
                   onChanged: (val) {},
+                  style: TextStyle(fontFamily: 'Cairo',
+                      color: isDark?Colors.white:Colors.black,),
                   controller: inputController,
                   cursorColor: Colors.blue,
                   decoration: new InputDecoration(
                     prefixIcon: Icon(
                       Icons.assignment,
+                      color: isDark?Colors.white:Colors.black,
                     ),
+                    labelStyle: TextStyle(fontFamily: 'Cairo',
+                      color: isDark?Colors.white:Colors.black,),
                     labelText: "التشخيص...",
 
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(25.0),
+                      borderRadius: new BorderRadius.circular(50.0),
                       borderSide: BorderSide(color: Colors.blue),
                     ),
 
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(25.0),
-                      // borderSide: BorderSide(color: color),
+                      borderRadius: new BorderRadius.circular(50.0),
+                      borderSide: BorderSide(
+                      color: isDark?Colors.white:Colors.black,),
                     ),
                     //fillColor: Colors.green),
                   ),

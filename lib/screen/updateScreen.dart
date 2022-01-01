@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/homeScreen.dart';
@@ -20,6 +22,9 @@ class _UpdateScreenState extends State<UpdateScreen> {
   @override
   Widget build(BuildContext context) {
 
+    bool isMobile = Platform.isAndroid || Platform.isIOS;
+
+    bool isDark = Provider.of<DarkModeProvider>(context, listen: false).isDark;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor:  Provider.of<DarkModeProvider>(context,listen: false).isDark? SettingsScreen.darkMode1:Colors.white,
@@ -30,20 +35,21 @@ class _UpdateScreenState extends State<UpdateScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.all(15.0),
-              child: SvgPicture.asset(
-                'assets/images/drawing.svg',
-                width: 300,
+              child: SvgPicture.asset(isDark
+                        ? 'assets/images/drawingDark.svg'
+                        : 'assets/images/drawing.svg',
+                width: isMobile?160 : 300,
               ),
             ),
             Text(
-              ':قم بتحديث البرنامج من خلال الرابط التالي',
+              isMobile?'قم بتحديث التطبيق من المتجر الخاص بالهاتف' :':قم بتحديث البرنامج من خلال الرابط التالي',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Cairo',
                   color: Colors.blue,
-                  fontSize: 20),
+                  fontSize:isMobile?15 :  20),
             ),
-            SizedBox(
+           isMobile? Container(): SizedBox(
               width: width -300,
               child: Text(
                 widget.url,
@@ -53,7 +59,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
                     fontSize: 15),
               ),
             ),
-            Padding(
+           isMobile? Container(): Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: ElevatedButton(
                 onPressed: () {

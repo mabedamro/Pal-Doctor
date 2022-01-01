@@ -41,8 +41,7 @@ class UserProvier with ChangeNotifier {
         print(e.toString());
       });
     } catch (e) {
-
-        print('error  !!');
+      print('error  !!');
       print(e.toString());
     }
   }
@@ -120,7 +119,17 @@ class UserProvier with ChangeNotifier {
                 // goToUpdateScreen(context);
                 result = 'needUpdate';
               } else {
-                result = 'success';
+                bool isMobile = Platform.isAndroid || Platform.isIOS;
+                if (isMobile) {
+                  if (clincUser.mobileSupport == '0') {
+                    signout(context);
+                    result = 'mobile';
+                  } else {
+                    result = 'success';
+                  }
+                } else {
+                  result = 'success';
+                }
               }
             }
           }
@@ -488,7 +497,7 @@ class UserProvier with ChangeNotifier {
     );
   }
 
-  Future<String> login({String email, String pass}) async {
+  Future<String> login({String email, String pass,@required BuildContext context}) async {
     try {
       String result = 'fail';
 
@@ -500,10 +509,38 @@ class UserProvier with ChangeNotifier {
         prefs.setString('email', email);
         prefs.setString('password', pass);
         await getUserData(auth.userId);
-        if (user.isActive == '0') {
+      if (clincUser.isActive == '0') {
+          // signout(context);
           result = 'fail';
         } else {
-          result = 'success';
+          if (user.isActive == '0') {
+            // signout(context);
+            result = 'fail';
+          } else {
+            if (stopAll == '1') {
+              // signout(context);
+              result = 'fail';
+            } else {
+              if (appVersion != AppConstants.appVersion) {
+                //need Update
+                print('needUpdate');
+                goToUpdateScreen(context);
+                result = 'needUpdate';
+              } else {
+                bool isMobile = Platform.isAndroid || Platform.isIOS;
+                if (isMobile) {
+                  if (clincUser.mobileSupport == '0') {
+                    // signout(context);
+                    result = 'mobile';
+                  } else {
+                    result = 'success';
+                  }
+                } else {
+                  result = 'success';
+                }
+              }
+            }
+          }
         }
       }).catchError((e) {
         if (e.toString().contains('SocketException')) {

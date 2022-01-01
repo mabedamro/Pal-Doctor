@@ -2,6 +2,7 @@
 import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/employeesProvider.dart';
 import 'package:desktop_version/screen/employeeScreen.dart';
+import 'package:desktop_version/screen/settingsScreen.dart';
 import 'package:desktop_version/widgets.dart/addBondDialog.dart';
 import 'package:desktop_version/widgets.dart/employeeBondsDialog.dart';
 import 'package:flutter/material.dart';
@@ -70,6 +71,9 @@ class __EmployeeInformationScreenpertiesState extends State<EmployeeInformationS
     nameController.text = EmployeeScreen.selectedEmployee.name;
     emailController.text = EmployeeScreen.selectedEmployee.email;
     return Scaffold(
+      backgroundColor: Provider.of<DarkModeProvider>(context,
+                                                    listen: false)
+                                                .isDark?SettingsScreen.darkMode1:Colors.grey[100],
       body: Directionality(textDirection: TextDirection.rtl,
         child: SafeArea(
           child: SizedBox(

@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
+import 'package:desktop_version/screen/settingsScreen.dart';
 import 'package:desktop_version/widgets.dart/addDiagsDialog.dart';
 import 'package:desktop_version/widgets.dart/addTestDialog.dart';
 import 'package:dotted_line/dotted_line.dart';
@@ -24,12 +27,17 @@ class _TestsUserDialogState extends State<TestsUserDialog> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Provider.of<DarkModeProvider>(context, listen: false).isDark;
     double width = MediaQuery.of(context).size.width;
 
+    bool isMobile = Platform.isAndroid || Platform.isIOS;
     double height = MediaQuery.of(context).size.height;
     return Directionality(
       textDirection: TextDirection.rtl,
+      
       child: AlertDialog(
+        backgroundColor: 
+                       isDark?SettingsScreen.darkMode1:Colors.white,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -40,9 +48,10 @@ class _TestsUserDialogState extends State<TestsUserDialog> {
                   style: TextStyle(
                       fontFamily: 'Cairo',
                       fontWeight: FontWeight.bold,
-                      fontSize: 25),
+                      color: isDark?Colors.white:Colors.black,
+                      fontSize: isMobile? 15:25),
                 ),
-                Padding(
+                isMobile? Container():Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
                     onPressed: () {
@@ -62,6 +71,7 @@ class _TestsUserDialogState extends State<TestsUserDialog> {
                             Text(
                               'إضافة فحص / أشعة',
                               style: TextStyle(
+                                
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
                                   fontFamily: 'Cairo',
@@ -83,7 +93,8 @@ class _TestsUserDialogState extends State<TestsUserDialog> {
               ],
             ),
             IconButton(
-                icon: Icon(Icons.close),
+                icon: Icon(Icons.close,
+                      color: isDark?Colors.white:Colors.black,),
                 onPressed: () {
                   Navigator.pop(context);
                 }),
@@ -94,6 +105,46 @@ class _TestsUserDialogState extends State<TestsUserDialog> {
           height: height / 1.5,
           child: Column(
             children: [
+              isMobile?Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (_) {
+                          return AddTestDialog();
+                        },
+                      );
+                    },
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.add),
+                            Text(
+                              'إضافة فحص / أشعة',
+                              style: TextStyle(
+                                
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontFamily: 'Cairo',
+                                  fontSize: 11),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                ):Container(),
               DottedLine(
                 direction: Axis.horizontal,
                 lineLength: double.infinity,
@@ -138,6 +189,8 @@ class _TestsUserDialogState extends State<TestsUserDialog> {
                             itemCount: userProvider.clincUser.clincTests.length,
                             itemBuilder: (_, index) {
                               return Card(
+
+                      color: isDark?SettingsScreen.darkMode2:Colors.grey[100],
                                 child: InkWell(
                                   child: Container(
                                     height: 50,
@@ -155,6 +208,8 @@ class _TestsUserDialogState extends State<TestsUserDialog> {
                                                     .toString(),
                                                 style: TextStyle(
                                                     fontFamily: 'Cairo',
+                                                    fontSize: isMobile?12:14,
+                      color: isDark?Colors.white:Colors.black,
                                                     fontWeight:
                                                         FontWeight.bold),
                                               ),
@@ -166,6 +221,7 @@ class _TestsUserDialogState extends State<TestsUserDialog> {
                                                 icon: Icon(
                                                   Icons.delete,
                                                   color: Colors.red,
+                                                  size: isMobile?20:24,
                                                 ),
                                                 onPressed: () {
                                                   Provider.of<UserProvier>(

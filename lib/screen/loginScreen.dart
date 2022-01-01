@@ -291,7 +291,7 @@ class _LoginScreenState extends State<LoginScreen> {
     print(_passwordController.text.length);
     if (isLoading == true) {
       String result = await Provider.of<UserProvier>(context, listen: false)
-          .login(email: email, pass: _passwordController.text);
+          .login(email: email, pass: _passwordController.text,context: context);
       print(result);
       if (result == 'success') {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -306,6 +306,7 @@ class _LoginScreenState extends State<LoginScreen> {
           context,
           MaterialPageRoute(builder: (context) => HomeScreen()),
         );
+        return;
       } else if (result == 'fail') {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -315,9 +316,6 @@ class _LoginScreenState extends State<LoginScreen> {
             backgroundColor: Colors.red,
           ),
         );
-        setState(() {
-          isLoading = false;
-        });
       } else if (result == 'internet fail') {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -332,6 +330,32 @@ class _LoginScreenState extends State<LoginScreen> {
           isLoading = false;
         });
       }
+      else if (result == 'mobile') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Text('اشتراكك لا يدعم نسخة الهاتف!'),
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      else if (result == 'update') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Text('اشتراكك لا يدعم نسخة الهاتف!'),
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+
+        setState(() {
+          isLoading = false;
+        });
     }
   }
 }

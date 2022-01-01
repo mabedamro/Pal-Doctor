@@ -179,6 +179,9 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
+        backgroundColor: Provider.of<DarkModeProvider>(context,
+                                                    listen: false)
+                                                .isDark?SettingsScreen.darkMode1:Colors.grey[100],
         body: SafeArea(
           child: SingleChildScrollView(
             child: Container(

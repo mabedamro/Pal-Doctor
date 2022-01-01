@@ -36,77 +36,88 @@ class _SessionsScreenState extends State<SessionsScreen> {
     return Directionality(
         textDirection: TextDirection.rtl,
         child: Scaffold(
-          floatingActionButton: isMobile?  FloatingActionButton(onPressed: (){
- showDialog(
+          floatingActionButton: isMobile
+              ? FloatingActionButton(
+                  onPressed: () {
+                    showDialog(
                       context: context,
                       builder: (_) {
                         return CaseDialog(
                           onPressed: () async {
-                            List<String> diags = [];
-                            List<String> tests = [];
-                            for (int i = 0;
-                                i <
-                                    Provider.of<UserProvier>(context,
-                                            listen: false)
-                                        .clincUser
-                                        .clincDiags
-                                        .length;
-                                i++) {
-                              if (CaseDialog.clincDiagsBools[i]) {
-                                diags.add(Provider.of<UserProvier>(context,
-                                        listen: false)
-                                    .clincUser
-                                    .clincDiags[i]);
+                            if (!CaseDialog.isLoading) {
+                              CaseDialog.isLoading = true;
+                              // CaseDialog.setState();
+                              List<String> diags = [];
+                              List<String> tests = [];
+                              for (int i = 0;
+                                  i <
+                                      Provider.of<UserProvier>(context,
+                                              listen: false)
+                                          .clincUser
+                                          .clincDiags
+                                          .length;
+                                  i++) {
+                                if (CaseDialog.clincDiagsBools[i]) {
+                                  diags.add(Provider.of<UserProvier>(context,
+                                          listen: false)
+                                      .clincUser
+                                      .clincDiags[i]);
+                                }
                               }
-                            }
-                            for (int i = 0;
-                                i <
-                                    Provider.of<UserProvier>(context,
-                                            listen: false)
-                                        .clincUser
-                                        .clincTests
-                                        .length;
-                                i++) {
-                              if (CaseDialog.clincTestsBools[i]) {
-                                tests.add(Provider.of<UserProvier>(context,
-                                        listen: false)
-                                    .clincUser
-                                    .clincTests[i]);
+                              for (int i = 0;
+                                  i <
+                                      Provider.of<UserProvier>(context,
+                                              listen: false)
+                                          .clincUser
+                                          .clincTests
+                                          .length;
+                                  i++) {
+                                if (CaseDialog.clincTestsBools[i]) {
+                                  tests.add(Provider.of<UserProvier>(context,
+                                          listen: false)
+                                      .clincUser
+                                      .clincTests[i]);
+                                }
                               }
-                            }
-                            Case newCase = Case(
-                              diags: diags,
-                              tests: tests,
-                              id: Provider.of<UserProvier>(context,
-                                      listen: false)
-                                  .user
-                                  .id,
-                              notes: CaseDialog.noteController.text,
-                              userName: Provider.of<UserProvier>(context,
-                                      listen: false)
-                                  .user
-                                  .name,
-                              uid: Provider.of<UserProvier>(context,
-                                      listen: false)
-                                  .user
-                                  .id,
-                            );
-                            PatientScreen.selectedPatient.cases
-                                .insert(0, newCase);
-                            String result = await Provider.of<PatientProvider>(
-                                    context,
-                                    listen: false)
-                                .updatePat(PatientScreen.selectedPatient,
-                                    context: context);
-                            if (result == 'success') {
-                              Navigator.of(context).pop();
-                              setState(() {});
+                              Case newCase = Case(
+                                diags: diags,
+                                tests: tests,
+                                id: Provider.of<UserProvier>(context,
+                                        listen: false)
+                                    .user
+                                    .id,
+                                notes: CaseDialog.noteController.text,
+                                userName: Provider.of<UserProvier>(context,
+                                        listen: false)
+                                    .user
+                                    .name,
+                                uid: Provider.of<UserProvier>(context,
+                                        listen: false)
+                                    .user
+                                    .id,
+                              );
+                              PatientScreen.selectedPatient.cases
+                                  .insert(0, newCase);
+                              String result =
+                                  await Provider.of<PatientProvider>(context,
+                                          listen: false)
+                                      .updatePat(PatientScreen.selectedPatient,
+                                          context: context);
+                              if (result == 'success') {
+                                Navigator.of(context).pop();
+                                setState(() {});
+                              }
+                            } else {
+                              return;
                             }
                           },
                         );
                       },
                     );
-          },child: Icon(Icons.add),) : Container(),
+                  },
+                  child: Icon(Icons.add),
+                )
+              : Container(),
           backgroundColor:
               Provider.of<DarkModeProvider>(context, listen: false).isDark
                   ? SettingsScreen.darkMode1
@@ -115,118 +126,132 @@ class _SessionsScreenState extends State<SessionsScreen> {
             leading: Container(),
             centerTitle: true,
             title: Text(
-                    'جلسات المريض',
-                    style: TextStyle(
-                        color: Colors.blue,
-                        fontFamily: 'Cairo',
-                        fontWeight: FontWeight.bold),
-                  ),
+              'جلسات المريض',
+              style: TextStyle(
+                  color: Colors.blue,
+                  fontFamily: 'Cairo',
+                  fontWeight: FontWeight.bold),
+            ),
             backgroundColor: Colors.transparent,
             elevation: 0,
             actions: [
-             isMobile? Container() : Padding(
-                padding: const EdgeInsets.only(top: 8.0, left: 8),
-                child: ElevatedButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (_) {
-                        return CaseDialog(
-                          onPressed: () async {
-                            List<String> diags = [];
-                            List<String> tests = [];
-                            for (int i = 0;
-                                i <
-                                    Provider.of<UserProvier>(context,
-                                            listen: false)
-                                        .clincUser
-                                        .clincDiags
-                                        .length;
-                                i++) {
-                              if (CaseDialog.clincDiagsBools[i]) {
-                                diags.add(Provider.of<UserProvier>(context,
-                                        listen: false)
-                                    .clincUser
-                                    .clincDiags[i]);
-                              }
-                            }
-                            for (int i = 0;
-                                i <
-                                    Provider.of<UserProvier>(context,
-                                            listen: false)
-                                        .clincUser
-                                        .clincTests
-                                        .length;
-                                i++) {
-                              if (CaseDialog.clincTestsBools[i]) {
-                                tests.add(Provider.of<UserProvier>(context,
-                                        listen: false)
-                                    .clincUser
-                                    .clincTests[i]);
-                              }
-                            }
-                            Case newCase = Case(
-                              diags: diags,
-                              tests: tests,
-                              id: Provider.of<UserProvier>(context,
-                                      listen: false)
-                                  .user
-                                  .id,
-                              notes: CaseDialog.noteController.text,
-                              userName: Provider.of<UserProvier>(context,
-                                      listen: false)
-                                  .user
-                                  .name,
-                              uid: Provider.of<UserProvier>(context,
-                                      listen: false)
-                                  .user
-                                  .id,
-                            );
-                            PatientScreen.selectedPatient.cases
-                                .insert(0, newCase);
-                            String result = await Provider.of<PatientProvider>(
-                                    context,
-                                    listen: false)
-                                .updatePat(PatientScreen.selectedPatient,
-                                    context: context);
-                            if (result == 'success') {
-                              Navigator.of(context).pop();
-                              setState(() {});
-                            }
-                          },
-                        );
-                      },
-                    );
-                  },
-                  child: SizedBox(
-                    width: isMobile ? width / 2 - 35 : 200,
-                    child: Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'إضافة جلسة',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Cairo',
-                                fontSize: 15),
+              isMobile
+                  ? Container()
+                  : Padding(
+                      padding: const EdgeInsets.only(top: 8.0, left: 8),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (_) {
+                              return CaseDialog(
+                                onPressed: () async {
+                                  if (!CaseDialog.isLoading) {
+                                    CaseDialog.isLoading = true;
+                                    // CaseDialog.setState();
+                                    List<String> diags = [];
+                                    List<String> tests = [];
+                                    for (int i = 0;
+                                        i <
+                                            Provider.of<UserProvier>(context,
+                                                    listen: false)
+                                                .clincUser
+                                                .clincDiags
+                                                .length;
+                                        i++) {
+                                      if (CaseDialog.clincDiagsBools[i]) {
+                                        diags.add(Provider.of<UserProvier>(
+                                                context,
+                                                listen: false)
+                                            .clincUser
+                                            .clincDiags[i]);
+                                      }
+                                    }
+                                    for (int i = 0;
+                                        i <
+                                            Provider.of<UserProvier>(context,
+                                                    listen: false)
+                                                .clincUser
+                                                .clincTests
+                                                .length;
+                                        i++) {
+                                      if (CaseDialog.clincTestsBools[i]) {
+                                        tests.add(Provider.of<UserProvier>(
+                                                context,
+                                                listen: false)
+                                            .clincUser
+                                            .clincTests[i]);
+                                      }
+                                    }
+                                    Case newCase = Case(
+                                      diags: diags,
+                                      tests: tests,
+                                      id: Provider.of<UserProvier>(context,
+                                              listen: false)
+                                          .user
+                                          .id,
+                                      notes: CaseDialog.noteController.text,
+                                      userName: Provider.of<UserProvier>(
+                                              context,
+                                              listen: false)
+                                          .user
+                                          .name,
+                                      uid: Provider.of<UserProvier>(context,
+                                              listen: false)
+                                          .user
+                                          .id,
+                                    );
+                                    PatientScreen.selectedPatient.cases
+                                        .insert(0, newCase);
+                                    String result =
+                                        await Provider.of<PatientProvider>(
+                                                context,
+                                                listen: false)
+                                            .updatePat(
+                                                PatientScreen.selectedPatient,
+                                                context: context);
+                                    if (result == 'success') {
+                                      Navigator.of(context).pop();
+                                      setState(() {});
+                                    }
+                                  } else {
+                                    return;
+                                  }
+                                },
+                              );
+                            },
+                          );
+                        },
+                        child: SizedBox(
+                          width: isMobile ? width / 2 - 35 : 200,
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'إضافة جلسة',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Cairo',
+                                      fontSize: 15),
+                                ),
+                                Icon(Icons.add)
+                              ],
+                            ),
                           ),
-                          Icon(Icons.add)
-                        ],
+                        ),
+                        style: ButtonStyle(
+                          elevation: MaterialStateProperty.all<double>(0),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50.0),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                  style: ButtonStyle(
-                    elevation: MaterialStateProperty.all<double>(0),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50.0),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: ElevatedButton(
@@ -239,14 +264,16 @@ class _SessionsScreenState extends State<SessionsScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                         isMobile?Container() :  Text(
-                            'رجوع',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Cairo',
-                                fontSize: 15),
-                          ),
+                          isMobile
+                              ? Container()
+                              : Text(
+                                  'رجوع',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Cairo',
+                                      fontSize: 15),
+                                ),
                           Icon(Icons.arrow_forward_ios_outlined)
                         ],
                       ),
@@ -267,7 +294,9 @@ class _SessionsScreenState extends State<SessionsScreen> {
           ),
           body: Center(
             child: Container(
-                width:isMobile? MediaQuery.of(context).size.width:  MediaQuery.of(context).size.width / 1.5,
+                width: isMobile
+                    ? MediaQuery.of(context).size.width
+                    : MediaQuery.of(context).size.width / 1.5,
                 child: ListView.builder(
                     itemCount: cases.length,
                     itemBuilder: (context, index) {
@@ -293,7 +322,7 @@ class _SessionsScreenState extends State<SessionsScreen> {
                                         style: TextStyle(
                                             fontFamily: 'Cairo',
                                             fontWeight: FontWeight.bold,
-                                            fontSize:isMobile?15 : 18,
+                                            fontSize: isMobile ? 15 : 18,
                                             color: Colors.red),
                                       ),
                                       Text(
@@ -308,7 +337,7 @@ class _SessionsScreenState extends State<SessionsScreen> {
                                                     ? Colors.white
                                                     : Colors.black,
                                             fontWeight: FontWeight.bold,
-                                            fontSize: isMobile? 12:15),
+                                            fontSize: isMobile ? 12 : 15),
                                       ),
                                     ],
                                   ),
@@ -319,7 +348,7 @@ class _SessionsScreenState extends State<SessionsScreen> {
                                         style: TextStyle(
                                           fontFamily: 'Cairo',
                                           fontWeight: FontWeight.bold,
-                                          fontSize: isMobile?15 :18,
+                                          fontSize: isMobile ? 15 : 18,
                                           color: Colors.red,
                                         ),
                                       ),
@@ -335,7 +364,7 @@ class _SessionsScreenState extends State<SessionsScreen> {
                                                         .isDark
                                                     ? Colors.white
                                                     : Colors.black,
-                                            fontSize: isMobile? 12:15),
+                                            fontSize: isMobile ? 12 : 15),
                                       ),
                                     ],
                                   ),
@@ -346,7 +375,7 @@ class _SessionsScreenState extends State<SessionsScreen> {
                                         style: TextStyle(
                                           fontFamily: 'Cairo',
                                           fontWeight: FontWeight.bold,
-                                          fontSize:isMobile?12 : 15,
+                                          fontSize: isMobile ? 12 : 15,
                                           color: Colors.grey,
                                         ),
                                       ),
@@ -362,13 +391,13 @@ class _SessionsScreenState extends State<SessionsScreen> {
                                                         .isDark
                                                     ? Colors.white
                                                     : Colors.black,
-                                            fontSize:isMobile? 12: 15),
+                                            fontSize: isMobile ? 12 : 15),
                                       ),
                                     ],
                                   ),
-                                   Row(
+                                  Row(
                                     children: [
-                                        Text(
+                                      Text(
                                         ' توقيع  ',
                                         style: TextStyle(
                                             fontFamily: 'Cairo',
@@ -376,14 +405,13 @@ class _SessionsScreenState extends State<SessionsScreen> {
                                             fontSize: 15),
                                       ),
                                       Text(
-                                        cases[index].userName+'   ',
+                                        cases[index].userName + '   ',
                                         style: TextStyle(
                                             fontFamily: 'Cairo',
                                             fontWeight: FontWeight.bold,
                                             color: Colors.blue,
                                             fontSize: 15),
                                       ),
-                                    
                                       Text(
                                         DateTimeProvider.dateAndTime(
                                             cases[index].date),
@@ -405,9 +433,7 @@ class _SessionsScreenState extends State<SessionsScreen> {
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                 
-                                ],
+                                children: [],
                               ),
                             ],
                           ),

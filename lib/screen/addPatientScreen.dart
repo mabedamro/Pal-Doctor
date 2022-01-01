@@ -65,7 +65,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
       color: Provider.of<DarkModeProvider>(context, listen: false).isDark
           ? Colors.white
           : Colors.black,
-          fontSize: isMobile?13:16,
+      fontSize: isMobile ? 13 : 16,
     );
     return Directionality(
         textDirection: TextDirection.rtl,
@@ -140,13 +140,13 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                       ? SettingsScreen.darkMode2
                       : Colors.white,
                   padding: EdgeInsets.all(15),
-                  width: isMobile? width: width - width / 2,
+                  width: isMobile ? width : width - width / 2,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
                         Icons.assignment_ind_rounded,
-                        size: isMobile?80 :120,
+                        size: isMobile ? 80 : 120,
                         color: Colors.blue,
                       ),
                       Padding(
@@ -559,7 +559,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           SizedBox(
-                            width: isMobile?width : width / 2,
+                            width: isMobile ? width : width / 2,
                             child: Row(
                               children: [
                                 Expanded(
@@ -572,51 +572,55 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                                           builder: (_) {
                                             return CaseDialog(
                                               onPressed: () {
-                                                String diag = '';
-                                                for (int i = 0;
-                                                    i <
-                                                        Provider.of<UserProvier>(
-                                                                context,
-                                                                listen: false)
-                                                            .clincUser
-                                                            .clincDiags
-                                                            .length;
-                                                    i++) {
-                                                  if (CaseDialog
-                                                      .clincDiagsBools[i]) {
-                                                    diag +=
-                                                        Provider.of<UserProvier>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .clincUser
-                                                                .clincDiags[i] +
-                                                            ',';
+                                                if (!CaseDialog.isLoading) {
+                                                  CaseDialog.isLoading = true;
+                                                  // CaseDialog.setState();
+                                                  String diag = '';
+                                                  for (int i = 0;
+                                                      i <
+                                                          Provider.of<UserProvier>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .clincUser
+                                                              .clincDiags
+                                                              .length;
+                                                      i++) {
+                                                    if (CaseDialog
+                                                        .clincDiagsBools[i]) {
+                                                      diag += Provider.of<
+                                                                      UserProvier>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .clincUser
+                                                              .clincDiags[i] +
+                                                          ',';
+                                                    }
                                                   }
-                                                }
-                                                for (int i = 0;
-                                                    i <
-                                                        Provider.of<UserProvier>(
-                                                                context,
-                                                                listen: false)
-                                                            .clincUser
-                                                            .clincTests
-                                                            .length;
-                                                    i++) {
-                                                  if (CaseDialog
-                                                      .clincTestsBools[i]) {
-                                                    diag +=
-                                                        Provider.of<UserProvier>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .clincUser
-                                                                .clincTests[i] +
-                                                            ',';
+                                                  for (int i = 0;
+                                                      i <
+                                                          Provider.of<UserProvier>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .clincUser
+                                                              .clincTests
+                                                              .length;
+                                                      i++) {
+                                                    if (CaseDialog
+                                                        .clincTestsBools[i]) {
+                                                      diag += Provider.of<
+                                                                      UserProvier>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .clincUser
+                                                              .clincTests[i] +
+                                                          ',';
+                                                    }
                                                   }
+                                                  diagsController.text = diag;
+                                                  Navigator.of(context).pop();
+                                                } else {
+                                                  return;
                                                 }
-                                                diagsController.text = diag;
-                                                Navigator.of(context).pop();
                                               },
                                             );
                                           },

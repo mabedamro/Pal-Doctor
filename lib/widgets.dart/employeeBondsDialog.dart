@@ -9,6 +9,7 @@ import 'package:desktop_version/provider/dateTimeProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/employeeScreen.dart';
 import 'package:desktop_version/screen/patientScreen.dart';
+import 'package:desktop_version/screen/settingsScreen.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -42,11 +43,12 @@ class _EmployeeBondsDialogState extends State<EmployeeBondsDialog> {
   Widget build(BuildContext context) {
     bool isMobile = Platform.isAndroid || Platform.isIOS;
     double width = MediaQuery.of(context).size.width;
-
+    bool isDark = Provider.of<DarkModeProvider>(context, listen: false).isDark;
     double height = MediaQuery.of(context).size.height;
     return Directionality(
       textDirection: TextDirection.rtl,
       child: AlertDialog(
+        backgroundColor: isDark ? SettingsScreen.darkMode1 : Colors.white,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -55,10 +57,14 @@ class _EmployeeBondsDialogState extends State<EmployeeBondsDialog> {
               style: TextStyle(
                   fontSize: isMobile ? 15 : 20,
                   fontFamily: 'Cairo',
+                  color: isDark ? Colors.white : Colors.black,
                   fontWeight: FontWeight.bold),
             ),
             IconButton(
-                icon: Icon(Icons.close),
+                icon: Icon(
+                  Icons.close,
+                  color: isDark ? Colors.white : Colors.black,
+                ),
                 onPressed: () {
                   Navigator.pop(context);
                 }),
@@ -197,6 +203,9 @@ class _EmployeeBondsDialogState extends State<EmployeeBondsDialog> {
                                                         .toString(),
                                                     style: TextStyle(
                                                         fontFamily: 'Cairo',
+                                                        color: isDark
+                                                            ? Colors.white
+                                                            : Colors.black,
                                                         fontSize:
                                                             isMobile ? 11 : 16,
                                                         fontWeight:
@@ -214,6 +223,9 @@ class _EmployeeBondsDialogState extends State<EmployeeBondsDialog> {
                                                                 .date),
                                                     style: TextStyle(
                                                         fontFamily: 'Cairo',
+                                                        color: isDark
+                                                            ? Colors.white
+                                                            : Colors.black,
                                                         fontSize:
                                                             isMobile ? 11 : 16,
                                                         fontWeight:
@@ -229,6 +241,9 @@ class _EmployeeBondsDialogState extends State<EmployeeBondsDialog> {
                                                         .userName,
                                                     style: TextStyle(
                                                         fontFamily: 'Cairo',
+                                                        color: isDark
+                                                            ? Colors.white
+                                                            : Colors.black,
                                                         fontSize:
                                                             isMobile ? 11 : 16,
                                                         fontWeight:

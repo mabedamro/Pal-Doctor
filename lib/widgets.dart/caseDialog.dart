@@ -10,8 +10,10 @@ class CaseDialog extends StatefulWidget {
   static TextEditingController noteController = TextEditingController();
   Function onPressed;
   CaseDialog({this.onPressed});
+  static Function setState;
   static List<bool> clincDiagsBools = [];
   static List<bool> clincTestsBools = [];
+  static bool isLoading = false;
   @override
   _CaseDialogState createState() => _CaseDialogState();
 }
@@ -43,6 +45,7 @@ class _CaseDialogState extends State<CaseDialog> {
 
   @override
   Widget build(BuildContext context) {
+    CaseDialog.setState = setState;
     bool isMobile = Platform.isAndroid || Platform.isIOS;
     var feildStyle = TextStyle(
         fontFamily: 'Cairo',
@@ -315,14 +318,22 @@ class _CaseDialogState extends State<CaseDialog> {
                             child: Center(
                               child: Padding(
                                 padding: const EdgeInsets.all(16.0),
-                                child: Text(
-                                  'إضافة',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'Cairo',
-                                      fontSize: 15),
-                                ),
+                                child: CaseDialog.isLoading
+                                    ? SizedBox(
+                                        width: isMobile ? 30 : 50,
+                                        height: isMobile ? 30 : 50,
+                                        child: CircularProgressIndicator(
+                                          backgroundColor: Colors.white,
+                                        ),
+                                      )
+                                    : Text(
+                                        'إضافة',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Cairo',
+                                            fontSize: 15),
+                                      ),
                               ),
                             ),
                             style: ButtonStyle(

@@ -5,6 +5,7 @@ import 'package:desktop_version/provider/bondsProvider.dart';
 import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/dateTimeProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
+import 'package:desktop_version/screen/settingsScreen.dart';
 import 'package:desktop_version/widgets.dart/addDiagsDialog.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
@@ -29,11 +30,13 @@ class _DiagsUserDialogState extends State<DiagsUserDialog> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-  bool isMobile = Platform.isAndroid || Platform.isIOS;
+    bool isMobile = Platform.isAndroid || Platform.isIOS;
     double height = MediaQuery.of(context).size.height;
+    bool isDark = Provider.of<DarkModeProvider>(context, listen: false).isDark;
     return Directionality(
       textDirection: TextDirection.rtl,
       child: AlertDialog(
+        backgroundColor:  isDark?SettingsScreen.darkMode1 :Colors.white,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -42,11 +45,12 @@ class _DiagsUserDialogState extends State<DiagsUserDialog> {
                 Text(
                   'تشخيصات العيادة',
                   style: TextStyle(
+                    color: isDark?Colors.white:Colors.black,
                       fontFamily: 'Cairo',
                       fontWeight: FontWeight.bold,
-                      fontSize:isMobile? 15 : 25),
+                      fontSize: isMobile ? 15 : 25),
                 ),
-                Padding(
+               isMobile?Container(): Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
                     onPressed: () {
@@ -59,7 +63,9 @@ class _DiagsUserDialogState extends State<DiagsUserDialog> {
                     },
                     child: Center(
                       child: Padding(
-                        padding:isMobile?const EdgeInsets.all(0.0) : const EdgeInsets.all(12.0),
+                        padding: isMobile
+                            ? const EdgeInsets.all(0.0)
+                            : const EdgeInsets.all(12.0),
                         child: Row(
                           children: [
                             Icon(Icons.add),
@@ -69,7 +75,7 @@ class _DiagsUserDialogState extends State<DiagsUserDialog> {
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
                                   fontFamily: 'Cairo',
-                                  fontSize:isMobile?11 : 15),
+                                  fontSize: isMobile ? 11 : 15),
                             ),
                           ],
                         ),
@@ -86,11 +92,12 @@ class _DiagsUserDialogState extends State<DiagsUserDialog> {
                 ),
               ],
             ),
-           isMobile?Container() : IconButton(
-                icon: Icon(Icons.close),
-                onPressed: () {
-                  Navigator.pop(context);
-                }),
+            IconButton(
+                    icon: Icon(Icons.close,color:  isDark?Colors.white:Colors.black,),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    }),
+
           ],
         ),
         content: SizedBox(
@@ -98,6 +105,47 @@ class _DiagsUserDialogState extends State<DiagsUserDialog> {
           height: height / 1.5,
           child: Column(
             children: [
+              isMobile?Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (_) {
+                          return AddDiagDialog();
+                        },
+                      );
+                    },
+                    child: Center(
+                      child: Padding(
+                        padding: isMobile
+                            ? const EdgeInsets.all(0.0)
+                            : const EdgeInsets.all(12.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.add),
+                            Text(
+                              'إضافة تشخيص',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontFamily: 'Cairo',
+                                  fontSize: isMobile ? 11 : 15),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                ):Container(),
               DottedLine(
                 direction: Axis.horizontal,
                 lineLength: double.infinity,
@@ -133,6 +181,7 @@ class _DiagsUserDialogState extends State<DiagsUserDialog> {
                                           ? Colors.white
                                           : Colors.black,
                                       fontFamily: 'Cairo',
+                                      // fontSize: isMobile? 12:14,
                                       fontWeight: FontWeight.bold),
                                 )
                               ],
@@ -142,6 +191,7 @@ class _DiagsUserDialogState extends State<DiagsUserDialog> {
                             itemCount: userProvider.clincUser.clincDiags.length,
                             itemBuilder: (_, index) {
                               return Card(
+                                color:  isDark?SettingsScreen.darkMode2:Colors.grey[100],
                                 child: InkWell(
                                   child: Container(
                                     height: 50,
@@ -158,7 +208,9 @@ class _DiagsUserDialogState extends State<DiagsUserDialog> {
                                                     .clincUser.clincDiags[index]
                                                     .toString(),
                                                 style: TextStyle(
-                                                    fontFamily: 'Cairo',
+                                                    fontFamily: 'Cairo',fontSize: isMobile? 12:14,
+                                                    
+                                                    color:  isDark?Colors.white:Colors.black,
                                                     fontWeight:
                                                         FontWeight.bold),
                                               ),
@@ -170,6 +222,7 @@ class _DiagsUserDialogState extends State<DiagsUserDialog> {
                                                 icon: Icon(
                                                   Icons.delete,
                                                   color: Colors.red,
+                                                  size:  isMobile? 20:24,
                                                 ),
                                                 onPressed: () {
                                                   Provider.of<UserProvier>(
