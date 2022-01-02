@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/settingsScreen.dart';
+import 'package:desktop_version/widgets.dart/addBondDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -74,7 +75,7 @@ class _CaseDialogState extends State<CaseDialog> {
                         Row(
                           children: [
                             new Text(
-                              "إضافة تشخيص",
+                              "إضافة جلسة",
                               style: TextStyle(
                                   fontFamily: 'Cairo',
                                   fontWeight: FontWeight.bold,
@@ -306,6 +307,52 @@ class _CaseDialogState extends State<CaseDialog> {
                                       : Colors.black),
                             ),
                             //fillColor: Colors.green),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 300,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (_) {
+                                  return AddBondDialog('increase');
+                                },
+                              );
+                            },
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: CaseDialog.isLoading
+                                    ? SizedBox(
+                                        width: isMobile ? 30 : 50,
+                                        height: isMobile ? 30 : 50,
+                                        child: CircularProgressIndicator(
+                                          backgroundColor: Colors.white,
+                                        ),
+                                      )
+                                    : Text(
+                                        'إضافة دفعة لهذه الجلسة',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Cairo',
+                                            fontSize: 15),
+                                      ),
+                              ),
+                            ),
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(Colors.grey),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50.0),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),

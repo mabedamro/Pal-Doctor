@@ -46,8 +46,8 @@ class _TabBarCustomeState extends State<TabBarCustome>
 
   @override
   Widget build(BuildContext context) {
-     bool isMobile = Platform.isAndroid || Platform.isIOS;
-     double width = MediaQuery.of(context).size.width;
+    bool isMobile = Platform.isAndroid || Platform.isIOS;
+    double width = MediaQuery.of(context).size.width;
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Flexible(
@@ -56,22 +56,29 @@ class _TabBarCustomeState extends State<TabBarCustome>
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                Container(height: isMobile? 18:0 ,),
+                Container(
+                  height: isMobile ? 18 : 0,
+                ),
                 // give the tab bar a height [can change hheight to preferred height]
                 Row(
                   children: [
-                    isMobile?Container(): SvgPicture.asset(
-                      Provider.of<DarkModeProvider>(context, listen: false)
-                              .isDark
-                          ? 'assets/images/drawingDark.svg'
-                          : 'assets/images/drawing.svg',
-                      width: 150,
-                    ),
-                   isMobile?Container(): SizedBox(
-                      width: 20,
-                    ),
+                    isMobile
+                        ? Container()
+                        : SvgPicture.asset(
+                            Provider.of<DarkModeProvider>(context,
+                                        listen: false)
+                                    .isDark
+                                ? 'assets/images/drawingDark.svg'
+                                : 'assets/images/drawing.svg',
+                            width: 150,
+                          ),
+                    isMobile
+                        ? Container()
+                        : SizedBox(
+                            width: 20,
+                          ),
                     Container(
-                      width:isMobile? width-20 : 800,
+                      width: isMobile ? width - 20 : 800,
                       height: 45,
                       decoration: BoxDecoration(
                         color: Colors.grey[300],
@@ -112,17 +119,19 @@ class _TabBarCustomeState extends State<TabBarCustome>
 
   void getTabsNames() {
     User user = Provider.of<UserProvier>(context, listen: false).user;
- bool isMobile = Platform.isAndroid || Platform.isIOS;
+    bool isMobile = Platform.isAndroid || Platform.isIOS;
     if (user.permission[0] == '1') {
       tabsNames.add(
         Tab(
-          child:isMobile?Icon(Icons.accessible_outlined) : Text(
-            'المرضى',
-            style: TextStyle(
-              fontFamily: 'Cairo',
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          child: isMobile
+              ? Icon(Icons.accessible_outlined)
+              : Text(
+                  'سجل المرضى',
+                  style: TextStyle(
+                    fontFamily: 'Cairo',
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
           // text: 'المرضى',
         ),
       );
@@ -130,50 +139,58 @@ class _TabBarCustomeState extends State<TabBarCustome>
     if (user.permission[2] == '1') {
       tabsNames.add(
         Tab(
-          child:isMobile?Icon(Icons.calendar_today) :  Text(
-            'المواعيد',
-            style: TextStyle(
-              fontFamily: 'Cairo',
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          child: isMobile
+              ? Icon(Icons.calendar_today)
+              : Text(
+                  'المواعيد',
+                  style: TextStyle(
+                    fontFamily: 'Cairo',
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
         ),
       );
     }
     if (user.permission[1] == '1') {
       tabsNames.add(
         Tab(
-          child: isMobile?Icon(Icons.person) : Text(
-            'الموظفين',
-            style: TextStyle(
-              fontFamily: 'Cairo',
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          child: isMobile
+              ? Icon(Icons.person)
+              : Text(
+                  'سجل الموظفين',
+                  style: TextStyle(
+                    fontFamily: 'Cairo',
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
         ),
       );
     }
     if (user.permission[3] == '1') {
       tabsNames.add(
         Tab(
-          child:isMobile?Icon(Icons.attach_money_outlined) :  Text(
-            'السجل المالي',
-            style: TextStyle(
-              fontFamily: 'Cairo',
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          child: isMobile
+              ? Icon(Icons.attach_money_outlined)
+              : Text(
+                  'السجل المالي',
+                  style: TextStyle(
+                    fontFamily: 'Cairo',
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
         ),
       );
     }
     tabsNames.add(Tab(
-      child:isMobile?Icon(Icons.settings) :  Text(
-        'الإعدادات',
-        style: TextStyle(
-          fontFamily: 'Cairo',
-          fontWeight: FontWeight.bold,
-        ),
-      ),
+      child: isMobile
+          ? Icon(Icons.settings)
+          : Text(
+              'الإعدادات',
+              style: TextStyle(
+                fontFamily: 'Cairo',
+                fontWeight: FontWeight.bold,
+              ),
+            ),
     ));
   }
 

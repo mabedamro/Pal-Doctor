@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:desktop_version/models/case.dart';
 import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/dateTimeProvider.dart';
@@ -126,7 +125,7 @@ class _SessionsScreenState extends State<SessionsScreen> {
             leading: Container(),
             centerTitle: true,
             title: Text(
-              'جلسات المريض',
+              PatientScreen.selectedPatient.name,
               style: TextStyle(
                   color: Colors.blue,
                   fontFamily: 'Cairo',
@@ -315,31 +314,75 @@ class _SessionsScreenState extends State<SessionsScreen> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'التشخيص: ',
-                                        style: TextStyle(
-                                            fontFamily: 'Cairo',
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: isMobile ? 15 : 18,
-                                            color: Colors.red),
-                                      ),
-                                      Text(
-                                        cases[index].diagsToString,
-                                        style: TextStyle(
-                                            fontFamily: 'Cairo',
-                                            color:
-                                                Provider.of<DarkModeProvider>(
-                                                            context,
-                                                            listen: false)
-                                                        .isDark
-                                                    ? Colors.white
-                                                    : Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: isMobile ? 12 : 15),
-                                      ),
-                                    ],
+                                  SizedBox(
+                                    width: isMobile
+                                        ? MediaQuery.of(context).size.width - 20
+                                        : MediaQuery.of(context).size.width /
+                                                1.5 -
+                                            30,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'الجلسة: ',
+                                              style: TextStyle(
+                                                  fontFamily: 'Cairo',
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: isMobile ? 15 : 18,
+                                                  color: Colors.red),
+                                            ),
+                                            Text(
+                                              cases[index].diagsToString,
+                                              style: TextStyle(
+                                                  fontFamily: 'Cairo',
+                                                  color:
+                                                      Provider.of<DarkModeProvider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .isDark
+                                                          ? Colors.white
+                                                          : Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: isMobile ? 12 : 15),
+                                            ),
+                                          ],
+                                        ),
+                                        IconButton(
+                                            icon: Icon(
+                                              Icons.delete,
+                                              color: Colors.red,
+                                              size: isMobile ? 20 : 24,
+                                            ),
+                                            onPressed: () async {
+                                              List<Case> newCases =
+                                                  List.from(cases);
+                                              for (var i = 0;
+                                                  i < newCases.length;
+                                                  i++) {
+                                                if (newCases[i].id ==
+                                                    cases[index].id) {
+                                                  newCases.removeAt(i);
+                                                  break;
+                                                }
+                                              }
+
+                                              PatientScreen.selectedPatient
+                                                  .cases = newCases;
+                                              await Provider.of<
+                                                          PatientProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .updatePat(
+                                                      PatientScreen
+                                                          .selectedPatient,
+                                                      context: context);
+                                              setState(() {});
+                                            })
+                                      ],
+                                    ),
                                   ),
                                   Row(
                                     children: [
@@ -395,39 +438,73 @@ class _SessionsScreenState extends State<SessionsScreen> {
                                       ),
                                     ],
                                   ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        ' توقيع  ',
-                                        style: TextStyle(
-                                            fontFamily: 'Cairo',
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15),
-                                      ),
-                                      Text(
-                                        cases[index].userName + '   ',
-                                        style: TextStyle(
-                                            fontFamily: 'Cairo',
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.blue,
-                                            fontSize: 15),
-                                      ),
-                                      Text(
-                                        DateTimeProvider.dateAndTime(
-                                            cases[index].date),
-                                        style: TextStyle(
-                                            fontFamily: 'Cairo',
-                                            fontWeight: FontWeight.bold,
-                                            color:
-                                                Provider.of<DarkModeProvider>(
-                                                            context,
-                                                            listen: false)
-                                                        .isDark
-                                                    ? Colors.white
-                                                    : Colors.black,
-                                            fontSize: 15),
-                                      ),
-                                    ],
+                                  Container(
+                                    width: isMobile
+                                        ? MediaQuery.of(context).size.width - 20
+                                        : MediaQuery.of(context).size.width /
+                                                1.5 -
+                                            30,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                ' توقيع  ',
+                                                style: TextStyle(
+                                                    fontFamily: 'Cairo',
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 15),
+                                              ),
+                                              Text(
+                                                cases[index].userName + '   ',
+                                                style: TextStyle(
+                                                    fontFamily: 'Cairo',
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.blue,
+                                                    fontSize: 15),
+                                              ),
+                                              Text(
+                                                DateTimeProvider.dateAndTime(
+                                                    cases[index].date),
+                                                style: TextStyle(
+                                                    fontFamily: 'Cairo',
+                                                    fontWeight: FontWeight.bold,
+                                                    color:
+                                                        Provider.of<DarkModeProvider>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .isDark
+                                                            ? Colors.white
+                                                            : Colors.black,
+                                                    fontSize: 15),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Container(
+                                          child: Text(
+                                            '         ' +
+                                                (cases.length - index)
+                                                    .toString(),
+                                            style: TextStyle(
+                                                fontFamily: 'Cairo',
+                                                fontWeight: FontWeight.bold,
+                                                color:
+                                                    Provider.of<DarkModeProvider>(
+                                                                context,
+                                                                listen: false)
+                                                            .isDark
+                                                        ? Colors.white
+                                                        : Colors.black,
+                                                fontSize: 15),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),

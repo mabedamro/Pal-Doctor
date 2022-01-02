@@ -38,6 +38,7 @@ class __PatientInfoSideContainerpertiesState
   TextEditingController cityController = TextEditingController(text: 'الخليل');
   TextEditingController diagsController = TextEditingController();
 
+  TextEditingController diagsDescriptionController = TextEditingController();
   TextEditingController idNumberController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
@@ -58,7 +59,7 @@ class __PatientInfoSideContainerpertiesState
   final focusCity = FocusNode();
 
   final focusAge = FocusNode();
-
+  final focusDiagsDescription = FocusNode();
   final focusRefferFrom = FocusNode();
 
   final focusDiag = FocusNode();
@@ -143,7 +144,10 @@ class __PatientInfoSideContainerpertiesState
 
       noteController.text = '';
     } else {
-      idNumberController.text = PatientScreen.selectedPatient.IDNumber;
+      idNumberController.text =
+          PatientScreen.selectedPatient.IDNumber == '000000000'
+              ? ''
+              : PatientScreen.selectedPatient.IDNumber;
 
       if (PatientScreen.selectedPatient.sex) {
         male = true;
@@ -154,6 +158,7 @@ class __PatientInfoSideContainerpertiesState
       }
       nameController.text = PatientScreen.selectedPatient.name;
       phoneController.text = PatientScreen.selectedPatient.phone;
+      diagsDescriptionController.text=PatientScreen.selectedPatient.diagsDescription;
       cityController.text = PatientScreen.selectedPatient.city;
       adressController.text = PatientScreen.selectedPatient.address;
       refferController.text = PatientScreen.selectedPatient.refferedFrom;
@@ -209,11 +214,19 @@ class __PatientInfoSideContainerpertiesState
                                       setState(() {
                                         isLoading = true;
                                       });
-
-                                      PatientScreen.selectedPatient.IDNumber =
-                                          trim(idNumberController.text);
-                                      PatientScreen.selectedPatient.name =
-                                          trim(nameController.text);
+                                      if (idNumberController.text == '') {
+                                        PatientScreen.selectedPatient.IDNumber =
+                                            '000000000';
+                                      } else {
+                                        PatientScreen.selectedPatient.IDNumber =
+                                            trim(idNumberController.text);
+                                      }
+                                      PatientScreen
+                                          .selectedPatient.name = PatientScreen
+                                              .selectedPatient
+                                              .diagsDescription =
+                                          trim(diagsDescriptionController.text);
+                                      trim(nameController.text);
                                       PatientScreen.selectedPatient.sex = male;
                                       PatientScreen.selectedPatient.phone =
                                           trim(phoneController.text);
@@ -529,7 +542,6 @@ class __PatientInfoSideContainerpertiesState
                 child: SingleChildScrollView(
                   child: Center(
                     child: Container(
-                      
                       padding: EdgeInsets.all(15),
                       width: width - width / 2,
                       child: Column(
@@ -541,60 +553,6 @@ class __PatientInfoSideContainerpertiesState
                             color: Colors.blue,
                           ),
 
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: TextFormField(
-                              enabled: PatientScreen.enableEditing,
-                              controller: idNumberController,
-                              onFieldSubmitted: (val) {
-                                FocusScope.of(context).requestFocus(focusName);
-                              },
-                              validator: (val) {
-                                try {
-                                  int id = int.parse(trim(val));
-
-                                  if (trim(val).length != 9) {
-                                    return 'الإدخال اللذي قمت به ليس رقم هوية';
-                                  } else {
-                                    return null;
-                                  }
-                                } catch (e) {
-                                  return 'الإدخال اللذي قمت به ليس رقم هوية';
-                                }
-                              },
-                              cursorColor: color,
-                              style: feildStyle,
-                              decoration: new InputDecoration(
-                                labelStyle: feildStyle,
-                                prefixIcon: Icon(
-                                  Icons.picture_in_picture_outlined,
-                                  color: Provider.of<DarkModeProvider>(context,
-                                              listen: false)
-                                          .isDark
-                                      ? Colors.white
-                                      : Colors.black,
-                                  size: showSideMenu ? 30 : 0,
-                                ),
-                                labelText: "رقم الهوية",
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(60.0),
-                                  borderSide: BorderSide(color: color),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(60.0),
-                                  borderSide: BorderSide(
-                                    color: Provider.of<DarkModeProvider>(
-                                                context,
-                                                listen: false)
-                                            .isDark
-                                        ? Colors.white
-                                        : Colors.black,
-                                  ),
-                                ),
-                                //fillColor: Colors.green),
-                              ),
-                            ),
-                          ),
                           Padding(
                             padding: const EdgeInsets.only(top: 8.0),
                             child: TextFormField(
@@ -625,6 +583,63 @@ class __PatientInfoSideContainerpertiesState
                                   size: showSideMenu ? 30 : 0,
                                 ),
                                 labelText: "إسم المريض",
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: new BorderRadius.circular(60.0),
+                                  borderSide: BorderSide(color: color),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: new BorderRadius.circular(60.0),
+                                  borderSide: BorderSide(
+                                    color: Provider.of<DarkModeProvider>(
+                                                context,
+                                                listen: false)
+                                            .isDark
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
+                                ),
+                                //fillColor: Colors.green),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: TextFormField(
+                              enabled: PatientScreen.enableEditing,
+                              controller: idNumberController,
+                              onFieldSubmitted: (val) {
+                                FocusScope.of(context).requestFocus(focusName);
+                              },
+                              validator: (val) {
+                                try {
+                                  if (idNumberController.text == '') {
+                                    return null;
+                                  }
+                                  int id = int.parse(trim(val));
+
+                                  if (trim(val).length != 9) {
+                                    return 'الإدخال اللذي قمت به ليس رقم هوية';
+                                  } else {
+                                    return null;
+                                  }
+                                } catch (e) {
+                                  return 'الإدخال اللذي قمت به ليس رقم هوية';
+                                }
+                              },
+                              cursorColor: color,
+                              style: feildStyle,
+                              decoration: new InputDecoration(
+                                labelStyle: feildStyle,
+                                prefixIcon: Icon(
+                                  Icons.picture_in_picture_outlined,
+                                  color: Provider.of<DarkModeProvider>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? Colors.white
+                                      : Colors.black,
+                                  size: showSideMenu ? 30 : 0,
+                                ),
+                                labelText: "رقم الهوية",
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(60.0),
                                   borderSide: BorderSide(color: color),
@@ -854,6 +869,57 @@ class __PatientInfoSideContainerpertiesState
                                   size: showSideMenu ? 30 : 0,
                                 ),
                                 labelText: "العمر (سنة)",
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: new BorderRadius.circular(60.0),
+                                  borderSide: BorderSide(color: color),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: new BorderRadius.circular(60.0),
+                                  borderSide: BorderSide(
+                                    color: Provider.of<DarkModeProvider>(
+                                                context,
+                                                listen: false)
+                                            .isDark
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
+                                ),
+                                //fillColor: Colors.green),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: TextFormField(
+                              controller: diagsDescriptionController,
+                              onFieldSubmitted: (val) {
+                                FocusScope.of(context)
+                                    .requestFocus(focusRefferFrom);
+                              },
+                              validator: (val) {
+                                try {
+                                  if (val == '') {
+                                    return 'عليك إضافة تشخيص للمريض';
+                                  }
+                                  return null;
+                                } catch (e) {
+                                  return 'القيمة المدخلة ليست عمراَ';
+                                }
+                              },
+                              style: feildStyle,
+                              cursorColor: color,
+                              focusNode: focusDiagsDescription,
+                              enabled: PatientScreen.enableEditing,
+                              decoration: new InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.date_range_rounded,
+                                  color: Provider.of<DarkModeProvider>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? Colors.white
+                                      : Colors.black,
+                                ),
+                                labelText: "التشخيص", labelStyle: feildStyle,
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(60.0),
                                   borderSide: BorderSide(color: color),

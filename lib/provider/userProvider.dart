@@ -213,7 +213,7 @@ class UserProvier with ChangeNotifier {
         const SnackBar(
           content: Directionality(
               textDirection: TextDirection.rtl,
-              child: Text('تم حذف التشخيص بنجاح')),
+              child: Text('تم حذف الجلسة بنجاح')),
           backgroundColor: Colors.green,
         ),
       );
@@ -301,7 +301,7 @@ class UserProvier with ChangeNotifier {
         const SnackBar(
           content: Directionality(
               textDirection: TextDirection.rtl,
-              child: Text('تم حذف التشخيص بنجاح')),
+              child: Text('تم حذف الفحص بنجاح')),
           backgroundColor: Colors.green,
         ),
       );
@@ -382,7 +382,7 @@ class UserProvier with ChangeNotifier {
         const SnackBar(
           content: Directionality(
               textDirection: TextDirection.rtl,
-              child: Text('تمت إضافة التشخيص بنجاح')),
+              child: Text('تمت إضافة الجلسة بنجاح')),
           backgroundColor: Colors.green,
         ),
       );
@@ -463,7 +463,7 @@ class UserProvier with ChangeNotifier {
         const SnackBar(
           content: Directionality(
               textDirection: TextDirection.rtl,
-              child: Text('تمت إضافة التشخيص بنجاح')),
+              child: Text('تمت إضافة الفحص بنجاح')),
           backgroundColor: Colors.green,
         ),
       );
@@ -497,7 +497,8 @@ class UserProvier with ChangeNotifier {
     );
   }
 
-  Future<String> login({String email, String pass,@required BuildContext context}) async {
+  Future<String> login(
+      {String email, String pass, @required BuildContext context}) async {
     try {
       String result = 'fail';
 
@@ -509,7 +510,7 @@ class UserProvier with ChangeNotifier {
         prefs.setString('email', email);
         prefs.setString('password', pass);
         await getUserData(auth.userId);
-      if (clincUser.isActive == '0') {
+        if (clincUser.isActive == '0') {
           // signout(context);
           result = 'fail';
         } else {

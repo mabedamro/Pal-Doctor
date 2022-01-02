@@ -31,6 +31,8 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
   TextEditingController phoneController = TextEditingController();
   TextEditingController adressController = TextEditingController();
   TextEditingController ageController = TextEditingController();
+
+  TextEditingController diagsDescriptionController = TextEditingController();
   TextEditingController refferController = TextEditingController();
   TextEditingController noteController = TextEditingController();
   bool male = true;
@@ -39,9 +41,13 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
 
   final focusName = FocusNode();
 
+  final focusId = FocusNode();
+
   final focusPhone = FocusNode();
 
   final focusAdress = FocusNode();
+
+  final focusDiagsDescription = FocusNode();
 
   final focusCity = FocusNode();
 
@@ -173,12 +179,62 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: TextFormField(
-                          controller: idNumberController,
+                          controller: nameController,
+                          focusNode: focusName,
+                          style: feildStyle,
                           onFieldSubmitted: (val) {
-                            FocusScope.of(context).requestFocus(focusName);
+                            FocusScope.of(context).requestFocus(focusId);
                           },
                           validator: (val) {
+                            if (trim(val).length < 5) {
+                              return 'الاسم قصير جدا';
+                            } else {
+                              return null;
+                            }
+                          },
+                          cursorColor: color,
+                          decoration: new InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.account_circle,
+                              color: Provider.of<DarkModeProvider>(context,
+                                          listen: false)
+                                      .isDark
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
+                            labelText: "إسم المريض",
+                            labelStyle: feildStyle,
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(60.0),
+                              borderSide: BorderSide(color: color),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(60.0),
+                              borderSide: BorderSide(
+                                color: Provider.of<DarkModeProvider>(context,
+                                            listen: false)
+                                        .isDark
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
+                            ),
+                            //fillColor: Colors.green),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: TextFormField(
+                          controller: idNumberController,
+                          onFieldSubmitted: (val) {
+                            FocusScope.of(context).requestFocus(focusPhone);
+                          },
+                          focusNode: focusId,
+                          validator: (val) {
                             try {
+                              if (val == '') {
+                                return null;
+                              }
                               int id = int.parse(trim(val));
 
                               if (trim(val).length != 9) {
@@ -202,52 +258,6 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                                   : Colors.black,
                             ),
                             labelText: "رقم الهوية",
-                            labelStyle: feildStyle,
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(60.0),
-                              borderSide: BorderSide(color: color),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(60.0),
-                              borderSide: BorderSide(
-                                color: Provider.of<DarkModeProvider>(context,
-                                            listen: false)
-                                        .isDark
-                                    ? Colors.white
-                                    : Colors.black,
-                              ),
-                            ),
-                            //fillColor: Colors.green),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: TextFormField(
-                          controller: nameController,
-                          focusNode: focusName,
-                          style: feildStyle,
-                          onFieldSubmitted: (val) {
-                            FocusScope.of(context).requestFocus(focusPhone);
-                          },
-                          validator: (val) {
-                            if (trim(val).length < 5) {
-                              return 'الاسم قصير جدا';
-                            } else {
-                              return null;
-                            }
-                          },
-                          cursorColor: color,
-                          decoration: new InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.account_circle,
-                              color: Provider.of<DarkModeProvider>(context,
-                                          listen: false)
-                                      .isDark
-                                  ? Colors.white
-                                  : Colors.black,
-                            ),
-                            labelText: "إسم المريض",
                             labelStyle: feildStyle,
                             focusedBorder: OutlineInputBorder(
                               borderRadius: new BorderRadius.circular(60.0),
@@ -474,8 +484,8 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                         child: TextFormField(
                           controller: ageController,
                           onFieldSubmitted: (val) {
-                            FocusScope.of(context)
-                                .requestFocus(focusRefferFrom);
+                           FocusScope.of(context)
+                                .requestFocus(focusDiagsDescription);
                           },
                           validator: (val) {
                             try {
@@ -499,6 +509,55 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                                   : Colors.black,
                             ),
                             labelText: "العمر (سنة)", labelStyle: feildStyle,
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(60.0),
+                              borderSide: BorderSide(color: color),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(60.0),
+                              borderSide: BorderSide(
+                                color: Provider.of<DarkModeProvider>(context,
+                                            listen: false)
+                                        .isDark
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
+                            ),
+                            //fillColor: Colors.green),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: TextFormField(
+                          controller: diagsDescriptionController,
+                          onFieldSubmitted: (val) {
+                            FocusScope.of(context)
+                                .requestFocus(focusRefferFrom);
+                          },
+                          validator: (val) {
+                            try {
+                              if(val==''){
+                                return 'عليك إضافة تشخيص للمريض';
+                              }
+                              return null;
+                            } catch (e) {
+                              return 'القيمة المدخلة ليست عمراَ';
+                            }
+                          },
+                          style: feildStyle,
+                          cursorColor: color,
+                          focusNode: focusDiagsDescription,
+                          decoration: new InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.date_range_rounded,
+                              color: Provider.of<DarkModeProvider>(context,
+                                          listen: false)
+                                      .isDark
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
+                            labelText: "التشخيص", labelStyle: feildStyle,
                             focusedBorder: OutlineInputBorder(
                               borderRadius: new BorderRadius.circular(60.0),
                               borderSide: BorderSide(color: color),
@@ -677,26 +736,14 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                                               ? Colors.white
                                               : Colors.black,
                                         ),
-                                        labelText: "التشخيص",
+                                        labelText: "الجلسة",
                                         labelStyle: feildStyle,
                                         focusedBorder: OutlineInputBorder(
                                           borderRadius:
                                               new BorderRadius.circular(60.0),
                                           borderSide: BorderSide(color: color),
                                         ),
-                                        disabledBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              new BorderRadius.circular(60.0),
-                                          borderSide: BorderSide(
-                                            color:
-                                                Provider.of<DarkModeProvider>(
-                                                            context,
-                                                            listen: false)
-                                                        .isDark
-                                                    ? Colors.white
-                                                    : Colors.black,
-                                          ),
-                                        ),
+                                      
                                         enabledBorder: OutlineInputBorder(
                                           borderRadius:
                                               new BorderRadius.circular(60.0),
@@ -806,7 +853,9 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                                             .user
                                             .id +
                                         DateTime.now().toString(),
-                                    IDNumber: trim(idNumberController.text),
+                                    IDNumber: idNumberController.text == ''
+                                        ? '000000000'
+                                        : trim(idNumberController.text),
                                     name: trim(nameController.text),
                                     addingDate: DateTime.now(),
                                     address: trim(adressController.text),
@@ -817,6 +866,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                                         .user
                                         .clincId,
                                     notes: trim(noteController.text),
+                                    diagsDescription: trim(diagsDescriptionController.text),
                                     phone: trim(phoneController.text),
                                     refferedFrom: trim(refferController.text),
                                     sex: male,

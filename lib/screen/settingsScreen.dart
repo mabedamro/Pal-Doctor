@@ -540,7 +540,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                               width: 10,
                                             ),
                                             Text(
-                                              'عرض تشخيصات العيادة',
+                                              'عرض جلسات العيادة',
                                               style: TextStyle(
                                                   color:
                                                       Provider.of<DarkModeProvider>(
@@ -1161,7 +1161,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                             width: 10,
                                           ),
                                           Text(
-                                            'عرض تشخيصات العيادة',
+                                            'عرض جلسات العيادة',
                                             style: TextStyle(
                                                 color:
                                                     Provider.of<DarkModeProvider>(

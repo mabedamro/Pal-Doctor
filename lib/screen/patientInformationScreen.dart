@@ -38,7 +38,7 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController cityController = TextEditingController(text: 'الخليل');
   TextEditingController diagsController = TextEditingController();
-
+  TextEditingController diagsDescriptionController = TextEditingController();
   TextEditingController idNumberController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
@@ -159,6 +159,8 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
       phoneController.text = PatientScreen.selectedPatient.phone;
       cityController.text = PatientScreen.selectedPatient.city;
       adressController.text = PatientScreen.selectedPatient.address;
+      diagsDescriptionController.text =
+          PatientScreen.selectedPatient.diagsDescription;
       refferController.text = PatientScreen.selectedPatient.refferedFrom;
       ageController.text = PatientScreen.selectedPatient.age;
 
@@ -179,9 +181,10 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: Provider.of<DarkModeProvider>(context,
-                                                    listen: false)
-                                                .isDark?SettingsScreen.darkMode1:Colors.grey[100],
+        backgroundColor:
+            Provider.of<DarkModeProvider>(context, listen: false).isDark
+                ? SettingsScreen.darkMode1
+                : Colors.grey[100],
         body: SafeArea(
           child: SingleChildScrollView(
             child: Container(
@@ -205,38 +208,45 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
                                             isLoading = true;
                                           });
 
-                                          PatientScreen.selectedPatient.IDNumber =
+                                          PatientScreen
+                                                  .selectedPatient.IDNumber =
                                               trim(idNumberController.text);
                                           PatientScreen.selectedPatient.name =
                                               trim(nameController.text);
-                                          PatientScreen.selectedPatient.sex = male;
+                                          PatientScreen.selectedPatient.sex =
+                                              male;
                                           PatientScreen.selectedPatient.phone =
                                               trim(phoneController.text);
                                           PatientScreen.selectedPatient.city =
                                               trim(cityController.text);
-
-                                          PatientScreen.selectedPatient.address =
+                                          PatientScreen.selectedPatient
+                                                  .diagsDescription =
+                                              trim(diagsDescriptionController
+                                                  .text);
+                                          PatientScreen
+                                                  .selectedPatient.address =
                                               trim(adressController.text);
                                           PatientScreen.selectedPatient.age =
                                               trim(ageController.text);
-                                          PatientScreen
-                                                  .selectedPatient.refferedFrom =
+                                          PatientScreen.selectedPatient
+                                                  .refferedFrom =
                                               trim(refferController.text);
                                           PatientScreen.selectedPatient.notes =
                                               trim(noteController.text);
                                           PatientScreen.selectedPatient.sex =
                                               CheckBoxForSideContainer.male;
 
-                                          String result =
-                                              await Provider.of<PatientProvider>(
-                                                      context,
-                                                      listen: false)
-                                                  .updatePat(
-                                                      PatientScreen.selectedPatient,
-                                                      context: context);
+                                          String result = await Provider.of<
+                                                      PatientProvider>(context,
+                                                  listen: false)
+                                              .updatePat(
+                                                  PatientScreen.selectedPatient,
+                                                  context: context);
                                           if (result == 'success') {
-                                            CheckBoxForSideContainer.male = true;
-                                            CheckBoxForSideContainer.female = false;
+                                            CheckBoxForSideContainer.male =
+                                                true;
+                                            CheckBoxForSideContainer.female =
+                                                false;
                                             setState(() {
                                               isLoading = false;
                                               PatientScreen.enableEditing =
@@ -289,7 +299,8 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
                                     shape: MaterialStateProperty.all<
                                         RoundedRectangleBorder>(
                                       RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(50.0),
+                                        borderRadius:
+                                            BorderRadius.circular(50.0),
                                       ),
                                     ),
                                   ),
@@ -328,7 +339,8 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
                                             context: context,
                                             builder: (_) {
                                               return PatientBondsDialog(
-                                                  PatientScreen.selectedPatient);
+                                                  PatientScreen
+                                                      .selectedPatient);
                                             },
                                           );
                                         } else if (value == 1) {
@@ -343,7 +355,8 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
                                             context: context,
                                             builder: (_) {
                                               return PatientDatesDialog(
-                                                  PatientScreen.selectedPatient);
+                                                  PatientScreen
+                                                      .selectedPatient);
                                             },
                                           );
                                         }
@@ -353,12 +366,13 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
                                           children: [
                                             Icon(
                                               Icons.keyboard_arrow_down_sharp,
-                                              color: Provider.of<DarkModeProvider>(
-                                                          context,
-                                                          listen: false)
-                                                      .isDark
-                                                  ? Colors.white
-                                                  : Colors.black,
+                                              color:
+                                                  Provider.of<DarkModeProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .isDark
+                                                      ? Colors.white
+                                                      : Colors.black,
                                             ),
                                             Text(
                                               'المزيد',
@@ -418,8 +432,8 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
                                                 children: [
-                                                  Icon(
-                                                      Icons.calendar_today_rounded),
+                                                  Icon(Icons
+                                                      .calendar_today_rounded),
                                                   Text(
                                                     'عرض المواعيد',
                                                     style: TextStyle(
@@ -526,7 +540,7 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
                       child: Center(
                         child: Container(
                           padding: EdgeInsets.all(15),
-                          width:isMobile? width :  width - width / 2,
+                          width: isMobile ? width : width - width / 2,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -542,7 +556,8 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
                                   enabled: PatientScreen.enableEditing,
                                   controller: idNumberController,
                                   onFieldSubmitted: (val) {
-                                    FocusScope.of(context).requestFocus(focusName);
+                                    FocusScope.of(context)
+                                        .requestFocus(focusName);
                                   },
                                   validator: (val) {
                                     try {
@@ -563,7 +578,8 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
                                     labelStyle: feildStyle,
                                     prefixIcon: Icon(
                                       Icons.picture_in_picture_outlined,
-                                      color: Provider.of<DarkModeProvider>(context,
+                                      color: Provider.of<DarkModeProvider>(
+                                                  context,
                                                   listen: false)
                                               .isDark
                                           ? Colors.white
@@ -572,11 +588,13 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
                                     ),
                                     labelText: "رقم الهوية",
                                     focusedBorder: OutlineInputBorder(
-                                      borderRadius: new BorderRadius.circular(60.0),
+                                      borderRadius:
+                                          new BorderRadius.circular(60.0),
                                       borderSide: BorderSide(color: color),
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                      borderRadius: new BorderRadius.circular(60.0),
+                                      borderRadius:
+                                          new BorderRadius.circular(60.0),
                                       borderSide: BorderSide(
                                         color: Provider.of<DarkModeProvider>(
                                                     context,
@@ -598,7 +616,8 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
                                   focusNode: focusName,
                                   style: feildStyle,
                                   onFieldSubmitted: (val) {
-                                    FocusScope.of(context).requestFocus(focusPhone);
+                                    FocusScope.of(context)
+                                        .requestFocus(focusPhone);
                                   },
                                   validator: (val) {
                                     if (trim(val).length < 5) {
@@ -612,7 +631,8 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
                                     labelStyle: feildStyle,
                                     prefixIcon: Icon(
                                       Icons.account_circle,
-                                      color: Provider.of<DarkModeProvider>(context,
+                                      color: Provider.of<DarkModeProvider>(
+                                                  context,
                                                   listen: false)
                                               .isDark
                                           ? Colors.white
@@ -621,11 +641,13 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
                                     ),
                                     labelText: "إسم المريض",
                                     focusedBorder: OutlineInputBorder(
-                                      borderRadius: new BorderRadius.circular(60.0),
+                                      borderRadius:
+                                          new BorderRadius.circular(60.0),
                                       borderSide: BorderSide(color: color),
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                      borderRadius: new BorderRadius.circular(60.0),
+                                      borderRadius:
+                                          new BorderRadius.circular(60.0),
                                       borderSide: BorderSide(
                                         color: Provider.of<DarkModeProvider>(
                                                     context,
@@ -648,7 +670,8 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
                                   enabled: PatientScreen.enableEditing,
                                   controller: phoneController,
                                   onFieldSubmitted: (val) {
-                                    FocusScope.of(context).requestFocus(focusCity);
+                                    FocusScope.of(context)
+                                        .requestFocus(focusCity);
                                   },
                                   validator: (val) {
                                     try {
@@ -670,7 +693,8 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
                                     labelStyle: feildStyle,
                                     prefixIcon: Icon(
                                       Icons.phone_sharp,
-                                      color: Provider.of<DarkModeProvider>(context,
+                                      color: Provider.of<DarkModeProvider>(
+                                                  context,
                                                   listen: false)
                                               .isDark
                                           ? Colors.white
@@ -679,11 +703,13 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
                                     ),
                                     labelText: "رقم الهاتف",
                                     focusedBorder: OutlineInputBorder(
-                                      borderRadius: new BorderRadius.circular(60.0),
+                                      borderRadius:
+                                          new BorderRadius.circular(60.0),
                                       borderSide: BorderSide(color: color),
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                      borderRadius: new BorderRadius.circular(60.0),
+                                      borderRadius:
+                                          new BorderRadius.circular(60.0),
                                       borderSide: BorderSide(
                                         color: Provider.of<DarkModeProvider>(
                                                     context,
@@ -723,12 +749,13 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
                                           labelStyle: feildStyle,
                                           prefixIcon: Icon(
                                             Icons.gps_fixed,
-                                            color: Provider.of<DarkModeProvider>(
-                                                        context,
-                                                        listen: false)
-                                                    .isDark
-                                                ? Colors.white
-                                                : Colors.black,
+                                            color:
+                                                Provider.of<DarkModeProvider>(
+                                                            context,
+                                                            listen: false)
+                                                        .isDark
+                                                    ? Colors.white
+                                                    : Colors.black,
                                             size: showSideMenu ? 30 : 0,
                                           ),
 
@@ -736,18 +763,20 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
                                           focusedBorder: OutlineInputBorder(
                                             borderRadius:
                                                 new BorderRadius.circular(60.0),
-                                            borderSide: BorderSide(color: color),
+                                            borderSide:
+                                                BorderSide(color: color),
                                           ),
                                           enabledBorder: OutlineInputBorder(
                                             borderRadius:
                                                 new BorderRadius.circular(60.0),
                                             borderSide: BorderSide(
-                                              color: Provider.of<DarkModeProvider>(
-                                                          context,
-                                                          listen: false)
-                                                      .isDark
-                                                  ? Colors.white
-                                                  : Colors.black,
+                                              color:
+                                                  Provider.of<DarkModeProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .isDark
+                                                      ? Colors.white
+                                                      : Colors.black,
                                             ),
                                           ),
                                           //fillColor: Colors.green),
@@ -782,12 +811,13 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
                                           labelStyle: feildStyle,
                                           prefixIcon: Icon(
                                             Icons.location_city,
-                                            color: Provider.of<DarkModeProvider>(
-                                                        context,
-                                                        listen: false)
-                                                    .isDark
-                                                ? Colors.white
-                                                : Colors.black,
+                                            color:
+                                                Provider.of<DarkModeProvider>(
+                                                            context,
+                                                            listen: false)
+                                                        .isDark
+                                                    ? Colors.white
+                                                    : Colors.black,
                                             size: showSideMenu ? 30 : 0,
                                           ),
                                           labelText: "العنوان",
@@ -795,18 +825,20 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
                                           focusedBorder: OutlineInputBorder(
                                             borderRadius:
                                                 new BorderRadius.circular(60.0),
-                                            borderSide: BorderSide(color: color),
+                                            borderSide:
+                                                BorderSide(color: color),
                                           ),
                                           enabledBorder: OutlineInputBorder(
                                             borderRadius:
                                                 new BorderRadius.circular(60.0),
                                             borderSide: BorderSide(
-                                              color: Provider.of<DarkModeProvider>(
-                                                          context,
-                                                          listen: false)
-                                                      .isDark
-                                                  ? Colors.white
-                                                  : Colors.black,
+                                              color:
+                                                  Provider.of<DarkModeProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .isDark
+                                                      ? Colors.white
+                                                      : Colors.black,
                                             ),
                                           ),
                                           //fillColor: Colors.green),
@@ -841,7 +873,8 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
                                     labelStyle: feildStyle,
                                     prefixIcon: Icon(
                                       Icons.date_range_rounded,
-                                      color: Provider.of<DarkModeProvider>(context,
+                                      color: Provider.of<DarkModeProvider>(
+                                                  context,
                                                   listen: false)
                                               .isDark
                                           ? Colors.white
@@ -850,11 +883,70 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
                                     ),
                                     labelText: "العمر (سنة)",
                                     focusedBorder: OutlineInputBorder(
-                                      borderRadius: new BorderRadius.circular(60.0),
+                                      borderRadius:
+                                          new BorderRadius.circular(60.0),
                                       borderSide: BorderSide(color: color),
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                      borderRadius: new BorderRadius.circular(60.0),
+                                      borderRadius:
+                                          new BorderRadius.circular(60.0),
+                                      borderSide: BorderSide(
+                                        color: Provider.of<DarkModeProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .isDark
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
+                                    ),
+                                    //fillColor: Colors.green),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: TextFormField(
+                                  enabled: PatientScreen.enableEditing,
+                                  controller: diagsDescriptionController,
+                                  onFieldSubmitted: (val) {
+                                    FocusScope.of(context)
+                                        .requestFocus(focusRefferFrom);
+                                  },
+                                  validator: (val) {
+                                    try {
+                                      if (val == '') {
+                                        return 'عليك إضافة تشخيص للمريض';
+                                      }
+
+                                      return null;
+                                    } catch (e) {
+                                      return 'القيمة المدخلة ليست عمراَ';
+                                    }
+                                  },
+                                  style: feildStyle,
+                                  cursorColor: color,
+                                  focusNode: focusAge,
+                                  decoration: new InputDecoration(
+                                    labelStyle: feildStyle,
+                                    prefixIcon: Icon(
+                                      Icons.date_range_rounded,
+                                      color: Provider.of<DarkModeProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .isDark
+                                          ? Colors.white
+                                          : Colors.black,
+                                      size: showSideMenu ? 30 : 0,
+                                    ),
+                                    labelText: "التشخيص",
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          new BorderRadius.circular(60.0),
+                                      borderSide: BorderSide(color: color),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          new BorderRadius.circular(60.0),
                                       borderSide: BorderSide(
                                         color: Provider.of<DarkModeProvider>(
                                                     context,
@@ -874,7 +966,8 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
                                   enabled: PatientScreen.enableEditing,
                                   controller: refferController,
                                   onFieldSubmitted: (val) {
-                                    FocusScope.of(context).requestFocus(focusDiag);
+                                    FocusScope.of(context)
+                                        .requestFocus(focusDiag);
                                   },
                                   style: feildStyle,
                                   cursorColor: color,
@@ -882,20 +975,24 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
                                   decoration: new InputDecoration(
                                     prefixIcon: Icon(
                                       Icons.medical_services_rounded,
-                                      color: Provider.of<DarkModeProvider>(context,
+                                      color: Provider.of<DarkModeProvider>(
+                                                  context,
                                                   listen: false)
                                               .isDark
                                           ? Colors.white
                                           : Colors.black,
                                       size: showSideMenu ? 30 : 0,
                                     ),
-                                    labelText: "محول من", labelStyle: feildStyle,
+                                    labelText: "محول من",
+                                    labelStyle: feildStyle,
                                     focusedBorder: OutlineInputBorder(
-                                      borderRadius: new BorderRadius.circular(60.0),
+                                      borderRadius:
+                                          new BorderRadius.circular(60.0),
                                       borderSide: BorderSide(color: color),
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                      borderRadius: new BorderRadius.circular(60.0),
+                                      borderRadius:
+                                          new BorderRadius.circular(60.0),
                                       borderSide: BorderSide(
                                         color: Provider.of<DarkModeProvider>(
                                                     context,
@@ -1058,12 +1155,13 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
                                           borderRadius:
                                               new BorderRadius.circular(60.0),
                                           borderSide: BorderSide(
-                                            color: Provider.of<DarkModeProvider>(
-                                                        context,
-                                                        listen: false)
-                                                    .isDark
-                                                ? Colors.white
-                                                : Colors.black,
+                                            color:
+                                                Provider.of<DarkModeProvider>(
+                                                            context,
+                                                            listen: false)
+                                                        .isDark
+                                                    ? Colors.white
+                                                    : Colors.black,
                                           ),
                                         ),
                                         //fillColor: Colors.green),

@@ -363,6 +363,15 @@ class _DatesScreenState extends State<DatesScreen> {
                                     selectedDayPredicate: (day) {
                                       return isSameDay(_selectedDay, day);
                                     },
+                                    headerStyle: HeaderStyle(
+                                        titleTextStyle: TextStyle(
+                                      color: Provider.of<DarkModeProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .isDark
+                                          ? Colors.white
+                                          : Colors.black,
+                                    )),
                                     onDaySelected:
                                         (selectedDay, focusedDay) async {
                                       setState(() {

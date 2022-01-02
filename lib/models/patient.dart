@@ -6,6 +6,7 @@ class Patient {
   String id;
   DateTime addingDate;
   String clincId;
+  String diagsDescription;
   String craetedById;
   String IDNumber;
   String name;
@@ -32,6 +33,7 @@ class Patient {
     @required this.refferedFrom,
     @required this.sex,
     @required createdById,
+    @required this.diagsDescription,
   });
 
   Patient.fromJson(dynamic json) {
@@ -43,6 +45,7 @@ class Patient {
     craetedById = json['craetedById'] ?? '';
     id = json['id'] ?? '';
     name = json['name'] ?? '';
+    diagsDescription=json['diagsDescription']??'';
     sex = json['sex'] ?? true;
     phone = json['phone'] ?? '';
     city = json['city'] ?? '';
@@ -69,6 +72,7 @@ class Patient {
       'age': age,
       'refferedFrom': refferedFrom,
       'notes': notes,
+      'diagsDescription':diagsDescription,
       'cases': casesToListOfMaps,
       'addingDate': DateFormat('yyyy-MM-dd HH:mm:ss').format(addingDate),
       'craetedById': craetedById,

@@ -43,7 +43,7 @@ class _DiagsUserDialogState extends State<DiagsUserDialog> {
             Row(
               children: [
                 Text(
-                  'تشخيصات العيادة',
+                  'جلسات العيادة',
                   style: TextStyle(
                     color: isDark?Colors.white:Colors.black,
                       fontFamily: 'Cairo',
@@ -70,7 +70,7 @@ class _DiagsUserDialogState extends State<DiagsUserDialog> {
                           children: [
                             Icon(Icons.add),
                             Text(
-                              'إضافة تشخيص',
+                              'إضافة جلسة',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
@@ -126,7 +126,7 @@ class _DiagsUserDialogState extends State<DiagsUserDialog> {
                           children: [
                             Icon(Icons.add),
                             Text(
-                              'إضافة تشخيص',
+                              'إضافة جلسة',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,

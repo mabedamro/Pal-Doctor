@@ -29,7 +29,7 @@ class _AddDiagDialogState extends State<AddDiagDialog> {
             Row(
               children: [
                 Text(
-                  'أدخل التشخيص الجديد',
+                  'أدخل الجلسة الجديدة',
                   style: TextStyle(
                       fontFamily: 'Cairo',
                       color: isDark?Colors.white:Colors.black,
@@ -70,7 +70,7 @@ class _AddDiagDialogState extends State<AddDiagDialog> {
                     ),
                     labelStyle: TextStyle(fontFamily: 'Cairo',
                       color: isDark?Colors.white:Colors.black,),
-                    labelText: "التشخيص...",
+                    labelText: "الجلسة...",
 
                     focusedBorder: OutlineInputBorder(
                       borderRadius: new BorderRadius.circular(50.0),
