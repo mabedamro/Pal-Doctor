@@ -4,13 +4,15 @@ import 'package:desktop_version/models/bond.dart';
 import 'package:desktop_version/provider/bondsProvider.dart';
 import 'package:desktop_version/provider/darkModeProvider.dart';
 import 'package:desktop_version/provider/dateTimeProvider.dart';
+import 'package:desktop_version/provider/userProvider.dart';
 import 'package:desktop_version/screen/settingsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class BondInfo extends StatefulWidget {
   Bond b;
-  BondInfo(this.b);
+  Function refresh;
+  BondInfo(this.b,this.refresh);
   @override
   _BondInfoState createState() => _BondInfoState();
 }
@@ -28,7 +30,7 @@ class _BondInfoState extends State<BondInfo> {
   @override
   Widget build(BuildContext context) {
     bool isDark = Provider.of<DarkModeProvider>(context, listen: false).isDark;
-    bool isMobile=Platform.isIOS||Platform.isAndroid;
+    bool isMobile = Platform.isIOS || Platform.isAndroid;
     var feildStyle = TextStyle(
       fontFamily: 'Cairo',
       fontWeight: FontWeight.bold,
@@ -54,15 +56,17 @@ class _BondInfoState extends State<BondInfo> {
                           fontFamily: 'Cairo',
                           color: isDark ? Colors.white : Colors.black,
                           fontWeight: FontWeight.bold,
-                          fontSize:isMobile? 20: 25),
+                          fontSize: isMobile ? 20 : 25),
                     ),
                   ],
                 ),
               ],
             ),
             IconButton(
-                icon: Icon(Icons.close,
-                          color: isDark?Colors.white:Colors.black,),
+                icon: Icon(
+                  Icons.close,
+                  color: isDark ? Colors.white : Colors.black,
+                ),
                 onPressed: () {
                   Navigator.pop(context);
                 }),
@@ -84,7 +88,7 @@ class _BondInfoState extends State<BondInfo> {
                             fontFamily: 'Cairo',
                             color: isDark ? Colors.white : Colors.black,
                             fontWeight: FontWeight.bold,
-                            fontSize: isMobile? 15:20),
+                            fontSize: isMobile ? 15 : 20),
                       ),
                       Text(
                         DateTimeProvider.dateAndTime(widget.b.date),
@@ -92,7 +96,7 @@ class _BondInfoState extends State<BondInfo> {
                             fontFamily: 'Cairo',
                             fontWeight: FontWeight.bold,
                             color: Colors.blue,
-                            fontSize:isMobile? 15: 20),
+                            fontSize: isMobile ? 15 : 20),
                       ),
                     ],
                   ),
@@ -110,7 +114,7 @@ class _BondInfoState extends State<BondInfo> {
                               labelText: "إسم المريض",
                               labelStyle: TextStyle(
                                 color: isDark ? Colors.white : Colors.black,
-                                fontSize: isMobile? 12:14,  
+                                fontSize: isMobile ? 12 : 14,
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: new BorderRadius.circular(60.0),
@@ -133,7 +137,7 @@ class _BondInfoState extends State<BondInfo> {
                                   ),
                                   labelText: "إسم الموظف",
                                   labelStyle: TextStyle(
-                                fontSize: isMobile? 12:14,  
+                                    fontSize: isMobile ? 12 : 14,
                                     color: isDark ? Colors.white : Colors.black,
                                   ),
 
@@ -155,7 +159,7 @@ class _BondInfoState extends State<BondInfo> {
                                     'نوع الصرف',
                                     style: TextStyle(
                                         fontFamily: 'Cairo',
-                                        fontSize: isMobile? 12:15,
+                                        fontSize: isMobile ? 12 : 15,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
@@ -164,7 +168,7 @@ class _BondInfoState extends State<BondInfo> {
                                   style: TextStyle(
                                       fontFamily: 'Cairo',
                                       color: Colors.red,
-                                      fontSize:isMobile?12 : 15,
+                                      fontSize: isMobile ? 12 : 15,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ],
@@ -181,7 +185,8 @@ class _BondInfoState extends State<BondInfo> {
                           Icons.account_circle,
                         ),
                         labelText: "المبلغ",
-                        labelStyle: TextStyle( fontSize:isMobile?12 : 15,
+                        labelStyle: TextStyle(
+                          fontSize: isMobile ? 12 : 15,
                           color: isDark ? Colors.white : Colors.black,
                         ),
                         focusedBorder: OutlineInputBorder(
@@ -208,7 +213,8 @@ class _BondInfoState extends State<BondInfo> {
                           Icons.account_circle,
                         ),
                         labelText: "ملاحظات",
-                        labelStyle: TextStyle( fontSize:isMobile?12 : 15,
+                        labelStyle: TextStyle(
+                          fontSize: isMobile ? 12 : 15,
                           color: isDark ? Colors.white : Colors.black,
                         ),
                         focusedBorder: OutlineInputBorder(
@@ -230,9 +236,9 @@ class _BondInfoState extends State<BondInfo> {
                         "توقيع:  ",
                         style: TextStyle(
                             fontFamily: 'Cairo',
-                          color: isDark?Colors.white:Colors.black,
+                            color: isDark ? Colors.white : Colors.black,
                             fontWeight: FontWeight.bold,
-                            fontSize:isMobile?15: 20),
+                            fontSize: isMobile ? 15 : 20),
                       ),
                       Text(
                         widget.b.userName,
@@ -240,10 +246,180 @@ class _BondInfoState extends State<BondInfo> {
                             fontFamily: 'Cairo',
                             fontWeight: FontWeight.bold,
                             color: Colors.blue,
-                            fontSize:isMobile? 15: 20),
+                            fontSize: isMobile ? 15 : 20),
                       ),
                     ],
                   ),
+                  Provider.of<UserProvier>(context, listen: false)
+                              .user
+                              .createdBy ==
+                          'me'
+                      ? Row(
+                          children: [
+                            Container(
+                                width: 60,
+                                height: 60,
+                                child: IconButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (_) {
+                                        return Directionality(
+                                          textDirection: TextDirection.rtl,
+                                          child: AlertDialog(
+                                            backgroundColor:
+                                                Provider.of<DarkModeProvider>(
+                                                            context,
+                                                            listen: false)
+                                                        .isDark
+                                                    ? SettingsScreen.darkMode2
+                                                    : Colors.white,
+                                            title: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                new Text(
+                                                  'هل تريد حذف هذا السند؟',
+                                                  style: TextStyle(
+                                                      color:
+                                                          Provider.of<DarkModeProvider>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .isDark
+                                                              ? Colors.white
+                                                              : Colors.black,
+                                                      fontFamily: 'Cairo',
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize:
+                                                          isMobile ? 15 : 25),
+                                                ),
+                                              ],
+                                            ),
+                                            content: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                SizedBox(
+                                                  height: 50,
+                                                  width: isMobile ? 100 : 200,
+                                                  child: ElevatedButton(
+                                                    onPressed: () async {
+                                                      await Provider.of<
+                                                                  BondsProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .deleteBond(
+                                                              widget.b.id,
+                                                              context);
+                                                      widget.refresh();
+                                                    },
+                                                    child: Center(
+                                                      child: Padding(
+                                                        padding: isMobile
+                                                            ? const EdgeInsets
+                                                                .all(5.0)
+                                                            : const EdgeInsets
+                                                                .all(12.0),
+                                                        child: Text(
+                                                          'نعم',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontFamily:
+                                                                  'Cairo',
+                                                              fontSize: isMobile
+                                                                  ? 12
+                                                                  : 15),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    style: ButtonStyle(
+                                                      shape: MaterialStateProperty
+                                                          .all<
+                                                              RoundedRectangleBorder>(
+                                                        RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      50.0),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: isMobile ? 3 : 10,
+                                                ),
+                                                SizedBox(
+                                                  height: 50,
+                                                  width: isMobile ? 100 : 200,
+                                                  child: ElevatedButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    child: Center(
+                                                      child: Padding(
+                                                        padding: isMobile
+                                                            ? const EdgeInsets
+                                                                .all(5.0)
+                                                            : const EdgeInsets
+                                                                .all(12.0),
+                                                        child: Text(
+                                                          'لا',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontFamily:
+                                                                  'Cairo',
+                                                              fontSize: isMobile
+                                                                  ? 12
+                                                                  : 15),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    style: ButtonStyle(
+                                                      backgroundColor:
+                                                          MaterialStateProperty
+                                                              .all(Colors.grey),
+                                                      shape: MaterialStateProperty
+                                                          .all<
+                                                              RoundedRectangleBorder>(
+                                                        RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      50.0),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  icon: Icon(
+                                    Icons.delete,
+                                    size: 30,
+                                    color: Colors.red,
+                                  ),
+                                )),
+                          ],
+                        )
+                      : Container(),
                 ],
               ),
             ),
@@ -268,7 +444,7 @@ class _BondInfoState extends State<BondInfo> {
           break;
         }
       }
-      print(temp);
+      debugPrint(temp);
       String temp2 = '';
       for (var i = temp.length - 1; i >= 0; i--) {
         if (temp[i].codeUnitAt(0) != 32 && temp[i].codeUnitAt(0) != 8207) {
@@ -284,8 +460,8 @@ class _BondInfoState extends State<BondInfo> {
         result += temp2[i];
       }
 
-      print(result);
-      print(temp.length);
+      debugPrint(result);
+      debugPrint(temp.length.toString());
 
       return result;
     }

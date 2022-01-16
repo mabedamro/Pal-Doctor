@@ -34,7 +34,6 @@ class User {
   });
 
   User.fromJson(dynamic res) {
-    print(res.toString());
     name = res['name'];
     email = res['email'];
     phoneNumber = res['phoneNumber'] ?? '';

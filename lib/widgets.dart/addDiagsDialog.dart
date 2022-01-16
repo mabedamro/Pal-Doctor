@@ -56,7 +56,7 @@ class _AddDiagDialogState extends State<AddDiagDialog> {
                 width: 400,
                 child: TextField(
                   onSubmitted: (val) {
-                    print('enter button');
+                    debugPrint('enter button');
                   },
                   onChanged: (val) {},
                   style: TextStyle(fontFamily: 'Cairo',

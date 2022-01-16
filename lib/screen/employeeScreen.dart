@@ -70,7 +70,7 @@ class _EmployeeScreenState extends State<EmployeeScreen>
                               child: TextField(
                                 controller: searchController,
                                 onSubmitted: (val) {
-                                  print('enter button');
+                                  debugPrint('enter button');
                                   Provider.of<EmployeesProvider>(context,
                                           listen: false)
                                       .search(val);

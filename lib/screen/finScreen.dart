@@ -44,6 +44,28 @@ class _FinScreenState extends State<FinScreen>
     );
   }
 
+  Future<void> refresh() {
+    setState(() {
+      FinScreen.isLoading = true;
+      all = true;
+      AllIncrease = false;
+      decrease = false;
+      AllDecraese = false;
+      decreaseEmp = false;
+      today = true;
+      calculateWithDate = false;
+      yesterday = false;
+      thisMonth = false;
+      lastMonth = false;
+      thisYear = false;
+
+      Provider.of<BondsProvider>(context, listen: false).getBonds(
+        Provider.of<UserProvier>(context, listen: false).user.clincId,
+        context,
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isMobile = Platform.isAndroid || Platform.isIOS;
@@ -70,30 +92,7 @@ class _FinScreenState extends State<FinScreen>
                                     padding: const EdgeInsets.all(8.0),
                                     child: ElevatedButton(
                                       onPressed: () {
-                                        setState(() {
-                                          FinScreen.isLoading = true;
-                                          all = true;
-                                          AllIncrease = false;
-                                          decrease = false;
-                                          AllDecraese = false;
-                                          decreaseEmp = false;
-                                          today = true;
-                                          calculateWithDate = false;
-                                          yesterday = false;
-                                          thisMonth = false;
-                                          lastMonth = false;
-                                          thisYear = false;
-
-                                          Provider.of<BondsProvider>(context,
-                                                  listen: false)
-                                              .getBonds(
-                                            Provider.of<UserProvier>(context,
-                                                    listen: false)
-                                                .user
-                                                .clincId,
-                                            context,
-                                          );
-                                        });
+                                        refresh();
                                       },
                                       child: Center(
                                         child: Padding(
@@ -313,7 +312,7 @@ class _FinScreenState extends State<FinScreen>
                         fontSize: 25),
                   ),
             Container(
-              height:isMobile? 100: 70,
+              height: isMobile ? 100 : 70,
               child: Column(
                 // mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -886,8 +885,8 @@ class _FinScreenState extends State<FinScreen>
                           style: ButtonStyle(
                             backgroundColor:
                                 MaterialStateProperty.all(Colors.grey),
-                            shape:
-                                MaterialStateProperty.all<RoundedRectangleBorder>(
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50.0),
                               ),
@@ -917,8 +916,8 @@ class _FinScreenState extends State<FinScreen>
                           style: ButtonStyle(
                             backgroundColor:
                                 MaterialStateProperty.all(Colors.grey),
-                            shape:
-                                MaterialStateProperty.all<RoundedRectangleBorder>(
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50.0),
                               ),
@@ -966,8 +965,8 @@ class _FinScreenState extends State<FinScreen>
                             ),
                           ),
                           style: ButtonStyle(
-                            shape:
-                                MaterialStateProperty.all<RoundedRectangleBorder>(
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50.0),
                               ),
@@ -1007,7 +1006,7 @@ class _FinScreenState extends State<FinScreen>
                           style: TextStyle(
                               color: Colors.blue,
                               fontFamily: 'Cairo',
-                              fontSize: isMobile? 12:14,
+                              fontSize: isMobile ? 12 : 14,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -1019,7 +1018,7 @@ class _FinScreenState extends State<FinScreen>
                           style: TextStyle(
                               color: Colors.blue,
                               fontFamily: 'Cairo',
-                              fontSize: isMobile? 12:14,
+                              fontSize: isMobile ? 12 : 14,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -1031,7 +1030,7 @@ class _FinScreenState extends State<FinScreen>
                           style: TextStyle(
                               color: Colors.blue,
                               fontFamily: 'Cairo',
-                              fontSize: isMobile? 12:14,
+                              fontSize: isMobile ? 12 : 14,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -1043,7 +1042,7 @@ class _FinScreenState extends State<FinScreen>
                           style: TextStyle(
                               color: Colors.blue,
                               fontFamily: 'Cairo',
-                              fontSize: isMobile? 12:14,
+                              fontSize: isMobile ? 12 : 14,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -1120,12 +1119,12 @@ class _FinScreenState extends State<FinScreen>
                                         context: context,
                                         builder: (_) {
                                           return BondInfo(
-                                              bondsPrvider.tempBonds[index]);
+                                              bondsPrvider.tempBonds[index],refresh);
                                         },
                                       );
                                     },
                                     child: Container(
-                                      height: isMobile?90 : 50,
+                                      height: isMobile ? 90 : 50,
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Row(
@@ -1138,7 +1137,8 @@ class _FinScreenState extends State<FinScreen>
                                                   getDescription(bondsPrvider
                                                       .tempBonds[index]),
                                                   style: TextStyle(
-                              fontSize: isMobile? 12:14,
+                                                      fontSize:
+                                                          isMobile ? 12 : 14,
                                                       fontFamily: 'Cairo',
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -1159,7 +1159,8 @@ class _FinScreenState extends State<FinScreen>
                                                   getAmount(bondsPrvider
                                                       .tempBonds[index]),
                                                   style: TextStyle(
-                              fontSize: isMobile? 12:14,
+                                                      fontSize:
+                                                          isMobile ? 12 : 14,
                                                       fontFamily: 'Cairo',
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -1180,7 +1181,8 @@ class _FinScreenState extends State<FinScreen>
                                                   getDate(bondsPrvider
                                                       .tempBonds[index]),
                                                   style: TextStyle(
-                              fontSize: isMobile? 12:14,
+                                                      fontSize:
+                                                          isMobile ? 12 : 14,
                                                       fontFamily: 'Cairo',
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -1201,7 +1203,8 @@ class _FinScreenState extends State<FinScreen>
                                                   getUserName(bondsPrvider
                                                       .tempBonds[index]),
                                                   style: TextStyle(
-                              fontSize: isMobile? 12:14,
+                                                      fontSize:
+                                                          isMobile ? 12 : 14,
                                                       fontFamily: 'Cairo',
                                                       fontWeight:
                                                           FontWeight.bold,

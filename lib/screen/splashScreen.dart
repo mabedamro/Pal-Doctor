@@ -97,7 +97,7 @@ class _SplashScreenState extends State<SplashScreen> {
           .changeDarkTo(false);
       prefs.setBool('isDark', false);
     } else {
-      print('isDark exist');
+      debugPrint('isDark exist');
       await Provider.of<DarkModeProvider>(context, listen: false)
           .changeDarkTo(prefs.getBool('isDark'));
     }

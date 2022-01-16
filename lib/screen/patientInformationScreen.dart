@@ -112,7 +112,7 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
       }
       String s =
           DateTimeProvider.date(selectedDate) + ' ' + hour + ':' + min + ':00';
-      print(s);
+      debugPrint(s);
 
       var date = DateTime.parse(s);
       var d = PatDate(
@@ -175,7 +175,7 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
           ? Colors.white
           : Colors.black,
     );
-    print('object');
+    debugPrint('object');
     final color = Colors.blue;
     double width = MediaQuery.of(context).size.width;
     return Directionality(
@@ -1334,7 +1334,7 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
           break;
         }
       }
-      print(temp);
+      debugPrint(temp);
       String temp2 = '';
       for (var i = temp.length - 1; i >= 0; i--) {
         if (temp[i].codeUnitAt(0) != 32 && temp[i].codeUnitAt(0) != 8207) {
@@ -1350,8 +1350,8 @@ class __PatientInfoScreenpertiesState extends State<PatientInfoScreen> {
         result += temp2[i];
       }
 
-      print(result);
-      print(temp.length);
+      debugPrint(result);
+      debugPrint(temp.length.toString());
 
       return result;
     }

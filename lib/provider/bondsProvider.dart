@@ -7,6 +7,7 @@ import 'package:desktop_version/screen/finScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firedart/firestore/firestore.dart';
 import 'package:flutter/widgets.dart';
+import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 
 class BondsProvider with ChangeNotifier {
@@ -29,7 +30,7 @@ class BondsProvider with ChangeNotifier {
         // search('');
         notifyListeners();
       }).catchError((e) async {
-        print(e.toString());
+        debugPrint(e.toString());
         if (e.toString().contains('SocketException')) {
           result = 'internet fail';
           return;
@@ -46,8 +47,8 @@ class BondsProvider with ChangeNotifier {
         result = 'fail';
       });
     } catch (e) {
-      print('EEEEEEEEEE');
-      print(e.toString());
+      debugPrint('EEEEEEEEEE');
+      debugPrint(e.toString());
     }
     if (result == 'success') {
       Navigator.pop(context);
@@ -85,7 +86,7 @@ class BondsProvider with ChangeNotifier {
   Future<void> getBonds(String clincId, BuildContext context) async {
     String result = '';
     try {
-      print('sSSSSSSSSSss');
+      debugPrint('sSSSSSSSSSss');
       var ref = Firestore.instance.collection('bonds');
       var data = await ref
           .where('clincId', isEqualTo: clincId)
@@ -93,11 +94,11 @@ class BondsProvider with ChangeNotifier {
           .then((value) {
             allBonds.clear();
 
-            print('Data Are Here @');
+            debugPrint('Data Are Here @');
             for (int i = 0; i < value.length; i++) {
               allBonds.insert(0, Bond.fromJson(value[i]));
             }
-            print('LLLLLLL');
+            debugPrint('LLLLLLL');
             FinScreen.isLoading = false;
             getSelectedBonds(all: true, today: true);
             result = 'success';
@@ -105,8 +106,8 @@ class BondsProvider with ChangeNotifier {
           })
           .timeout(Duration(seconds: 5))
           .catchError((e) async {
-            print('FFFFFFFFFFFFFF');
-            print(e.toString());
+            debugPrint('FFFFFFFFFFFFFF');
+            debugPrint(e.toString());
             if (e.toString().contains('TimeoutException')) {
               result = 'internet fail';
             } else if (e.toString().contains('SocketException')) {
@@ -128,7 +129,7 @@ class BondsProvider with ChangeNotifier {
             }
           });
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
       result = 'fail';
     }
 
@@ -160,25 +161,25 @@ class BondsProvider with ChangeNotifier {
     String result = '';
     try {
       empBonds.clear();
-      print('sSSSSSSSSSss');
+      debugPrint('sSSSSSSSSSss');
       var ref = Firestore.instance.collection('bonds');
       var data = await ref
           .where('empId', isEqualTo: emp.id)
           .get()
           .then((value) {
-            print('Data Are Here @');
+            debugPrint('Data Are Here @');
             for (int i = 0; i < value.length; i++) {
               empBonds.insert(0, Bond.fromJson(value[i]));
             }
-            print(empBonds.length);
-            print('LLLLLLL');
+            debugPrint(empBonds.length.toString());
+            debugPrint('LLLLLLL');
             result = 'success';
             notifyListeners();
           })
           .timeout(Duration(seconds: 5))
           .catchError((e) async {
-            print('FFFFFFFFFFFFFF');
-            print(e.toString());
+            debugPrint('FFFFFFFFFFFFFF');
+            debugPrint(e.toString());
             if (e.toString().contains('TimeoutException')) {
               result = 'internet fail';
             } else if (e.toString().contains('SocketException')) {
@@ -202,7 +203,7 @@ class BondsProvider with ChangeNotifier {
             }
           });
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
       result = 'fail';
     }
 
@@ -232,24 +233,24 @@ class BondsProvider with ChangeNotifier {
     String result = '';
     try {
       patBonds.clear();
-      print('sSSSSSSSSSss');
+      debugPrint('sSSSSSSSSSss');
       var ref = Firestore.instance.collection('bonds');
       var data = await ref
           .where('pid', isEqualTo: p.id)
           .get()
           .then((value) {
-            print('Data Are Here @');
+            debugPrint('Data Are Here @');
             for (int i = 0; i < value.length; i++) {
               patBonds.insert(0, Bond.fromJson(value[i]));
             }
-            print('LLLLLLL');
+            debugPrint('LLLLLLL');
             result = 'success';
             notifyListeners();
           })
           .timeout(Duration(seconds: 5))
           .catchError((e) async {
-            print('FFFFFFFFFFFFFF');
-            print(e.toString());
+            debugPrint('FFFFFFFFFFFFFF');
+            debugPrint(e.toString());
             if (e.toString().contains('TimeoutException')) {
               result = 'internet fail';
             } else if (e.toString().contains('SocketException')) {
@@ -273,7 +274,7 @@ class BondsProvider with ChangeNotifier {
             }
           });
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
       result = 'fail';
     }
 
@@ -320,28 +321,28 @@ class BondsProvider with ChangeNotifier {
       // bonds = List.from(Provider.of<BondsProvider>(context,listen: false).allBonds);
       typeBonds = allBonds;
     } else if (AllIncrease) {
-      print('all incraese');
+      debugPrint('all incraese');
       for (var i = 0; i < allBonds.length; i++) {
         if (allBonds[i].type == 'increase') {
           typeBonds.add(allBonds[i]);
         }
       }
     } else if (AllDecraese) {
-      print('all decrease');
+      debugPrint('all decrease');
       for (var i = 0; i < allBonds.length; i++) {
         if (allBonds[i].type.contains('decrease')) {
           typeBonds.add(allBonds[i]);
         }
       }
     } else if (decrease) {
-      print('decrease');
+      debugPrint('decrease');
       for (var i = 0; i < allBonds.length; i++) {
         if (allBonds[i].type == 'decrease') {
           typeBonds.add(allBonds[i]);
         }
       }
     } else if (decreaseEmp) {
-      print('decrease employee');
+      debugPrint('decrease employee');
       for (var i = 0; i < allBonds.length; i++) {
         if (allBonds[i].type == 'decrease emp') {
           typeBonds.add(allBonds[i]);
@@ -369,9 +370,9 @@ class BondsProvider with ChangeNotifier {
         }
       }
     } else if (lastMonth) {
-      print('last month');
+      debugPrint('last month');
       for (var i = 0; i < typeBonds.length; i++) {
-        print(typeBonds[i].date.month);
+        debugPrint(typeBonds[i].date.month.toString());
         if (isInLastMonth(typeBonds[i].date)) {
           tempBonds.add(typeBonds[i]);
         }
@@ -415,7 +416,7 @@ class BondsProvider with ChangeNotifier {
 
       month = 12;
       year -= 1;
-      print(date.month);
+      debugPrint(date.month.toString());
       if (date.year == year && date.month == month) {
         return true;
       } else {
@@ -451,6 +452,81 @@ class BondsProvider with ChangeNotifier {
     }
   }
 
+  Future<void> deleteBond(String bondId, BuildContext context) async {
+    String result = '';
+    try {
+      debugPrint('sSSSSSSSSSss');
+      var ref = Firestore.instance.collection('bonds');
+      var data = await ref
+          .document(bondId)
+          .delete()
+          .then((value) {
+            result = 'success';
+          })
+          .timeout(Duration(seconds: 5))
+          .catchError((e) async {
+            debugPrint('FFFFFFFFFFFFFF');
+            debugPrint(e.toString());
+            if (e.toString().contains('TimeoutException')) {
+              result = 'internet fail';
+            } else if (e.toString().contains('SocketException')) {
+              result = 'internet fail';
+            } else if (e.toString().contains('PERMISSION_DENIED') ||
+                e.toString().contains('UNAUTHENTICATED')) {
+              String result =
+                  await Provider.of<UserProvier>(context, listen: false)
+                      .tryToLogin(context);
+              if (result == 'success') {
+                deleteBond(bondId, context);
+              } else if (result == 'needUpdate') {
+              } else {
+                Provider.of<UserProvier>(context, listen: false)
+                    .signout(context);
+              }
+            } else {
+              result = 'fail';
+            }
+          });
+    } catch (e) {
+      debugPrint(e.toString());
+      result = 'fail';
+    }
+    if (result == 'success') {
+      Navigator.of(context).pop();
+
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Text('تم حذف السند بنجاح')),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else if (result == 'fail') {
+      FinScreen.isLoading = false;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Text('حدث خطأ غير متوقع')),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } else if (result == 'internet fail') {
+      FinScreen.isLoading = false;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Directionality(
+            textDirection: TextDirection.rtl,
+            child: Text('تحقق من الاتصال بالإنترنت'),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
   // Future<String> updatePat(Patient p, {BuildContext context}) async {
   //   String result = 'fail';
   //   try {
@@ -465,7 +541,7 @@ class BondsProvider with ChangeNotifier {
   //         })
   //         .timeout(Duration(seconds: 5))
   //         .catchError((e) async {
-  //           print(e.toString());
+  //           debugPrint(e.toString());
   //           if (e.toString().contains('TimeoutException')) {
   //             result = 'internet fail';
   //             return;
@@ -487,8 +563,8 @@ class BondsProvider with ChangeNotifier {
   //           result = 'fail';
   //         });
   //   } catch (e) {
-  //     print('EEEEEEEEEE');
-  //     print(e.toString());
+  //     debugPrint('EEEEEEEEEE');
+  //     debugPrint(e.toString());
   //     result = 'fail';
   //   }
   //   if (result == 'success') {
@@ -536,10 +612,10 @@ class BondsProvider with ChangeNotifier {
   //   text = text.toLowerCase();
   //   searchList.clear();
   //   if (text == '') {
-  //     print('all patinets');
+  //     debugPrint('all patinets');
   //     searchList = List.from(patients);
   //   } else {
-  //     print(patients[0].name);
+  //     debugPrint(patients[0].name);
   //     for (int i = 0; i < patients.length; i++) {
   //       if ((patients[i].name.toLowerCase() + patients[i].IDNumber)
   //           .contains(text)) {
@@ -547,7 +623,7 @@ class BondsProvider with ChangeNotifier {
   //       }
   //     }
   //   }
-  //   print(searchList.length);
+  //   debugPrint(searchList.length);
   //   notifyListeners();
   // }
 }

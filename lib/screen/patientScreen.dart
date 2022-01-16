@@ -77,7 +77,7 @@ class _PatientScreenState extends State<PatientScreen>
                                         ? Colors.white
                                         : Colors.black),
                                 onSubmitted: (val) {
-                                  print('enter button');
+                                  debugPrint('enter button');
                                 },
                                 onChanged: (val) {
                                   Provider.of<PatientProvider>(context,

@@ -1060,7 +1060,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
           break;
         }
       }
-      print(temp);
+      debugPrint(temp);
       String temp2 = '';
       for (var i = temp.length - 1; i >= 0; i--) {
         if (temp[i].codeUnitAt(0) != 32 && temp[i].codeUnitAt(0) != 8207) {
@@ -1076,8 +1076,8 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
         result += temp2[i];
       }
 
-      print(result);
-      print(temp.length);
+      debugPrint(result);
+      debugPrint(temp.length.toString());
 
       return result;
     }

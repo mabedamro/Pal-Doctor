@@ -318,7 +318,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
                                           ':' +
                                           min +
                                           ':00';
-                                  print(s);
+                                  debugPrint(s);
 
                                   var date = DateTime.parse(s);
                                   var d = PatDate(
@@ -415,7 +415,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
           break;
         }
       }
-      print(temp);
+      debugPrint(temp);
       String temp2 = '';
       for (var i = temp.length - 1; i >= 0; i--) {
         if (temp[i].codeUnitAt(0) != 32 && temp[i].codeUnitAt(0) != 8207) {
@@ -431,8 +431,8 @@ class _AddDateDialogState extends State<AddDateDialog> {
         result += temp2[i];
       }
 
-      print(result);
-      print(temp.length);
+      debugPrint(result);
+      debugPrint(temp.length.toString());
 
       return result;
     }

@@ -25,16 +25,16 @@ class _TabBarCustomeState extends State<TabBarCustome>
   List<Widget> tabs = [];
   @override
   void initState() {
-    print('1');
+    debugPrint('1');
     getTabs();
 
-    print('2');
+    debugPrint('2');
     getTabsNames();
 
-    print('3');
+    debugPrint('3');
     _tabController = TabController(length: tabs.length, vsync: this);
 
-    print('4');
+    debugPrint('4');
     super.initState();
   }
 

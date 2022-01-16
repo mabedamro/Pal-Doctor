@@ -37,7 +37,7 @@ class Patient {
   });
 
   Patient.fromJson(dynamic json) {
-    print(json.toString());
+  
     addingDate = DateTime.parse(json['addingDate']) ?? DateTime.now();
 
     clincId = json['clincId'] ?? '';

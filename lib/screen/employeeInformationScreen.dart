@@ -379,7 +379,7 @@ class __EmployeeInformationScreenpertiesState extends State<EmployeeInformationS
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     controller: nameController,
-                    enabled: EmployeeScreen.enableEditing,
+                    enabled: false,// EmployeeScreen.enableEditing,
                     onFieldSubmitted: (val) {
                       // FocusScope.of(context).requestFocus(focus);
                     },
@@ -714,7 +714,7 @@ class __EmployeeInformationScreenpertiesState extends State<EmployeeInformationS
           break;
         }
       }
-      print(temp);
+      debugPrint(temp);
       String temp2 = '';
       for (var i = temp.length - 1; i >= 0; i--) {
         if (temp[i].codeUnitAt(0) != 32 && temp[i].codeUnitAt(0) != 8207) {
@@ -730,8 +730,8 @@ class __EmployeeInformationScreenpertiesState extends State<EmployeeInformationS
         result += temp2[i];
       }
 
-      print(result);
-      print(temp.length);
+      debugPrint(result);
+      debugPrint(temp.length.toString());
 
       return result;
     }

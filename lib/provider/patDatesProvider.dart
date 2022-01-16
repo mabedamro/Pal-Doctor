@@ -21,7 +21,7 @@ class PatDateProvider with ChangeNotifier {
         // search('');
         notifyListeners();
       }).catchError((e) async {
-        print(e.toString());
+        debugPrint(e.toString());
         if (e.toString().contains('SocketException')) {
           result = 'internet fail';
           return;
@@ -38,8 +38,8 @@ class PatDateProvider with ChangeNotifier {
         result = 'fail';
       });
     } catch (e) {
-      print('EEEEEEEEEE');
-      print(e.toString());
+      debugPrint('EEEEEEEEEE');
+      debugPrint(e.toString());
     }
     if (result == 'success') {
       Navigator.pop(context);
@@ -77,28 +77,28 @@ class PatDateProvider with ChangeNotifier {
   Future<void> getDates(String id, BuildContext context) async { //id =  clincId + date
     String result = '';
     try {
-      print('sSSSSSSSSSss');
+      debugPrint('sSSSSSSSSSss');
       tempDates.clear();
       var ref = Firestore.instance.collection('dates');
-      print(id);
+      debugPrint(id);
       var data = await ref
           .where('id', isEqualTo: id)
           .get()
           .then((value) {
-            print('Data Are Here @');
+            debugPrint('Data Are Here @');
             for (int i = 0; i < value.length; i++) {
               tempDates.insert(0, PatDate.fromJson(value[i]));
             }
-            print('LLLLLLL');
-            print(tempDates.length);
+            debugPrint('LLLLLLL');
+            debugPrint(tempDates.length.toString());
 
             result = 'success';
             notifyListeners();
           })
           .timeout(Duration(seconds: 5))
           .catchError((e) async {
-            print('FFFFFFFFFFFFFF');
-            print(e.toString());
+            debugPrint('FFFFFFFFFFFFFF');
+            debugPrint(e.toString());
             if (e.toString().contains('TimeoutException')) {
               result = 'internet fail';
             } else if (e.toString().contains('SocketException')) {
@@ -120,7 +120,7 @@ class PatDateProvider with ChangeNotifier {
             }
           });
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
       result = 'fail';
     }
 
@@ -148,28 +148,28 @@ class PatDateProvider with ChangeNotifier {
   Future<void> getDatesPatient(String pid, BuildContext context) async { //id =  clincId + date
     String result = '';
     try {
-      print('sSSSSSSSSSss');
+      debugPrint('sSSSSSSSSSss');
       patDates.clear();
       var ref = Firestore.instance.collection('dates');
-      print(pid);
+      debugPrint(pid);
       var data = await ref
           .where('pid', isEqualTo: pid)
           .get()
           .then((value) {
-            print('Data Are Here @');
+            debugPrint('Data Are Here @');
             for (int i = 0; i < value.length; i++) {
               patDates.insert(0, PatDate.fromJson(value[i]));
             }
-            print('LLLLLLL');
-            print(patDates.length);
+            debugPrint('LLLLLLL');
+            debugPrint(patDates.length.toString());
 
             result = 'success';
             notifyListeners();
           })
           .timeout(Duration(seconds: 5))
           .catchError((e) async {
-            print('FFFFFFFFFFFFFF');
-            print(e.toString());
+            debugPrint('FFFFFFFFFFFFFF');
+            debugPrint(e.toString());
             if (e.toString().contains('TimeoutException')) {
               result = 'internet fail';
             } else if (e.toString().contains('SocketException')) {
@@ -191,7 +191,7 @@ class PatDateProvider with ChangeNotifier {
             }
           });
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
       result = 'fail';
     }
 

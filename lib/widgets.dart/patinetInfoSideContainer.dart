@@ -112,7 +112,7 @@ class __PatientInfoSideContainerpertiesState
       }
       String s =
           DateTimeProvider.date(selectedDate) + ' ' + hour + ':' + min + ':00';
-      print(s);
+      debugPrint(s);
 
       var date = DateTime.parse(s);
       var d = PatDate(
@@ -176,7 +176,7 @@ class __PatientInfoSideContainerpertiesState
           ? Colors.white
           : Colors.black,
     );
-    print('object');
+    debugPrint('object');
     final color = Colors.blue;
     PatientInfoSideContainer.setStateForAnimation = setStateToAnimate;
     double width = MediaQuery.of(context).size.width;
@@ -209,7 +209,7 @@ class __PatientInfoSideContainerpertiesState
                             padding: const EdgeInsets.all(8.0),
                             child: ElevatedButton(
                               onPressed: () async {
-                                print(
+                                debugPrint(
                                     '++++++++++++++++++++++++++++++++++++++++');
                                 if (PatientScreen.enableEditing) {
                                   if (_formKey.currentState.validate()) {
@@ -217,30 +217,31 @@ class __PatientInfoSideContainerpertiesState
                                       setState(() {
                                         isLoading = true;
                                       });
-                                      print(
+                                      debugPrint(
                                           '+++++++++++---------------------+');
                                       if (idNumberController.text == '') {
-                                        print(
+                                        debugPrint(
                                             '+++++++++++---------------------+');
                                         PatientScreen.selectedPatient.IDNumber =
                                             '000000000';
 
-                                        print(
+                                        debugPrint(
                                             PatientScreen.selectedPatient.name +
                                                 'AAAAAAAAAAAAA');
                                       } else {
                                         PatientScreen.selectedPatient.IDNumber =
                                             trim(idNumberController.text);
-                                        print(
+                                        debugPrint(
                                             '+++++++++++---------------------+');
                                       }
 
-                                      print(PatientScreen.selectedPatient.name +
-                                          'AAAAAAAAAAAAA');
-                                      print(nameController.text +
+                                      debugPrint(
+                                          PatientScreen.selectedPatient.name +
+                                              'AAAAAAAAAAAAA');
+                                      debugPrint(nameController.text +
                                           'AAAAAAAAAAAAA');
 
-                                      print(
+                                      debugPrint(
                                           '+++++++++++---------------------+');
                                       PatientScreen.selectedPatient.name =
                                           trim(nameController.text);
@@ -248,7 +249,7 @@ class __PatientInfoSideContainerpertiesState
                                               .diagsDescription =
                                           trim(diagsDescriptionController.text);
 
-                                      print(
+                                      debugPrint(
                                           '+++++++++++---------------------+');
                                       PatientScreen.selectedPatient.sex = male;
                                       PatientScreen.selectedPatient.phone =
@@ -267,9 +268,11 @@ class __PatientInfoSideContainerpertiesState
                                           trim(noteController.text);
                                       PatientScreen.selectedPatient.sex =
                                           CheckBoxForSideContainer.male;
-                                      print(PatientScreen.selectedPatient.toMap
+                                      debugPrint(PatientScreen
+                                          .selectedPatient.toMap
                                           .toString());
-                                      print('+++++++RRRRRRRRR------------+');
+                                      debugPrint(
+                                          '+++++++RRRRRRRRR------------+');
 
                                       String result =
                                           await Provider.of<PatientProvider>(
@@ -278,7 +281,7 @@ class __PatientInfoSideContainerpertiesState
                                               .updatePat(
                                                   PatientScreen.selectedPatient,
                                                   context: context);
-                                      print(
+                                      debugPrint(
                                           PatientScreen.selectedPatient.toMap);
                                       if (result == 'success') {
                                         CheckBoxForSideContainer.male = true;
@@ -1333,7 +1336,7 @@ class __PatientInfoSideContainerpertiesState
           break;
         }
       }
-      print(temp);
+      debugPrint(temp);
       String temp2 = '';
       for (var i = temp.length - 1; i >= 0; i--) {
         if (temp[i].codeUnitAt(0) != 32 && temp[i].codeUnitAt(0) != 8207) {
@@ -1349,8 +1352,8 @@ class __PatientInfoSideContainerpertiesState
         result += temp2[i];
       }
 
-      print(result);
-      print(temp.length);
+      debugPrint(result);
+      debugPrint(temp.length.toString());
 
       return result;
     }
@@ -1358,7 +1361,7 @@ class __PatientInfoSideContainerpertiesState
 
   void setStateToAnimate(bool s) {
     setState(() {
-      print('object');
+      debugPrint('object');
       showSideMenu = s;
     });
   }
@@ -1743,7 +1746,7 @@ class __EmployeeInfoSideContainerState
             padding: const EdgeInsets.all(8.0),
             child: TextFormField(
               controller: nameController,
-              enabled: EmployeeScreen.enableEditing,
+              enabled: false, // EmployeeScreen.enableEditing,
               onFieldSubmitted: (val) {
                 // FocusScope.of(context).requestFocus(focus);
               },
@@ -2062,7 +2065,7 @@ class __EmployeeInfoSideContainerState
 
   void setStateToAnimate(bool s) {
     setState(() {
-      print('object');
+      debugPrint('object');
       showSideMenu = s;
     });
   }

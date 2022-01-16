@@ -56,7 +56,7 @@ class _AddTestDialogState extends State<AddTestDialog> {
                 width: 400,
                 child: TextField(
                   onSubmitted: (val) {
-                    print('enter button');
+                    debugPrint('enter button');
                   },
                   onChanged: (val) {},
                   controller: inputController,

@@ -22,7 +22,7 @@ class PatientProvider with ChangeNotifier {
         search('');
         notifyListeners();
       }).catchError((e) async {
-        print(e.toString());
+        debugPrint(e.toString());
         if (e.toString().contains('SocketException')) {
           result = 'internet fail';
         } else if (e.toString().contains('PERMISSION_DENIED') ||
@@ -40,8 +40,8 @@ class PatientProvider with ChangeNotifier {
 
       return result;
     } catch (e) {
-      print('EEEEEEEEEE');
-      print(e.toString());
+      debugPrint('EEEEEEEEEE');
+      debugPrint(e.toString());
       return result;
     }
   }
@@ -49,7 +49,7 @@ class PatientProvider with ChangeNotifier {
   Future<void> getPatients(String clincId, BuildContext context) async {
     String result = '';
     try {
-      print('sSSSSSSSSSss');
+      debugPrint('sSSSSSSSSSss');
       var ref = Firestore.instance.collection('patients');
       var data = await ref
           .where('clincId', isEqualTo: clincId)
@@ -58,22 +58,22 @@ class PatientProvider with ChangeNotifier {
             patients.clear();
 
             searchList.clear();
-            print('Data Are Here @');
+            debugPrint('Data Are Here @');
             for (int i = 0; i < value.length; i++) {
               patients.insert(0, Patient.fromJson(value[i]));
               searchList.insert(0, Patient.fromJson(value[i]));
             }
-            print(patients.length);
+            debugPrint(patients.length.toString());
 
-            print('LLLLLLL');
+            debugPrint('LLLLLLL');
             PatientScreen.isLoading = false;
             notifyListeners();
             result = 'success';
           })
           .timeout(Duration(seconds: 5))
           .catchError((e) async {
-            print('FFFFFFFFFFFFFF');
-            print(e.toString());
+            debugPrint('FFFFFFFFFFFFFF');
+            debugPrint(e.toString());
             if (e.toString().contains('TimeoutException')) {
               result = 'internet fail';
             } else if (e.toString().contains('SocketException')) {
@@ -97,7 +97,7 @@ class PatientProvider with ChangeNotifier {
             }
           });
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
       result = 'fail';
     }
 
@@ -139,7 +139,7 @@ class PatientProvider with ChangeNotifier {
           })
           .timeout(Duration(seconds: 5))
           .catchError((e) async {
-            print(e.toString());
+            debugPrint(e.toString());
             if (e.toString().contains('TimeoutException')) {
               result = 'internet fail';
               return;
@@ -164,8 +164,8 @@ class PatientProvider with ChangeNotifier {
             result = 'fail';
           });
     } catch (e) {
-      print('EEEEEEEEEE');
-      print(e.toString());
+      debugPrint('EEEEEEEEEE');
+      debugPrint(e.toString());
       result = 'fail';
     }
 
@@ -215,10 +215,10 @@ class PatientProvider with ChangeNotifier {
     text = text.toLowerCase();
     searchList.clear();
     if (text == '') {
-      print('all patinets');
+      debugPrint('all patinets');
       searchList = List.from(patients);
     } else {
-      print(patients[0].name);
+      debugPrint(patients[0].name);
       for (int i = 0; i < patients.length; i++) {
         if ((patients[i].name.toLowerCase() + patients[i].IDNumber)
             .contains(text)) {
@@ -226,7 +226,7 @@ class PatientProvider with ChangeNotifier {
         }
       }
     }
-    print(searchList.length);
+    debugPrint(searchList.length.toString());
     notifyListeners();
   }
 }

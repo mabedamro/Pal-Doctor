@@ -31,18 +31,18 @@ class UserProvier with ChangeNotifier {
       }
       var ref = Firestore.instance.collection('users').document(user.clincId);
       var data = await ref.get().then((value) {
-        print(value.toString());
+        debugPrint(value.toString());
         clincUser = User.fromJson(value);
 
-        print('clicn data got!!');
+        debugPrint('clicn data got!!');
         notifyListeners();
       }).catchError((e) {
-        print('Here Error Man !');
-        print(e.toString());
+        debugPrint('Here Error Man !');
+        debugPrint(e.toString());
       });
     } catch (e) {
-      print('error  !!');
-      print(e.toString());
+      debugPrint('error  !!');
+      debugPrint(e.toString());
     }
   }
 
@@ -56,11 +56,11 @@ class UserProvier with ChangeNotifier {
         updateUrl = value['updateUrl'];
         stopAll = value['stopAll'];
       }).catchError((e) {
-        print('Here Error Man !');
-        print(e.toString());
+        debugPrint('Here Error Man !');
+        debugPrint(e.toString());
       });
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
     }
   }
 
@@ -69,16 +69,16 @@ class UserProvier with ChangeNotifier {
       var ref = Firestore.instance.collection('users').document(uid);
       var data = await ref.get().then((value) async {
         user = User.fromJson(value);
-        print('Data Are Here');
+        debugPrint('Data Are Here');
         await getClincData();
         await getAppConstants();
         notifyListeners();
       }).catchError((e) {
-        print('Here Error Man !');
-        print(e.toString());
+        debugPrint('Here Error Man !');
+        debugPrint(e.toString());
       });
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
     }
   }
 
@@ -88,7 +88,7 @@ class UserProvier with ChangeNotifier {
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       if (prefs.getString('email') == '') {
-        print('no saved email');
+        debugPrint('no saved email');
         return 'false';
       }
 
@@ -100,7 +100,7 @@ class UserProvier with ChangeNotifier {
       // Sign in with user credentials
       await auth.signIn(email, pass).then((value) async {
         await getUserData(auth.userId);
-        print('object');
+        debugPrint('object');
         if (clincUser.isActive == '0') {
           signout(context);
           result = 'fail';
@@ -115,7 +115,7 @@ class UserProvier with ChangeNotifier {
             } else {
               if (appVersion != AppConstants.appVersion) {
                 //need Update
-                print('needUpdate');
+                debugPrint('needUpdate');
                 // goToUpdateScreen(context);
                 result = 'needUpdate';
               } else {
@@ -142,7 +142,7 @@ class UserProvier with ChangeNotifier {
           prefs.setString('password', '');
           result = 'fail';
         }
-        print(e.toString());
+        debugPrint(e.toString());
       });
 
       return result;
@@ -177,8 +177,8 @@ class UserProvier with ChangeNotifier {
           })
           .timeout(Duration(seconds: 5))
           .catchError((e) async {
-            print('HOOOOOOOn');
-            print(e.toString());
+            debugPrint('HOOOOOOOn');
+            debugPrint(e.toString());
 
             if (e.toString().contains('TimeoutException')) {
               result = 'internet fail';
@@ -203,8 +203,8 @@ class UserProvier with ChangeNotifier {
             }
           });
     } catch (e) {
-      print('EEEEEEEEEE');
-      print(e.toString());
+      debugPrint('EEEEEEEEEE');
+      debugPrint(e.toString());
       result = 'fail';
       ;
     }
@@ -265,8 +265,8 @@ class UserProvier with ChangeNotifier {
           })
           .timeout(Duration(seconds: 5))
           .catchError((e) async {
-            print('HOOOOOOOn');
-            print(e.toString());
+            debugPrint('HOOOOOOOn');
+            debugPrint(e.toString());
 
             if (e.toString().contains('TimeoutException')) {
               result = 'internet fail';
@@ -291,8 +291,8 @@ class UserProvier with ChangeNotifier {
             }
           });
     } catch (e) {
-      print('EEEEEEEEEE');
-      print(e.toString());
+      debugPrint('EEEEEEEEEE');
+      debugPrint(e.toString());
       result = 'fail';
       ;
     }
@@ -346,8 +346,8 @@ class UserProvier with ChangeNotifier {
           })
           .timeout(Duration(seconds: 5))
           .catchError((e) async {
-            print('HOOOOOOOn');
-            print(e.toString());
+            debugPrint('HOOOOOOOn');
+            debugPrint(e.toString());
 
             if (e.toString().contains('TimeoutException')) {
               result = 'internet fail';
@@ -372,8 +372,8 @@ class UserProvier with ChangeNotifier {
             }
           });
     } catch (e) {
-      print('EEEEEEEEEE');
-      print(e.toString());
+      debugPrint('EEEEEEEEEE');
+      debugPrint(e.toString());
       result = 'fail';
       ;
     }
@@ -427,8 +427,8 @@ class UserProvier with ChangeNotifier {
           })
           .timeout(Duration(seconds: 5))
           .catchError((e) async {
-            print('HOOOOOOOn');
-            print(e.toString());
+            debugPrint('HOOOOOOOn');
+            debugPrint(e.toString());
 
             if (e.toString().contains('TimeoutException')) {
               result = 'internet fail';
@@ -453,8 +453,8 @@ class UserProvier with ChangeNotifier {
             }
           });
     } catch (e) {
-      print('EEEEEEEEEE');
-      print(e.toString());
+      debugPrint('EEEEEEEEEE');
+      debugPrint(e.toString());
       result = 'fail';
       ;
     }
@@ -490,7 +490,7 @@ class UserProvier with ChangeNotifier {
   }
 
   void goToUpdateScreen(BuildContext context) {
-    print('UUUUUUUUUUUUUUUUUUUUUUUUUUU');
+    debugPrint('UUUUUUUUUUUUUUUUUUUUUUUUUUU');
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => UpdateScreen(updateUrl)),
@@ -503,7 +503,7 @@ class UserProvier with ChangeNotifier {
       String result = 'fail';
 
       var auth = FirebaseAuth.instance;
-      print('Heeee');
+      debugPrint('Heeee');
       // Sign in with user credentials
       await auth.signIn(email, pass).then((value) async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -524,7 +524,7 @@ class UserProvier with ChangeNotifier {
             } else {
               if (appVersion != AppConstants.appVersion) {
                 //need Update
-                print('needUpdate');
+                debugPrint('needUpdate');
                 goToUpdateScreen(context);
                 result = 'needUpdate';
               } else {
@@ -549,7 +549,7 @@ class UserProvier with ChangeNotifier {
         } else {
           result = 'fail';
         }
-        print(e.toString());
+        debugPrint(e.toString());
       });
 
       return result;

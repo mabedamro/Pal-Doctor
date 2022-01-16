@@ -67,7 +67,7 @@ class EmployeesProvider with ChangeNotifier {
           search('');
           notifyListeners();
         }).catchError((e) async {
-          print(e.toString());
+          debugPrint(e.toString());
           if (e.toString().contains('SocketException')) {
             result = 'internet fail';
           }
@@ -94,16 +94,16 @@ class EmployeesProvider with ChangeNotifier {
           result = 'fail';
         });
       } else {
-        print('error here');
-        print(res['error'].toString());
+        debugPrint('error here');
+        debugPrint(res['error'].toString());
 
         return res['error']['message'];
       }
 
       return result;
     } catch (e) {
-      print('EEEEEEEEEE');
-      print(e.toString());
+      debugPrint('EEEEEEEEEE');
+      debugPrint(e.toString());
       return result;
     }
   }
@@ -128,8 +128,8 @@ class EmployeesProvider with ChangeNotifier {
           })
           .timeout(Duration(seconds: 5))
           .catchError((e) async {
-            print('HOOOOOOOn');
-            print(e.toString());
+            debugPrint('HOOOOOOOn');
+            debugPrint(e.toString());
 
             if (e.toString().contains('TimeoutException')) {
               result = 'internet fail';
@@ -154,8 +154,8 @@ class EmployeesProvider with ChangeNotifier {
 
       return result;
     } catch (e) {
-      print('EEEEEEEEEE');
-      print(e.toString());
+      debugPrint('EEEEEEEEEE');
+      debugPrint(e.toString());
       return 'false';
     }
   }
@@ -190,8 +190,8 @@ class EmployeesProvider with ChangeNotifier {
           })
           .timeout(Duration(seconds: 5))
           .catchError((e) async {
-            print('HOOOOOOOn');
-            print(e.toString());
+            debugPrint('HOOOOOOOn');
+            debugPrint(e.toString());
 
             if (e.toString().contains('TimeoutException')) {
               result = 'internet fail';
@@ -214,8 +214,8 @@ class EmployeesProvider with ChangeNotifier {
             }
           });
     } catch (e) {
-      print('EEEEEEEEEE');
-      print(e.toString());
+      debugPrint('EEEEEEEEEE');
+      debugPrint(e.toString());
       result = 'fail';
     }
     if (result == 'success') {
@@ -252,7 +252,7 @@ class EmployeesProvider with ChangeNotifier {
   Future<void> getEmployee(String clincId, BuildContext context) async {
     String result = '';
     try {
-      print('sSSSSSSSSSss');
+      debugPrint('sSSSSSSSSSss');
       var ref = Firestore.instance.collection('users');
       var data = await ref
           .where('clincId', isEqualTo: clincId)
@@ -261,21 +261,21 @@ class EmployeesProvider with ChangeNotifier {
             employees.clear();
 
             searchList.clear();
-            print('Data Are Here @');
+            debugPrint('Data Are Here @');
             for (int i = 0; i < value.length; i++) {
               employees.insert(0, User.fromJson(value[i]));
               searchList.insert(0, User.fromJson(value[i]));
             }
-            print(employees.length);
+            debugPrint(employees.length.toString());
 
-            print('LLLLLLL');
+            debugPrint('LLLLLLL');
             notifyListeners();
             result = 'success';
           })
           .timeout(Duration(seconds: 5))
           .catchError((e) async {
-            print('FFFFFFFFFFFFFF');
-            print(e.toString());
+            debugPrint('FFFFFFFFFFFFFF');
+            debugPrint(e.toString());
             if (e.toString().contains('TimeoutException')) {
               result = 'internet fail';
             } else if (e.toString().contains('SocketException')) {
@@ -297,7 +297,7 @@ class EmployeesProvider with ChangeNotifier {
             }
           });
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
       result = 'fail';
     }
 
@@ -327,17 +327,17 @@ class EmployeesProvider with ChangeNotifier {
     text = text.toLowerCase();
     searchList.clear();
     if (text == '') {
-      print('all employees');
+      debugPrint('all employees');
       searchList = List.from(employees);
     } else {
-      print(employees[0].name);
+      debugPrint(employees[0].name);
       for (int i = 0; i < employees.length; i++) {
         if (employees[i].name.toLowerCase().contains(text)) {
           searchList.add(employees[i]);
         }
       }
     }
-    print(searchList.length);
+    debugPrint(searchList.length.toString());
     notifyListeners();
   }
 }

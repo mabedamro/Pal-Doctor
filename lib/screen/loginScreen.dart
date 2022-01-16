@@ -103,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   focusNode: focus,
                   controller: _passwordController,
                   onSubmitted: (val) {
-                    print('enter button');
+                    debugPrint('enter button');
                     setState(() {
                       isLoading = true;
                     });
@@ -161,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 //           ? Colors.white
                 //           : Colors.black),
                 //   onSubmitted: (val) {
-                //     print('enter button');
+                //     debugPrint('enter button');
                 //     setState(() {
                 //       isLoading = true;
                 //     });
@@ -256,7 +256,7 @@ class _LoginScreenState extends State<LoginScreen> {
           break;
         }
       }
-      print(temp);
+      debugPrint(temp);
       String temp2 = '';
       for (var i = temp.length - 1; i >= 0; i--) {
         if (temp[i].codeUnitAt(0) != 32 && temp[i].codeUnitAt(0) != 8207) {
@@ -272,27 +272,27 @@ class _LoginScreenState extends State<LoginScreen> {
         result += temp2[i];
       }
 
-      print(result);
+      debugPrint(result);
       String finalValue = '';
-      print(temp.length);
+      debugPrint(temp.length.toString());
       for (var i = 0; i < result.length; i++) {
         if (result[i].codeUnitAt(0) != 32 && result[i].codeUnitAt(0) != 8207) {
           finalValue += result[i];
         }
       }
-      print(finalValue.length);
+      debugPrint(finalValue.length.toString());
       return finalValue;
     }
   }
 
   Future<void> login() async {
     String email = trim(_emailController.text);
-    print('.' + email + '.');
-    print(_passwordController.text.length);
+    debugPrint('.' + email + '.');
+    debugPrint(_passwordController.text.length.toString());
     if (isLoading == true) {
       String result = await Provider.of<UserProvier>(context, listen: false)
           .login(email: email, pass: _passwordController.text,context: context);
-      print(result);
+      debugPrint(result);
       if (result == 'success') {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
