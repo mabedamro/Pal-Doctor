@@ -1,4 +1,4 @@
-package com.example.desktop_version
+package com.clinc.paldoctor
 
 import io.flutter.embedding.android.FlutterActivity
 

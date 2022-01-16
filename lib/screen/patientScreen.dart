@@ -403,7 +403,7 @@ class _PatientScreenState extends State<PatientScreen>
                         Expanded(
                           child: Center(
                             child: Text(
-                              'رقم الهوية',
+                              'التشخيص',
                               style: TextStyle(
                                   fontSize: isMobile ? 12 : 14,
                                   color: Colors.blue,
@@ -544,7 +544,7 @@ class _PatientScreenState extends State<PatientScreen>
                                                   child: Text(
                                                     patProvider
                                                         .searchList[index]
-                                                        .IDNumber,
+                                                        .diagsDescription,
                                                     style: TextStyle(
                                                         color: Provider.of<
                                                                         DarkModeProvider>(

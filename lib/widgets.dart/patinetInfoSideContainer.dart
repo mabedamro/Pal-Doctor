@@ -158,7 +158,8 @@ class __PatientInfoSideContainerpertiesState
       }
       nameController.text = PatientScreen.selectedPatient.name;
       phoneController.text = PatientScreen.selectedPatient.phone;
-      diagsDescriptionController.text=PatientScreen.selectedPatient.diagsDescription;
+      diagsDescriptionController.text =
+          PatientScreen.selectedPatient.diagsDescription;
       cityController.text = PatientScreen.selectedPatient.city;
       adressController.text = PatientScreen.selectedPatient.address;
       refferController.text = PatientScreen.selectedPatient.refferedFrom;
@@ -208,25 +209,47 @@ class __PatientInfoSideContainerpertiesState
                             padding: const EdgeInsets.all(8.0),
                             child: ElevatedButton(
                               onPressed: () async {
+                                print(
+                                    '++++++++++++++++++++++++++++++++++++++++');
                                 if (PatientScreen.enableEditing) {
                                   if (_formKey.currentState.validate()) {
                                     if (!isLoading) {
                                       setState(() {
                                         isLoading = true;
                                       });
+                                      print(
+                                          '+++++++++++---------------------+');
                                       if (idNumberController.text == '') {
+                                        print(
+                                            '+++++++++++---------------------+');
                                         PatientScreen.selectedPatient.IDNumber =
                                             '000000000';
+
+                                        print(
+                                            PatientScreen.selectedPatient.name +
+                                                'AAAAAAAAAAAAA');
                                       } else {
                                         PatientScreen.selectedPatient.IDNumber =
                                             trim(idNumberController.text);
+                                        print(
+                                            '+++++++++++---------------------+');
                                       }
-                                      PatientScreen
-                                          .selectedPatient.name = PatientScreen
-                                              .selectedPatient
+
+                                      print(PatientScreen.selectedPatient.name +
+                                          'AAAAAAAAAAAAA');
+                                      print(nameController.text +
+                                          'AAAAAAAAAAAAA');
+
+                                      print(
+                                          '+++++++++++---------------------+');
+                                      PatientScreen.selectedPatient.name =
+                                          trim(nameController.text);
+                                      PatientScreen.selectedPatient
                                               .diagsDescription =
                                           trim(diagsDescriptionController.text);
-                                      trim(nameController.text);
+
+                                      print(
+                                          '+++++++++++---------------------+');
                                       PatientScreen.selectedPatient.sex = male;
                                       PatientScreen.selectedPatient.phone =
                                           trim(phoneController.text);
@@ -244,6 +267,9 @@ class __PatientInfoSideContainerpertiesState
                                           trim(noteController.text);
                                       PatientScreen.selectedPatient.sex =
                                           CheckBoxForSideContainer.male;
+                                      print(PatientScreen.selectedPatient.toMap
+                                          .toString());
+                                      print('+++++++RRRRRRRRR------------+');
 
                                       String result =
                                           await Provider.of<PatientProvider>(
@@ -252,6 +278,8 @@ class __PatientInfoSideContainerpertiesState
                                               .updatePat(
                                                   PatientScreen.selectedPatient,
                                                   context: context);
+                                      print(
+                                          PatientScreen.selectedPatient.toMap);
                                       if (result == 'success') {
                                         CheckBoxForSideContainer.male = true;
                                         CheckBoxForSideContainer.female = false;
